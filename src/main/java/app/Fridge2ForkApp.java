@@ -23,7 +23,7 @@ public class Fridge2ForkApp extends Application {
         //Välkomstsidan i mitten
         root.setCenter(new HomeView());
 
-        //2. Innehållet och lägg i ramen, storlek 800x600
+        //2.Innehållet och lägg i ramen, storlek 800x600
         Scene scene = new Scene(root, 800, 600);
 
         //3. Titel till fönstret högst upp

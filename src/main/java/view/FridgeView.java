@@ -15,7 +15,7 @@ public class FridgeView extends StackPane {
         Label title = new Label("Vad har du hemma?");
         title.setStyle("-fx-font-sixe: 28px; -fx-font-weight-bold;");
 
-        //Kryssrutorna
+        // Kryssrutorna
         CheckBox kolhydrater = new CheckBox("Kolhydrater");
         CheckBox protein = new CheckBox("Protein");
         CheckBox gronsaker = new CheckBox("Grönsaker");

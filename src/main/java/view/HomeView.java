@@ -25,7 +25,7 @@ public class HomeView extends StackPane {
             Fridge2ForkApp.root.setCenter(new FridgeView());
         });
 
-        //Allt i en VBox så det staplas på höjden
+        //Allt i  en VBox så det staplas på höjden
         VBox content = new VBox(20, welcome, subText, BSubText);
         content.setAlignment(Pos.CENTER);
 

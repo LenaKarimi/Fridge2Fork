@@ -14,7 +14,7 @@ public class RecipeView extends StackPane {
         this.getChildren().add(title);
         this.setAlignment(Pos.CENTER);
 
-        //Tillfällif bakgrundsfärg för att se vyskiftet
+        //Tillfällif  bakgrundsfärg för att se vyskiftet
         this.setStyle("-fx-background-color: violet;");
     }
 }

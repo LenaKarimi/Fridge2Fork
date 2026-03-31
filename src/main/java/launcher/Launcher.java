@@ -1,5 +1,5 @@
 package launcher;
-
+//hej
 import app.Fridge2ForkApp;
 
 public class Launcher {
