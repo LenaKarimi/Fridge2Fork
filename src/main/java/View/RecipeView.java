@@ -1,4 +1,4 @@
-package view;
+package View;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;

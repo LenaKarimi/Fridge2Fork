@@ -1,4 +1,4 @@
-package view;
+package View;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.StackPane;
@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-import app.Fridge2ForkApp;
+import App.Fridge2ForkApp;
 
 public class FridgeView extends StackPane {
 

@@ -1,7 +1,6 @@
-package view;
+package View;
 
-import app.Fridge2ForkApp;
-import view.FridgeView;
+import App.Fridge2ForkApp;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;

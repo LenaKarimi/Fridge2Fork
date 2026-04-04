@@ -1,14 +1,11 @@
-package view;
+package View;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import javafx.geometry.Insets;
-import javafx.scene.layout.Priority;
-import app.Fridge2ForkApp;
-import view.HomeView;
-import view.RecipeView;
+import App.Fridge2ForkApp;
 
 
 public class SideBarView extends VBox {

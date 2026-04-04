@@ -1,11 +1,11 @@
-package app;
+package App;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import view.SideBarView;
-import view.HomeView;
+import View.SideBarView;
+import View.HomeView;
 
 public class Fridge2ForkApp extends Application {
 
