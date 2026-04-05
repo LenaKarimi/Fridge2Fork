@@ -1,5 +1,6 @@
 package API;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,7 +15,7 @@ public class ApiClient {
         baseUrl = "https://www.themealdb.com/api/json/v1/1"; //delen som är gemensam för alla
     }
 
-    public String  filterByIngredient(String ingredient) throws Exception{
+    public String filterByIngredient(String ingredient) throws IOException, InterruptedException {
         String url = baseUrl + "/filter.php?i=" + ingredient; //här bygger jag URL
 
         //skapar "brevet som ska skickas, mpste bestå av: adressen, att vi vill hämra och skapa den
@@ -29,7 +30,7 @@ public class ApiClient {
         return response.body();
     }
 
-    public String filterByLookUpId(String id) throws Exception{
+    public String filterByLookUpId(String id) throws InterruptedException, IOException {
         String url = baseUrl + "/lookup.php?i=" + id;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
