@@ -8,12 +8,16 @@ public class Recipe {
     private List<Ingredient> ingredients;
     private int totalServings;
     private int estimatedTime;
+    private Diet diet;
+    private Cuisine cuisine;
 
-    public Recipe(String name, List<Ingredient> ingredients, int totalServings, int estimatedTime) {
+    public Recipe(String name, List<Ingredient> ingredients, int totalServings, int estimatedTime, Cuisine cuisine, Diet diet) {
         this.name = name;
         this.ingredients = ingredients;
         this.totalServings = totalServings;
         this.estimatedTime = estimatedTime;
+        this.diet = diet;
+        this.cuisine = cuisine;
     }
 
 
@@ -47,5 +51,21 @@ public class Recipe {
 
     public void setEstimatedTime(int estimatedTime) {
         this.estimatedTime = estimatedTime;
+    }
+
+    public Diet getDiet() {
+        return diet;
+    }
+
+    public void setDiet(Diet diet) {
+        this.diet = diet;
+    }
+
+    public Cuisine getCuisine() {
+        return cuisine;
+    }
+
+    public void setCuisine(Cuisine cuisine) {
+        this.cuisine = cuisine;
     }
 }
