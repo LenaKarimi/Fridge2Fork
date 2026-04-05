@@ -15,7 +15,7 @@ public class DietView extends StackPane {
         Label kitchenTitle = new Label("Önskat kök");
         kitchenTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        //Kryssrutor för   kosten
+        //Kryssrutor för kosten
         CheckBox vegetarisk = new CheckBox("Vegetarisk");
         CheckBox vegan = new CheckBox("Vegan");
         CheckBox glutenfri = new CheckBox("Glutenfri");

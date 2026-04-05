@@ -16,7 +16,7 @@ public class SideBarView extends VBox {
         this.setPadding(new Insets(10)); //Marginal från kanten
         this.setStyle("-fx-background-color: khaki;");
 
-        //2.   Översta raden med två kvadrater (HBox)
+        //2. Översta raden med två kvadrater (HBox)
         HBox topRow = new HBox(10);
         StackPane leftSquare = createBox("powderblue", 70, 70, "Profil");
         StackPane rightSquare = createBox("lightpink", 70, 70, "Likes");
