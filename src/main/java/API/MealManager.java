@@ -1,21 +1,19 @@
 package API;
-import API.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.tools.javac.Main;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MealManager {
     private ApiClient client;
+    private List<MealApiModel> mealsMatching;
 
     public MealManager(ApiClient client){
         this.client = client;
     }
 
-    public void searchForRecepie(String ingredient, String category){
+    public List<MealApiModel>searchForRecepie(String ingredient, String category, ArrayList<String> userIngredient){
+        mealsMatching = new ArrayList<>();
         try{
             String jsonResponse = client.filterByIngredient(ingredient); //skickar förfrågan med ingrediens som hämtar Json strängen, får lista med alla recept som innehåller ingredient
 
@@ -33,18 +31,15 @@ public class MealManager {
                 MealApiModel specificMeal = responseIDMeal.getMeals().get(0);
 
                 if (specificMeal.getStrArea().equalsIgnoreCase(category)){
+
                     specificMeal.buildIngredientLists();// bygger listorna för det specifika objektet
                     List<String> ingredientList = specificMeal.getIngredientList(); //hämtar lista för ingredienser för specifikt recept
-                    List<String> measureList = specificMeal.getMeasureList(); //hämtar lista för mått för specifikt recept
+                    List<String> measureList = specificMeal.getMeasureList(); //hämtar lista för mått för specifikt recep
 
-                    System.out.println("Catogory " + specificMeal.getStrArea()); //går igenom alla recept och måll och skrver ut dem
-                    for (int i = 0; i<ingredientList.size(); i++){
-                        System.out.println(ingredientList.get(i) + " - " + measureList.get(i));
+                    if (isMealMatching70Percent(userIngredient,ingredientList)){
+                        mealsMatching.add(specificMeal);
                     }
-                    System.out.println();
-                    System.out.println(specificMeal.getStrInstructions() + "\n"); // skriver ut  instruktioner
                 }
-
             }
         }
         catch (InterruptedException e){
@@ -53,5 +48,20 @@ public class MealManager {
         catch (IOException e) {
             e.printStackTrace();
         }
+        return mealsMatching;
     }
+
+    public boolean isMealMatching70Percent(List<String> userList, List<String> ingredientList){
+        int counter = 0;
+        for (String i : ingredientList){
+            for (String userIngredient : userList){
+                if (i.equalsIgnoreCase(userIngredient)){
+                    counter++;
+                }
+            }
+        }
+        Double percent = (double) counter/ingredientList.size();
+        return percent>= 0.7;
+    }
+
 }
