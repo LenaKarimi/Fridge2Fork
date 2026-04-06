@@ -19,8 +19,8 @@ public class HomeView extends BorderPane {
         //Inlogg och registrering
         HBox authButtons = new HBox(10);
         authButtons.setAlignment(Pos.TOP_RIGHT);
-        Button loginBtn = new Button("Logga in");
-        Button registerBtn = new Button("Skapa konto");
+        Button loginBtn = new Button("Log in");
+        Button registerBtn = new Button("Create account");
         //transparent färg för aesthetics lol
         loginBtn.setStyle("-fx-background-color: transparent; -fx-border-color: tan; -fx-border-radius: 5;");
         registerBtn.setStyle("-fx-background-color: tan; -fx-text-fill: white; -fx-background-radius: 5;");
@@ -32,14 +32,14 @@ public class HomeView extends BorderPane {
         this.setTop(authButtons); //så raden läggs längst upp
 
         //Välkomstmeddelande och huvudknapp
-        welcomeLabel = new Label("Välkommen till Fridge2Fork!");
+        welcomeLabel = new Label("Welcome to Fridge2Fork!");
         welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold");
 
-        Label subText = new Label("Upptäck recept baserade på vad du redan har hemma");
+        Label subText = new Label("Discover recipes based on what you already have at home");
         subText.setStyle("-fx-font-size: 16px;");
 
         //Knappen
-        Button BSubText = new Button("Vad har du hemma?");
+        Button BSubText = new Button("What's in your fridge?");
         BSubText.setStyle("-fx-font-size: 14px; -fx-padding: 10 20 10 20;");
         BSubText.setCursor(javafx.scene.Cursor.HAND);
         BSubText.setOnAction(e ->{
@@ -54,6 +54,6 @@ public class HomeView extends BorderPane {
 
     //Tänkt att anropa för inloggning
     public void setUserName(String name){
-        welcomeLabel.setText("Välkommen, " + name + "!");
+        welcomeLabel.setText("Welcome, " + name + "!");
     }
 }
