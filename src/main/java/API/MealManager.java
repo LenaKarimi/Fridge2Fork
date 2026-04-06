@@ -28,7 +28,7 @@ public class MealManager {
 
                 String jsonResponseIDMeal = client.filterByLookUpId(idMeal); //anropar API med specifikt id, för att då json stränf för specifikt recept med alla ingredienser, lookup retunerar en lista med alla objekt drf 0
                 MealResponse responseIDMeal = mapper.readValue(jsonResponseIDMeal,MealResponse.class); //får hela receptet i form av json sträng, gör om till objekt
-                MealApiModel specificMeal = responseIDMeal.getMeals().get(0);
+                MealApiModel specificMeal = responseIDMeal.getMeals().get(0); // då vi får en "hel" lista med objet vill vi ha det första objektet, även om det bara är ett objekt - för att säkerställa 
 
                 if (specificMeal.getStrArea().equalsIgnoreCase(category)){ // om område motsvarar kategori som valts
 
