@@ -15,8 +15,8 @@ public class ApiClient {
         baseUrl = "https://www.themealdb.com/api/json/v1/1"; //delen som är gemensam för alla
     }
 
-    public String filterByIngredient(String ingredient) throws IOException, InterruptedException {
-        String url = baseUrl + "/filter.php?i=" + ingredient; //här bygger jag URL
+    public String filterByIngredient(String mainIngredient) throws IOException, InterruptedException {
+        String url = baseUrl + "/filter.php?i=" + mainIngredient; //här bygger jag URL
 
         //skapar "brevet som ska skickas, mpste bestå av: adressen, att vi vill hämra och skapa den
         HttpRequest request = HttpRequest.newBuilder()
@@ -31,6 +31,7 @@ public class ApiClient {
     }
 
     public String filterByLookUpId(String id) throws InterruptedException, IOException {
+        //i denna metod skickar jag förfrågan om det specifika receptet och får tillbaka text
         String url = baseUrl + "/lookup.php?i=" + id;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -38,7 +39,6 @@ public class ApiClient {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+        return response.body(); //body är json strängen
     }
-
 }
