@@ -4,7 +4,7 @@ import java.util.List;
 
 @JsonIgnoreProperties (ignoreUnknown = true)
 public class MealResponse {
-    private List<MealApiModel> meals;
+    private List<MealApiModel> meals; //matchar med jsonfältet "meals", så jacksson kan  skapa mealApiManager objektem
 
     public MealResponse(){
     }
