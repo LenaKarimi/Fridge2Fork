@@ -14,14 +14,21 @@ import javafx.geometry.Insets;
 
 public class FridgeView extends StackPane {
 
+    private Label errorLabel;
+
     public FridgeView(){
         VBox mainContent = new VBox(20);
         mainContent.setPadding(new Insets(40));
         mainContent.setAlignment(Pos.TOP_LEFT);
 
         Label title = new Label("What's in your fridge?");
-        title.setStyle("-fx-font-sixe: 18px; -fx-font-weight-bold; -fx-text-fill: black;");
+        title.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;");
         mainContent.getChildren().add(title);
+
+        errorLabel = new Label("");
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold;");
+        errorLabel.setVisible(false);
+        mainContent.getChildren().add(errorLabel);
 
         //Kolhydrater
         mainContent.getChildren().add(createCategorySection("Carbohydrates", "Pasta", "Rice", "Potato", "Sweet potato",
@@ -82,5 +89,17 @@ public class FridgeView extends StackPane {
         section.getChildren().addAll(catLabel, ingredientFlow);
         section.setPadding(new Insets(0, 0, 20, 0));
         return section;
+
+    }
+
+    //Tänkt att använda för att felhantera om val saknas
+    public void showErrorMessage(String message){
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
+    }
+
+    //Tömma felmeddelandet
+    public void clearErrorMessage(){
+      errorLabel.setVisible(false);
     }
 }

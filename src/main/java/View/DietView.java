@@ -1,5 +1,7 @@
 package View;
 
+import App.Fridge2ForkApp;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -14,6 +16,12 @@ public class DietView extends StackPane {
         dietTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         Label kitchenTitle = new Label("Cuisine type");
         kitchenTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        Button findRecipesBtn = new Button("Find Recipes");
+        findRecipesBtn.setStyle("-fx-font-size: 16px; -fx-padding: 12 40; -fx-background-color: darkseagreen; -fx-text-fill: white; -fx-font-weight: bold;");
+        findRecipesBtn.setCursor(javafx.scene.Cursor.HAND);
+        findRecipesBtn.setOnAction(e -> {
+            Fridge2ForkApp.root.setCenter(new RecipeResultsView());
+        });
 
         //Kryssrutor för kosten
         CheckBox vegetarian = new CheckBox("Vegetarian");
@@ -43,7 +51,7 @@ public class DietView extends StackPane {
 
         //Lägg allt i VBox
         VBox content = new VBox(15, dietTitle, vegetarian, vegan, glutenFree, lactoseFree, kitchenTitle, swedish,
-                italian, asian, middleEastern, extraProtein, lowCarb);
+                italian, asian, middleEastern, extraProtein, lowCarb, findRecipesBtn);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setPadding(new Insets(40));
 
