@@ -2,67 +2,72 @@ package Model;
 
 import java.util.List;
 
-public class Recipe {
+public class Recipe{
 
+    private String id; //för att spara i vår egna databas
     private String name;
+    private String instructions;
+    private String imageUrl;
     private List<Ingredient> ingredients;
     private int totalServings;
     private int estimatedTime;
-    private Diet diet;
+    private Diet diet; //frågan är om vi ska ha kvar detta? måste gruppera manuellt isf då det ej framgår i API?
     private Cuisine cuisine;
 
-    public Recipe(String name, List<Ingredient> ingredients, int totalServings, int estimatedTime, Cuisine cuisine, Diet diet) {
+    public Recipe(String id, String name, String instructions, String imageUrl, List<Ingredient> ingredients, Cuisine cuisine){
+        this.id = id;
         this.name = name;
+        this.instructions = instructions;
+        this.imageUrl = imageUrl;
         this.ingredients = ingredients;
-        this.totalServings = totalServings;
-        this.estimatedTime = estimatedTime;
-        this.diet = diet;
         this.cuisine = cuisine;
+        this.totalServings = 0;
+        this.estimatedTime = 0;
+        this.diet = null;
     }
-
-
+    public String getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
+    public String getInstructions() {
+        return instructions;
     }
-
+    public String getImageUrl() {
+        return imageUrl;
+    }
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public Cuisine getCuisine() {
+        return cuisine;
     }
-
     public int getTotalServings() {
         return totalServings;
-    }
-
-    public void setTotalServings(int totalServings) {
-        this.totalServings = totalServings;
     }
 
     public int getEstimatedTime() {
         return estimatedTime;
     }
 
-    public void setEstimatedTime(int estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
-
     public Diet getDiet() {
         return diet;
     }
 
-    public void setDiet(Diet diet) {
-        this.diet = diet;
+
+    //lägger bara set-metoder på det som vi själva behöver sätta på, det som ej sätts via API i denna konstruktor
+    public void setTotalServings(int totalServings) {
+        this.totalServings = totalServings;
     }
 
-    public Cuisine getCuisine() {
-        return cuisine;
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
+    }
+
+    public void setDiet(Diet diet) {
+        this.diet = diet;
     }
 
     public void setCuisine(Cuisine cuisine) {
