@@ -7,5 +7,4 @@ public enum CuisineGroup {
     european,
     american,
     latin_american,
-    other,
 }
