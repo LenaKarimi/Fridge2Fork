@@ -16,6 +16,7 @@ public class Main {
 
         for (TheMealDbDTO recepie : results){
             System.out.println(recepie.strMeal);
+            System.out.println(recepie.strInstructions);
         }
 
     }
