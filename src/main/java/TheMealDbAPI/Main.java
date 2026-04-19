@@ -10,16 +10,14 @@ public class Main {
 
         MealRepository mealRepository = new MealRepository(httpTheMealDbClient);
 
-        Category.MealManager mealManager = new Category.MealManager(mealRepository);
+        TheMealManager mealManager = new TheMealManager(mealRepository);
 
         List<TheMealDbDTO> results = mealManager.searchForRecepie("chicken", "Indian");
 
         for (TheMealDbDTO recepie : results){
             System.out.println(recepie.strMeal);
             System.out.println(recepie.strInstructions);
-
         }
-        System.out.println();
 
     }
 }
