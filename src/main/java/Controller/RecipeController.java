@@ -5,7 +5,7 @@ import TheMealDbAPI.MealMapper;
 import TheMealDbAPI.MealRepository;
 import TheMealDbAPI.HttpTheMealDbClient;
 import TheMealDbAPI.TheMealDbDTO;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,11 @@ public class RecipeController {
     //hanterar logik kring recept, 70% gräns osv
 
     //De olika klasserna som används från Api:et
-    private MealRepository mealRepository;
-    private MealMapper mealMapper;
+    private final MealRepository mealRepository;
+    private final MealMapper mealMapper;
 
     public RecipeController(){
-        this.httpTheMealDbClient = new HttpTheMealDbClient();
+        this.mealRepository = new MealRepository(new HttpTheMealDbClient());
         this.mealMapper = new MealMapper();
 
     }
@@ -47,9 +47,37 @@ public class RecipeController {
 
     }
 
+    public List<Recipe> searchRecipesByIngredients(List<String> ingredients) throws Exception {
+        if (ingredients == null || ingredients.isEmpty()) {
+            throw new IllegalArgumentException("You have to choose at leats one alternative in all categories to continue!");
+        }
+
+        List<Recipe> allRecipes = new ArrayList<>();
+
+        for (String ingredient : ingredients) {
+
+            if (ingredient == null || ingredient.isBlank() || ingredient.equalsIgnoreCase("none")) {
+                continue;
+            }
+
+
+            List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(ingredient);
+
+            for (TheMealDbDTO meal : meals) {
+                TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
+                Recipe recipe = mealMapper.toDomain(detailedMeal);
+                allRecipes.add(recipe);
+
+
+            }
+
+        }
+        return allRecipes;
+    }
+
     //Gör om objekt till strängar detta ska användas i gui sen.
-    public List<String> searchRecipeNames(String mainIngredient) throws Exception{
-        List<Recipe> recipes = searchRecipes(mainIngredient);
+    public List<String> searchRecipeNamesByIngredients(List <String> ingredients) throws Exception{
+        List<Recipe> recipes = searchRecipesByIngredients(ingredients);
 
         List<String> names = new ArrayList<>();
 
