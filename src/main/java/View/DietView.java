@@ -12,8 +12,8 @@ import javafx.geometry.Insets;
 public class DietView extends StackPane {
 
     public DietView(){
-        Label dietTitle = new Label("Dietary preferences");
-        dietTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        //Label dietTitle = new Label("Dietary preferences");
+        //dietTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         Label kitchenTitle = new Label("Cuisine type");
         kitchenTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         Button findRecipesBtn = new Button("Find Recipes");
@@ -24,34 +24,38 @@ public class DietView extends StackPane {
         });
 
         //Kryssrutor för kosten
-        CheckBox vegetarian = new CheckBox("Vegetarian");
-        CheckBox vegan = new CheckBox("Vegan");
-        CheckBox glutenFree = new CheckBox("Gluten free");
-        CheckBox lactoseFree = new CheckBox("Lactose free");
-        CheckBox extraProtein = new CheckBox("Extra protein");
-        CheckBox lowCarb = new CheckBox("Low carb");
+        //CheckBox vegetarian = new CheckBox("Vegetarian");
+        //CheckBox vegan = new CheckBox("Vegan");
+        //CheckBox glutenFree = new CheckBox("Gluten free");
+        //CheckBox lactoseFree = new CheckBox("Lactose free");
+        //CheckBox extraProtein = new CheckBox("Extra protein");
+        //CheckBox lowCarb = new CheckBox("Low carb");
 
-        CheckBox swedish = new CheckBox("Swedish home cooking");
-        CheckBox italian = new CheckBox("Italian");
         CheckBox asian = new CheckBox("Asian");
         CheckBox middleEastern = new CheckBox("Middle eastern");
+        CheckBox european = new CheckBox("European");
+        CheckBox american = new CheckBox("American");
+        CheckBox latinAmerican = new CheckBox("Latin america");
 
         //Stilen på alla kryssrutor
         String checkStyle = "-fx-font-size: 16px;";
-        vegetarian.setStyle(checkStyle);
-        vegan.setStyle(checkStyle);
-        glutenFree.setStyle(checkStyle);
-        lactoseFree.setStyle(checkStyle);
-        swedish.setStyle(checkStyle);
-        italian.setStyle(checkStyle);
+        //vegetarian.setStyle(checkStyle);
+        //vegan.setStyle(checkStyle);
+        //glutenFree.setStyle(checkStyle);
+        //lactoseFree.setStyle(checkStyle);
+
         asian.setStyle(checkStyle);
         middleEastern.setStyle(checkStyle);
-        extraProtein.setStyle(checkStyle);
-        lowCarb.setStyle(checkStyle);
+        european.setStyle(checkStyle);
+        american.setStyle(checkStyle);
+        latinAmerican.setStyle(checkStyle);
+
+        //extraProtein.setStyle(checkStyle);
+        //lowCarb.setStyle(checkStyle);
 
         //Lägg allt i VBox
-        VBox content = new VBox(15, dietTitle, vegetarian, vegan, glutenFree, lactoseFree, kitchenTitle, swedish,
-                italian, asian, middleEastern, extraProtein, lowCarb, findRecipesBtn);
+        VBox content = new VBox(15, kitchenTitle, asian,
+                middleEastern, european, american, latinAmerican, findRecipesBtn);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setPadding(new Insets(40));
 
