@@ -31,44 +31,42 @@ public class FridgeView extends StackPane {
         mainContent.getChildren().add(errorLabel);
 
         //Kolhydrater
-        mainContent.getChildren().add(createCategorySection("Carbohydrates", "Pasta", "Rice", "Potato", "Sweet potato",
-                "Bread", "Couscous", "Bulgur", "None"));
-
-        //"Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni", "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats"
+        mainContent.getChildren().add(createCategorySection("Carbohydrates", "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
+                "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats", "none"));
 
         //Protein
-        mainContent.getChildren().add(createCategorySection("Protein", "Chicken", "Beef", "Pork", "Eggs", "Tofu",
-                "Salmon", "Canned tuna", "Shrimp", "None"));
+        mainContent.getChildren().add(createCategorySection("Protein", "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
+                "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish",
+                "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa",
+                "Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas", "none"));
 
-        //kött: "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage"
-       //seafood: "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish"
-        // vegansk protein: "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa"
-        //baljväxter:"Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas"
 
         //Grönsaker
-        mainContent.getChildren().add(createCategorySection("Vegetables", "Broccoli", "Carrot", "Spinach", "Tomato",
-                "Onion", "Bell pepper", "Lettuce", "Corn", "Cucumber", "None"));
+        mainContent.getChildren().add(createCategorySection("Vegetables", "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato", "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage", "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
+                "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom", "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "none"));
 
-        //Grönsaker: "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato", "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage", "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper", "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom", "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish"
-        //Frukter:"Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut", "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado"
+        //Frukter:
+        mainContent.getChildren().add(createCategorySection("Fruits", "Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut", "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "none"));
 
 
         //Mejeri
-        mainContent.getChildren().add(createCategorySection("Dairy", "Milk", "Cheese", "Butter", "Sour cream",
-                "Creme Fraîche", "None"));
-
-        //Mejeri:"Milk", "Butter", "Cheese", "Cheddar", "Mozzarella", "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone", "Ghee", "Creme Fraiche"
-
+        mainContent.getChildren().add(createCategorySection("Dairy", "Milk", "Butter", "Cheese", "Cheddar", "Mozzarella", "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone", "Ghee", "Creme Fraiche", "none"));
 
         //Skafferi
         mainContent.getChildren().add(createCategorySection("Pantry", "Olive oil", "Garlic", "Canned tomatoes",
                 "Chickpeas", "Lentils", "Nuts", "None"));
 
-        //örter & kryddor:"Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika", "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary", "Coriander", "Bay Leaves"
-        //såser:"Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard", "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce"
-        //Övrigt:"Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives"
-        //liquid: "Water", "Stock", "Chicken Stock", "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk"
-        //Nötter 6 frö: "Almonds", "Cashews", "Peanuts", "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds"
+        //örter & kryddor
+        mainContent.getChildren().add(createCategorySection("Spices & herbs", "Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika", "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary", "Coriander", "Bay Leaves", "None"));
+
+        mainContent.getChildren().add(createCategorySection("Sause", "Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard", "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
+
+        mainContent.getChildren().add(createCategorySection("Liquid", "Water", "Stock", "Chicken Stock", "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk", "None"));
+
+        mainContent.getChildren().add(createCategorySection("Nuts and seeds", "Almonds", "Cashews", "Peanuts", "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
+
+        mainContent.getChildren().add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
+
 
 
         //Nästa-knappen
