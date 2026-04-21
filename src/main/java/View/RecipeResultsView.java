@@ -23,7 +23,7 @@ public class RecipeResultsView extends VBox {
 
         if (recipes == null || recipes.isEmpty()) {
             Label noResults = new Label("No recipes found for your ingredients try selecting more!");
-            noResults.setStyle("fx.font-size: 16px; -fxtext-fill: grey,");
+            noResults.setStyle("fx.font-size: 16px; -fx-text-fill: grey,");
             this.getChildren().add(noResults);
             return;
         }
@@ -63,7 +63,7 @@ public class RecipeResultsView extends VBox {
         String cuisineText = recipe.getCuisine() != null ? recipe.getCuisine().toString() : "Unknown cuisine";
 
         Label cuisineLabel = new Label(cuisineText);
-        cuisineLabel.setStyle("-fx-font-size: 13px; -fx-text-filol: darkseagreen;");
+        cuisineLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: darkseagreen;");
 
         card.getChildren().addAll(nameLabel, cuisineLabel);
 

@@ -81,9 +81,7 @@ public class FridgeView extends StackPane {
         nextButton.setStyle("-fx-font-sixe; 16px -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
                 "fx-text-fill: white; -fx-font-weight: bold;");
         nextButton.setCursor(javafx.scene.Cursor.HAND);
-        nextButton.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new DietView());
-        });
+        nextButton.setOnAction(e -> handleNextStep());
 
         mainContent.getChildren().add(nextButton);
 
@@ -113,7 +111,7 @@ public class FridgeView extends StackPane {
 
         try {
             RecipeController controller = new RecipeController();
-            List<Recipe> recipes = controller.searchRecipesByIngredients(selectedIngredients);
+            List<Recipe> recipes = controller.searchRecipes(selectedIngredients);
 
             Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes));
         } catch (Exception ex){
@@ -138,8 +136,9 @@ public class FridgeView extends StackPane {
         for (String ingredient : ingredients) {
             CheckBox cb = new CheckBox(ingredient);
             cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
-
+            allCheckBoxes.add(cb);
             ingredientFlow.getChildren().add(cb);
+
         }
 
         section.getChildren().addAll(catLabel, ingredientFlow);
