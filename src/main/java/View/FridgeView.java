@@ -1,6 +1,8 @@
 package View;
 
 import App.Fridge2ForkApp;
+import Controller.RecipeController;
+import Model.Recipe;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -18,9 +20,8 @@ import java.util.List;
 public class FridgeView extends StackPane {
 
     private Label errorLabel;
-    private List<CheckBox> proteinCheckboxes = new ArrayList<>();
-
-
+    //Här ska alla checkboxar från alla kategorier sparas
+    private List<CheckBox> allCheckBoxes = new ArrayList<>();
 
     public FridgeView(){
         VBox mainContent = new VBox(20);
@@ -37,41 +38,41 @@ public class FridgeView extends StackPane {
         mainContent.getChildren().add(errorLabel);
 
         //Kolhydrater
-        mainContent.getChildren().add(createCategorySection("Carbohydrates", false,"Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
+        mainContent.getChildren().add(createCategorySection("Carbohydrates", "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
                 "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats", "none"));
 
         //Protein
-        mainContent.getChildren().add(createCategorySection("Protein", true,"Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
+        mainContent.getChildren().add(createCategorySection("Protein", "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
                 "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish",
                 "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa",
                 "Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas", "none"));
 
 
         //Grönsaker
-        mainContent.getChildren().add(createCategorySection("Vegetables", false,"Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato", "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage", "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
+        mainContent.getChildren().add(createCategorySection("Vegetables", "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato", "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage", "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
                 "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom", "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "none"));
 
         //Frukter:
-        mainContent.getChildren().add(createCategorySection("Fruits", false,"Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut", "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "none"));
+        mainContent.getChildren().add(createCategorySection("Fruits", "Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut", "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "none"));
 
 
         //Mejeri
-        mainContent.getChildren().add(createCategorySection("Dairy", false,"Milk", "Butter", "Cheese", "Cheddar", "Mozzarella", "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone", "Ghee", "Creme Fraiche", "none"));
+        mainContent.getChildren().add(createCategorySection("Dairy", "Milk", "Butter", "Cheese", "Cheddar", "Mozzarella", "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone", "Ghee", "Creme Fraiche", "none"));
 
         //Skafferi
-        mainContent.getChildren().add(createCategorySection("Pantry", false,"Olive oil", "Garlic", "Canned tomatoes",
+        mainContent.getChildren().add(createCategorySection("Pantry", "Olive oil", "Garlic", "Canned tomatoes",
                 "Chickpeas", "Lentils", "Nuts", "None"));
 
         //örter & kryddor
-        mainContent.getChildren().add(createCategorySection("Spices & herbs", false,"Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika", "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary", "Coriander", "Bay Leaves", "None"));
+        mainContent.getChildren().add(createCategorySection("Spices & herbs", "Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika", "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary", "Coriander", "Bay Leaves", "None"));
 
-        mainContent.getChildren().add(createCategorySection("Sause", false,"Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard", "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
+        mainContent.getChildren().add(createCategorySection("Sause", "Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard", "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
 
-        mainContent.getChildren().add(createCategorySection("Liquid", false,"Water", "Stock", "Chicken Stock", "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk", "None"));
+        mainContent.getChildren().add(createCategorySection("Liquid", "Water", "Stock", "Chicken Stock", "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk", "None"));
 
-        mainContent.getChildren().add(createCategorySection("Nuts and seeds", false,"Almonds", "Cashews", "Peanuts", "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
+        mainContent.getChildren().add(createCategorySection("Nuts and seeds", "Almonds", "Cashews", "Peanuts", "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
 
-        mainContent.getChildren().add(createCategorySection("Other", false,"Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
+        mainContent.getChildren().add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
 
 
 
@@ -80,9 +81,7 @@ public class FridgeView extends StackPane {
         nextButton.setStyle("-fx-font-sixe; 16px -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
                 "fx-text-fill: white; -fx-font-weight: bold;");
         nextButton.setCursor(javafx.scene.Cursor.HAND);
-        nextButton.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new DietView());
-        });
+        nextButton.setOnAction(e -> handleNextStep());
 
         mainContent.getChildren().add(nextButton);
 
@@ -92,8 +91,43 @@ public class FridgeView extends StackPane {
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         this.getChildren().add(scrollPane);
     }
+
+    private void handleNextStep(){
+        //Samla ihop alla ikryssade ingredienser & hoppa över none
+
+        List<String> selectedIngredients = new ArrayList<>();
+        for (CheckBox cb : allCheckBoxes){
+            if(cb.isSelected() && !cb.getText().equalsIgnoreCase("none")){
+                selectedIngredients.add(cb.getText());
+            }
+        }
+
+        if (selectedIngredients.isEmpty()){
+            showErrorMessage("Please select at least one ingredient before continuing!");
+            return;
+        }
+
+        clearErrorMessage();
+
+        try {
+            RecipeController controller = new RecipeController();
+            List<Recipe> recipes = controller.searchRecipes(selectedIngredients);
+
+            Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes));
+        } catch (Exception ex){
+            showErrorMessage("Something went wrong when searching for recipes. Please try again!");
+
+            ex.printStackTrace();
+        }
+        }
+
+
+
+
+
+
         //"..." betyder att metoden tar emot hur många strängar som helst
-    private VBox createCategorySection(String categoryName, boolean isProtein, String...ingredients) {
+    private VBox createCategorySection(String categoryName, String...ingredients) {
         VBox section = new VBox(10);
         Label catLabel = new Label(categoryName);
         catLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: darkseagreen");
@@ -102,12 +136,9 @@ public class FridgeView extends StackPane {
         for (String ingredient : ingredients) {
             CheckBox cb = new CheckBox(ingredient);
             cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
-
-            if (isProtein) {
-                proteinCheckboxes.add(cb);
-            }
-
+            allCheckBoxes.add(cb);
             ingredientFlow.getChildren().add(cb);
+
         }
 
         section.getChildren().addAll(catLabel, ingredientFlow);
@@ -126,18 +157,4 @@ public class FridgeView extends StackPane {
     public void clearErrorMessage(){
       errorLabel.setVisible(false);
     }
-
-    public List<String> getSelectedProteins () {
-        List<String> selected = new ArrayList<>();
-
-        for (CheckBox cb : proteinCheckboxes) {
-            if (cb.isSelected() && !cb.getText().equals("none")) {
-                selected.add(cb.getText());
-
-            }
-        }
-        return selected;
-    }
-
-
 }
