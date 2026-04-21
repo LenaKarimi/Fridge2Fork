@@ -3,7 +3,7 @@ package TheMealDbAPI;
 import DTO.*;
 import Model.Cuisine;
 import Model.Ingredient;
-import Model.Recepie;
+import Model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 // loopar igenom alla ingredienser,lägger till den i en lista - gjord av ingrediens objekt, och ändrar land till cuisine-enum
 public class MealMapper {
 
-    public Recepie toDomain(TheMealDbDTO theMealDbDTO){
+    public Recipe toDomain(TheMealDbDTO theMealDbDTO){
 
         //ingredienslistan
         List<Ingredient> recipeIngredients = new ArrayList<>();
@@ -30,7 +30,7 @@ public class MealMapper {
 
         Cuisine cuisine = mapCuisin(theMealDbDTO.strArea);
 
-        return new Recepie(theMealDbDTO.idMeal, theMealDbDTO.strMeal, theMealDbDTO.strInstructions,theMealDbDTO.strMealThumb, recipeIngredients, cuisine);
+        return new Recipe(theMealDbDTO.idMeal, theMealDbDTO.strMeal, theMealDbDTO.strInstructions,theMealDbDTO.strMealThumb, recipeIngredients, cuisine);
     }
 
     private Cuisine mapCuisin(String strArea){
