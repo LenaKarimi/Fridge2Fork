@@ -1,6 +1,8 @@
 package View;
 
 import App.Fridge2ForkApp;
+import Controller.RecipeController;
+import Model.Recipe;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -11,10 +13,15 @@ import javafx.scene.control.ScrollPane;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FridgeView extends StackPane {
 
     private Label errorLabel;
+    //Här ska alla checkboxar från alla kategorier sparas
+    private List<CheckBox> allCheckBoxes = new ArrayList<>();
 
     public FridgeView(){
         VBox mainContent = new VBox(20);
@@ -86,6 +93,41 @@ public class FridgeView extends StackPane {
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         this.getChildren().add(scrollPane);
     }
+
+    private void handleNextStep(){
+        //Samla ihop alla ikryssade ingredienser & hoppa över none
+
+        List<String> selectedIngredients = new ArrayList<>();
+        for (CheckBox cb : allCheckBoxes){
+            if(cb.isSelected() && !cb.getText().equalsIgnoreCase("none")){
+                selectedIngredients.add(cb.getText());
+            }
+        }
+
+        if (selectedIngredients.isEmpty()){
+            showErrorMessage("Please select at least one ingredient before continuing!");
+            return;
+        }
+
+        clearErrorMessage();
+
+        try {
+            RecipeController controller = new RecipeController();
+            List<Recipe> recipes = controller.searchRecipesByIngredients(selectedIngredients);
+
+            Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes));
+        } catch (Exception ex){
+            showErrorMessage("Something went wrong when searching for recipes. Please try again!");
+
+            ex.printStackTrace();
+        }
+        }
+
+
+
+
+
+
         //"..." betyder att metoden tar emot hur många strängar som helst
     private VBox createCategorySection(String categoryName, String...ingredients) {
         VBox section = new VBox(10);
