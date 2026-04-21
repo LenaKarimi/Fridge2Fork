@@ -16,11 +16,9 @@ public class RecipeController {
     //De olika klasserna som används från Api:et
     private MealRepository mealRepository;
     private MealMapper mealMapper;
-    private HttpTheMealDbClient httpTheMealDbClient;
 
     public RecipeController(){
         this.httpTheMealDbClient = new HttpTheMealDbClient();
-        this.mealRepository = new MealRepository(this.httpTheMealDbClient);
         this.mealMapper = new MealMapper();
 
     }
@@ -39,7 +37,7 @@ public class RecipeController {
             TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
 
             Recipe recipe = mealMapper.toDomain(detailedMeal);
-            
+
 
             recipes.add(recipe);
 
@@ -62,4 +60,6 @@ public class RecipeController {
         }
         return names;
     }
+
+
 }
