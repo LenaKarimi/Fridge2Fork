@@ -1,6 +1,6 @@
 package TheMealDbAPI;
 
-import Model.Category;
+import DTO.TheMealDbDTO;
 
 import java.util.List;
 

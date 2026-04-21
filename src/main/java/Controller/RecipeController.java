@@ -1,11 +1,11 @@
 package Controller;
 
-import Model.Recipe;
+import DTO.RecepieDTO;
+import Model.Recepie;
 import TheMealDbAPI.MealMapper;
 import TheMealDbAPI.MealRepository;
 import TheMealDbAPI.HttpTheMealDbClient;
-import TheMealDbAPI.TheMealDbDTO;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import DTO.TheMealDbDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,20 +23,20 @@ public class RecipeController {
 
     }
      //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
-    public List<Recipe> searchRecipes (String mainIngredient) throws Exception {
+    public List<Recepie> searchRecipes (String mainIngredient) throws Exception {
 
         if(mainIngredient==null || mainIngredient.isBlank()){
             return new ArrayList<>();
         }
 
-        List<Recipe> recipes = new ArrayList<>();
+        List<Recepie> recipes = new ArrayList<>();
 
         List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(mainIngredient);
 
         for (TheMealDbDTO meal : meals){
             TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
 
-            Recipe recipe = mealMapper.toDomain(detailedMeal);
+            Recepie recipe = mealMapper.toDomain(detailedMeal);
 
 
             recipes.add(recipe);
@@ -49,16 +49,22 @@ public class RecipeController {
 
     //Gör om objekt till strängar detta ska användas i gui sen.
     public List<String> searchRecipeNames(String mainIngredient) throws Exception{
-        List<Recipe> recipes = searchRecipes(mainIngredient);
+        List<Recepie> recipes = searchRecipes(mainIngredient);
 
         List<String> names = new ArrayList<>();
 
-        for (Recipe recipe : recipes){
+        for (Recepie recipe : recipes){
             names.add(recipe.getName());
 
 
         }
         return names;
+    }
+
+    //recipe
+    //gör om om objektet från ett modelobjekt till ett DTO-objekt
+    public RecepieDTO getRecepieDTO(Recepie recepie){
+        return new RecepieDTO(recepie.getName(), recepie.getImageUrl());
     }
 
 

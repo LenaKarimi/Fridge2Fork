@@ -1,5 +1,6 @@
 package TheMealDbAPI;
 
+import DTO.TheMealDbDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
