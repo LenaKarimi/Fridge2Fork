@@ -1,48 +1,53 @@
 package Controller;
 
-import DTO.RecepieDTO;
 import Model.Recepie;
 import TheMealDbAPI.MealMapper;
 import TheMealDbAPI.MealRepository;
 import TheMealDbAPI.HttpTheMealDbClient;
-import DTO.TheMealDbDTO;
+import DTO.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeController {
+    private HttpTheMealDbClient httpTheMealDBClient;
     //hanterar logik kring recept, 70% gräns osv
 
     //De olika klasserna som används från Api:et
     private MealRepository mealRepository;
     private MealMapper mealMapper;
 
+
     public RecipeController(){
-        this.httpTheMealDbClient = new HttpTheMealDbClient();
         this.mealMapper = new MealMapper();
+        this.httpTheMealDBClient = new HttpTheMealDbClient();
+        this.mealRepository = new MealRepository(httpTheMealDBClient);
 
     }
      //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
-    public List<Recepie> searchRecipes (String mainIngredient) throws Exception {
-
-        if(mainIngredient==null || mainIngredient.isBlank()){
-            return new ArrayList<>();
-        }
+    public List<Recepie> searchRecipes (List<String> proteins) throws Exception {
 
         List<Recepie> recipes = new ArrayList<>();
 
-        List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(mainIngredient);
-
-        for (TheMealDbDTO meal : meals){
-            TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
-
-            Recepie recipe = mealMapper.toDomain(detailedMeal);
-
-
-            recipes.add(recipe);
-
-
+        if(proteins==null || proteins.isEmpty()){
+            return recipes;
         }
+
+        for(String protein : proteins){
+            if(protein == null || protein.isBlank()){
+                continue;
+            }
+            List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
+
+            for(TheMealDbDTO meal : meals) {
+                TheMealDbDTO mealName = mealRepository.getMealById(meal.idMeal);
+
+                Recepie recepie = mealMapper.toDomain(mealName);
+                recipes.add(recepie);
+
+            }
+        }
+
         return recipes;
 
     }
