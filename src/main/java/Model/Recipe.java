@@ -2,7 +2,7 @@ package Model;
 
 import java.util.List;
 
-public class Recipe{
+public class Recipe {
 
     private String id; //för att spara i vår egna databas
     private String name;

@@ -4,90 +4,70 @@ import Model.Recipe;
 import TheMealDbAPI.MealMapper;
 import TheMealDbAPI.MealRepository;
 import TheMealDbAPI.HttpTheMealDbClient;
-import TheMealDbAPI.TheMealDbDTO;
-
+import DTO.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeController {
-    //hanterar logik kring recept, 70% gräns osv
-
-    //De olika klasserna som används från Api:et
-    private final MealRepository mealRepository;
-    private final MealMapper mealMapper;
+    private HttpTheMealDbClient httpTheMealDBClient;
+    private MealRepository mealRepository;
+    private MealMapper mealMapper;
 
     public RecipeController(){
-        this.mealRepository = new MealRepository(new HttpTheMealDbClient());
         this.mealMapper = new MealMapper();
-
+        this.httpTheMealDBClient = new HttpTheMealDbClient();
+        this.mealRepository = new MealRepository(httpTheMealDBClient);
     }
-     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
-    public List<Recipe> searchRecipes (String mainIngredient) throws Exception {
 
-        if(mainIngredient==null || mainIngredient.isBlank()){
-            return new ArrayList<>();
-        }
-
+    //Hämtar kompletta receptobjekt baserat på en lista av ingredienser
+    public List<Recipe> searchRecipes(List<String> proteins) throws Exception {
         List<Recipe> recipes = new ArrayList<>();
 
-        List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(mainIngredient);
-
-        for (TheMealDbDTO meal : meals){
-            TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
-
-            Recipe recipe = mealMapper.toDomain(detailedMeal);
-
-
-            recipes.add(recipe);
-
-
-        }
-        return recipes;
-
-    }
-
-    public List<Recipe> searchRecipesByIngredients(List<String> ingredients) throws Exception {
-        if (ingredients == null || ingredients.isEmpty()) {
-            throw new IllegalArgumentException("You have to choose at leats one alternative in all categories to continue!");
+        if(proteins == null || proteins.isEmpty()){
+            return recipes;
         }
 
-        List<Recipe> allRecipes = new ArrayList<>();
-
-        for (String ingredient : ingredients) {
-
-            if (ingredient == null || ingredient.isBlank() || ingredient.equalsIgnoreCase("none")) {
+        for(String protein : proteins){
+            if(protein == null || protein.isBlank()){
                 continue;
             }
+            List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
 
-
-            List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(ingredient);
-
-            for (TheMealDbDTO meal : meals) {
-                TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
-                Recipe recipe = mealMapper.toDomain(detailedMeal);
-                allRecipes.add(recipe);
-
-
+            if (meals != null) {
+                for(TheMealDbDTO meal : meals) {
+                    TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
+                    Recipe recipe = mealMapper.toDomain(detailedMeal);
+                    recipes.add(recipe);
+                }
             }
-
         }
-        return allRecipes;
+        return recipes;
     }
 
-    //Gör om objekt till strängar detta ska användas i gui sen.
-    public List<String> searchRecipeNamesByIngredients(List <String> ingredients) throws Exception{
-        List<Recipe> recipes = searchRecipesByIngredients(ingredients);
-
+    //Returnerar bara namnen på recepten som hittats
+    public List<String> searchRecipeNames(List<String> ingredients) throws Exception {
+        List<Recipe> recipes = searchRecipes(ingredients);
         List<String> names = new ArrayList<>();
 
         for (Recipe recipe : recipes){
             names.add(recipe.getName());
-
-
         }
         return names;
     }
 
+    //Mappar ett Recepie-objekt till ett DTO-objekt
+    public RecepieDTO getRecepieDTO(Recipe recipe){
+        if (recipe == null) return null;
+        return new RecepieDTO(recipe.getName(), recipe.getImageUrl());
+    }
 
+    //Mappar en hel lista av Recepie till en lista av DTO
+    public List<RecepieDTO> getRecepieDTOList(List<Recipe> recipes){
+        List<RecepieDTO> dtos = new ArrayList<>();
+        for (Recipe r : recipes){
+            dtos.add(getRecepieDTO(r));
+        }
+        return dtos;
+    }
 }
