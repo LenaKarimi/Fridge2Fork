@@ -39,12 +39,14 @@ public class RecipeController {
             }
             List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
 
-            for(TheMealDbDTO meal : meals) {
-                TheMealDbDTO mealName = mealRepository.getMealById(meal.idMeal);
+            if (meals != null) {
+                for (TheMealDbDTO meal : meals) {
+                    TheMealDbDTO mealName = mealRepository.getMealById(meal.idMeal);
 
-                Recepie recepie = mealMapper.toDomain(mealName);
-                recipes.add(recepie);
+                    Recepie recepie = mealMapper.toDomain(mealName);
+                    recipes.add(recepie);
 
+                }
             }
         }
 
@@ -54,7 +56,7 @@ public class RecipeController {
 
     //Gör om objekt till strängar detta ska användas i gui sen.
     public List<String> searchRecipeNames(String mainIngredient) throws Exception{
-        List<Recepie> recipes = searchRecipes(mainIngredient);
+        List<Recepie> recipes = searchRecipes(ingredients);
 
         List<String> names = new ArrayList<>();
 
@@ -69,8 +71,15 @@ public class RecipeController {
     //recipe
     //gör om om objektet från ett modelobjekt till ett DTO-objekt
     public RecepieDTO getRecepieDTO(Recepie recepie){
+        if (recepie == null) return null;
         return new RecepieDTO(recepie.getName(), recepie.getImageUrl());
     }
 
+    //Metod som mappar en hel lista på en gång
+    public List<RecepieDTO> dtos = new ArrayList<>();
+    for (Recepie r : recipes){
+        dtos.add(getRecepieDTO(r));
+    }
+    return dtos;
 
 }
