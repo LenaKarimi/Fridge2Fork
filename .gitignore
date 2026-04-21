@@ -240,3 +240,17 @@ http-client.private.env.json
 .idea/**/copilot.data.migration.*.xml
 
 .idea/
+*.icloud
+target/classes/App/.Fridge2ForkApp 2.class.icloud
+target/classes/Launcher/.Launcher 2.class.icloud
+target/classes/Model/.Category 2.class.icloud
+target/classes/Model/.Cuisine 2.class.icloud
+target/classes/Model/.Diet 2.class.icloud
+target/classes/Model/.Ingredient 2.class.icloud
+target/classes/Model/.Profile 2.class.icloud
+target/classes/Model/.Recipe 2.class.icloud
+target/classes/View/.DietView 2.class.icloud
+target/classes/View/.FridgeView 2.class.icloud
+target/classes/View/.HomeView 2.class.icloud
+target/classes/View/.RecipeView 2.class.icloud
+target/classes/View/.SideBarView 2.class.icloud
