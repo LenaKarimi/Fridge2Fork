@@ -1,8 +1,8 @@
 package View;
 
 import App.Fridge2ForkApp;
+import View.DietView;
 import Controller.RecipeController;
-import Model.Recipe;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -78,7 +78,7 @@ public class FridgeView extends StackPane {
 
         //Nästa-knappen
         Button nextButton = new Button("Next step");
-        nextButton.setStyle("-fx-font-sixe; 16px -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
+        nextButton.setStyle("-fx-font-size; 16px -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
                 "fx-text-fill: white; -fx-font-weight: bold;");
         nextButton.setCursor(javafx.scene.Cursor.HAND);
         nextButton.setOnAction(e -> handleNextStep());
@@ -111,15 +111,13 @@ public class FridgeView extends StackPane {
 
         try {
             RecipeController controller = new RecipeController();
-            List<Recipe> recipes = controller.searchRecipes(selectedIngredients);
-
-            Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes));
+            Fridge2ForkApp.root.setCenter(new DietView(selectedIngredients, controller));
         } catch (Exception ex){
             showErrorMessage("Something went wrong when searching for recipes. Please try again!");
 
             ex.printStackTrace();
         }
-        }
+    }
 
 
 

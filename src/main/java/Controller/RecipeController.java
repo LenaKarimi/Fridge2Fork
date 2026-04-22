@@ -22,26 +22,41 @@ public class RecipeController {
 
     //Hämtar kompletta receptobjekt baserat på en lista av ingredienser
     public List<Recipe> searchRecipes(List<String> proteins) throws Exception {
+        System.out.println("RecipeController: searchRecipes called with " + proteins);
         List<Recipe> recipes = new ArrayList<>();
 
-        if(proteins == null || proteins.isEmpty()){
+        if (proteins == null || proteins.isEmpty()){
             return recipes;
         }
 
-        for(String protein : proteins){
-            if(protein == null || protein.isBlank()){
+        final int MAX_MEALS_PER_INGREDIENT = 5; // begränsa antal detaljanrop per ingrediens för snabbare respons
+
+        for (String protein : proteins){
+            if (protein == null || protein.isBlank()){
                 continue;
             }
+            System.out.println("RecipeController: fetching meals for protein = " + protein);
             List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
 
             if (meals != null) {
-                for(TheMealDbDTO meal : meals) {
+                int count = 0;
+                for (TheMealDbDTO meal : meals) {
+                    if (meal == null || meal.idMeal == null) continue;
+                    if (count >= MAX_MEALS_PER_INGREDIENT) break;
+                    count++;
+
+                    System.out.println("RecipeController: fetching detail for id = " + meal.idMeal);
                     TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
-                    Recipe recipe = mealMapper.toDomain(detailedMeal);
-                    recipes.add(recipe);
+                    if (detailedMeal != null) {
+                        Recipe recipe = mealMapper.toDomain(detailedMeal);
+                        recipes.add(recipe);
+                    }
                 }
+            } else {
+                System.out.println("RecipeController: no meals returned for " + protein);
             }
         }
+        System.out.println("RecipeController: total recipes collected = " + recipes.size());
         return recipes;
     }
 
@@ -56,13 +71,13 @@ public class RecipeController {
         return names;
     }
 
-    //Mappar ett Recepie-objekt till ett DTO-objekt
+    //Mappar ett Recipe-objekt till ett DTO-objekt
     public RecepieDTO getRecepieDTO(Recipe recipe){
         if (recipe == null) return null;
         return new RecepieDTO(recipe.getName(), recipe.getImageUrl());
     }
 
-    //Mappar en hel lista av Recepie till en lista av DTO
+    //Mappar en hel lista av Recipe till en lista av DTO
     public List<RecepieDTO> getRecepieDTOList(List<Recipe> recipes){
         List<RecepieDTO> dtos = new ArrayList<>();
         for (Recipe r : recipes){
