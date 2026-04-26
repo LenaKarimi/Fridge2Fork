@@ -38,6 +38,7 @@ public class RecipeController {
             System.out.println("RecipeController: fetching meals for protein = " + protein);
             List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
 
+<<<<<<< HEAD
             if (meals != null) {
                 int count = 0;
                 for (TheMealDbDTO meal : meals) {
@@ -54,15 +55,30 @@ public class RecipeController {
                 }
             } else {
                 System.out.println("RecipeController: no meals returned for " + protein);
+=======
+            for(TheMealDbDTO meal : meals) {
+                TheMealDbDTO mealName = mealRepository.getMealById(meal.idMeal);
+
+                Recepie recepie = mealMapper.toDomain(mealName);
+                recipes.add(recepie);
+
+>>>>>>> parent of 48a46e9 (Update RecipeController.java)
             }
         }
         System.out.println("RecipeController: total recipes collected = " + recipes.size());
         return recipes;
     }
 
+<<<<<<< HEAD
     //Returnerar bara namnen på recepten som hittats
     public List<String> searchRecipeNames(List<String> ingredients) throws Exception {
         List<Recipe> recipes = searchRecipes(ingredients);
+=======
+    //Gör om objekt till strängar detta ska användas i gui sen.
+    public List<String> searchRecipeNames(String mainIngredient) throws Exception{
+        List<Recepie> recipes = searchRecipes(mainIngredient);
+
+>>>>>>> parent of 48a46e9 (Update RecipeController.java)
         List<String> names = new ArrayList<>();
 
         for (Recipe recipe : recipes){
@@ -71,6 +87,7 @@ public class RecipeController {
         return names;
     }
 
+<<<<<<< HEAD
     //Mappar ett Recipe-objekt till ett DTO-objekt
     public RecepieDTO getRecepieDTO(Recipe recipe){
         if (recipe == null) return null;
@@ -86,3 +103,13 @@ public class RecipeController {
         return dtos;
     }
 }
+=======
+    //recipe
+    //gör om om objektet från ett modelobjekt till ett DTO-objekt
+    public RecepieDTO getRecepieDTO(Recepie recepie){
+        return new RecepieDTO(recepie.getName(), recepie.getImageUrl());
+    }
+
+
+}
+>>>>>>> parent of 48a46e9 (Update RecipeController.java)
