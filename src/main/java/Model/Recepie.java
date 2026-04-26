@@ -2,7 +2,7 @@ package Model;
 
 import java.util.List;
 
-public class Recipe {
+public class Recepie {
 
     private String id; //för att spara i vår egna databas
     private String name;
@@ -14,7 +14,7 @@ public class Recipe {
     private Diet diet; //frågan är om vi ska ha kvar detta? måste gruppera manuellt isf då det ej framgår i API?
     private Cuisine cuisine;
 
-    public Recipe(String id, String name, String instructions, String imageUrl, List<Ingredient> ingredients, Cuisine cuisine){
+    public Recepie(String id, String name, String instructions, String imageUrl, List<Ingredient> ingredients, Cuisine cuisine){
         this.id = id;
         this.name = name;
         this.instructions = instructions;
