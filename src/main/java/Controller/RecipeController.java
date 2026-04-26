@@ -39,6 +39,7 @@ public class RecipeController {
             List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             if (meals != null) {
                 int count = 0;
                 for (TheMealDbDTO meal : meals) {
@@ -55,6 +56,14 @@ public class RecipeController {
                 }
             } else {
                 System.out.println("RecipeController: no meals returned for " + protein);
+=======
+            for(TheMealDbDTO meal : meals) {
+                TheMealDbDTO mealName = mealRepository.getMealById(meal.idMeal);
+
+                Recepie recepie = mealMapper.toDomain(mealName);
+                recipes.add(recepie);
+
+>>>>>>> parent of 48a46e9 (Update RecipeController.java)
 =======
             for(TheMealDbDTO meal : meals) {
                 TheMealDbDTO mealName = mealRepository.getMealById(meal.idMeal);
