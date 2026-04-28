@@ -18,13 +18,13 @@ public class SideBarView extends VBox {
 
         //2. Översta raden med två kvadrater (HBox)
         HBox topRow = new HBox(10);
-        StackPane leftSquare = createBox("powderblue", 100, 70, "Profil");
+        StackPane leftSquare = createBox("powderblue", 100, 70, "Profile");
         //StackPane rightSquare = createBox("lightpink", 70, 70, "Likes");
         topRow.getChildren().addAll(leftSquare);
 
         //Fyra rektanglar som fyller ut bredden automatiskt
         StackPane rect1 = createBox("white", 0, 80, "Home");
-        StackPane rect2 = createBox("white", 0, 80, "Liked recepie");
+        StackPane rect2 = createBox("white", 0, 80, "Liked recipes");
         StackPane rect3 = createBox("white", 0, 80, "Purchases");
         //StackPane rect4 = createBox("white", 0, 80, "Inställningar");
 

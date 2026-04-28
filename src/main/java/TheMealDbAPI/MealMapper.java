@@ -1,6 +1,5 @@
 package TheMealDbAPI;
 
-import DTO.*;
 import Model.Cuisine;
 import Model.Ingredient;
 import Model.Recipe;

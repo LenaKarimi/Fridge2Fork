@@ -5,14 +5,14 @@ import Model.Ingredient;
 
 import java.util.List;
 
-public class RecepieDTO {
+public class RecipeDTO {
     private RecipeController controller;
     private String name;
     private String instructions;
     private String imageUrl;
     private List<Ingredient> ingredients;
 
-    public RecepieDTO(String name, String imageUrl ){
+    public RecipeDTO(String name, String imageUrl ){
         this.name = name;
         this.imageUrl = imageUrl;
     }

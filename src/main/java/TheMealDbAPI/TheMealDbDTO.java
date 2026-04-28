@@ -1,4 +1,4 @@
-package DTO;
+package TheMealDbAPI;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

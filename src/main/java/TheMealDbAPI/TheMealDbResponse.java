@@ -1,5 +1,4 @@
 package TheMealDbAPI;
-import DTO.TheMealDbDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 

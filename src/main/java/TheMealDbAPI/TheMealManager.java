@@ -1,7 +1,5 @@
 package TheMealDbAPI;
 
-import DTO.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

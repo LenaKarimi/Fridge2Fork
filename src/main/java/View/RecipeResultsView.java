@@ -51,45 +51,45 @@ public class RecipeResultsView extends VBox {
 
 
     private VBox createRecipeCard(Recipe recipe) {
-
         VBox card = new VBox(10);
-        card.setStyle(
-                "-fx-background-color: white;" + "-fx-padding: 15;" + "-fx-background-radius: 15;" + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);"
-        );
+        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
         card.setPrefWidth(250);
 
-        //Debug: skriv ut vad objektet innehåller så vi ser varför namn/bild saknas
-        System.out.println("RecipeResultsView -> recipe debug: name=" + recipe.getName() + ", imageUrl=" + recipe.getImageUrl() + ", cuisine=" + recipe.getCuisine());
+        //Debug
+        System.out.println("RecipeResultsView debug: name=" + recipe.getName() + ", cuisine=" + recipe.getCuisine());
 
-        //Namn, fallback om null/empty
-        String nameText = recipe.getName() != null && !recipe.getName().isBlank() ? recipe.getName() : "Unnamed recipe";
-        Label nameLabel = new Label(nameText);
-        nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        nameLabel.setWrapText(true);
+        //Skapa titel-label
+        String nameText = (recipe.getName() != null && !recipe.getName().isBlank()) ? recipe.getName() : "Unnamed Recipe";
+        Label titleLabel = new Label(nameText);
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: normal; -fx-text-fill: black;");
+        titleLabel.setWrapText(true);
 
-        //Försök ladda bild om URL finns
+        //Skapa cuisine-label
+        String cuisineText = (recipe.getCuisine() != null) ? "Cuisine: " + recipe.getCuisine().toString() : "Unknown Cuisine";
+        Label cuisineLabel = new Label(cuisineText);
+        cuisineLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: gray;");
+
+        //Behållare för all text
+        VBox textContainer = new VBox(5);
+        textContainer.getChildren().addAll(titleLabel, cuisineLabel);
+
+        //Bild
         String imageUrl = recipe.getImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
             try {
                 Image image = new Image(imageUrl, true);
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(200);
-                imageView.setFitHeight(140);
+                imageView.setFitWidth(220);
+                imageView.setFitHeight(150);
                 imageView.setPreserveRatio(true);
-                card.getChildren().add(imageView);
+                card.getChildren().addAll(imageView, textContainer);
             } catch (Exception e) {
-                //om bilden inte kan laddas, visa inget men logga
-                System.out.println("RecipeResultsView -> failed to load image for url=" + imageUrl + " : " + e.getMessage());
+                card.getChildren().add(textContainer);
             }
+        } else {
+            card.getChildren().add(textContainer);
         }
 
-        String cuisineText = recipe.getCuisine() != null ? recipe.getCuisine().toString() : "Unknown cuisine";
-        Label cuisineLabel = new Label(cuisineText);
-        cuisineLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: darkseagreen;");
-
-        card.getChildren().addAll(nameLabel, cuisineLabel);
-
         return card;
-
     }
 }

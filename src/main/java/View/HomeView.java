@@ -33,9 +33,9 @@ public class HomeView extends BorderPane {
 
         //Välkomstmeddelande och huvudknapp
         welcomeLabel = new Label("Welcome to Fridge2Fork!");
-        welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold");
+        welcomeLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold");
 
-        Label subText = new Label("Discover recipes based on what you already have at home");
+        Label subText = new Label("Discover recipes based on what you already have at home.");
         subText.setStyle("-fx-font-size: 16px;");
 
         //Knappen
