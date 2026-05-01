@@ -12,7 +12,7 @@ public class Main {
 
         TheMealManager mealManager = new TheMealManager(mealRepository);
 
-        List<TheMealDbDTO> results = mealManager.searchForRecepie("chicken", "Indian");
+        List<TheMealDbDTO> results = mealManager.searchForRecepie("chicken", "India");
 
         for (TheMealDbDTO recepie : results){
             System.out.println(recepie.strMeal);

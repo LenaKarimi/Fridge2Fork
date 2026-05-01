@@ -17,11 +17,13 @@ public class TheMealManager {
 
             try{
                 List<TheMealDbDTO> allMeals = repository.getMealsByIngredient(mainIngredient);
+                //System.out.println("Antal måltider hittade: " + allMeals.size());
 
                 //går igenom alla recept
                 for (TheMealDbDTO meal : allMeals){
 
                     TheMealDbDTO specificMeal = repository.getMealById(meal.idMeal);
+                    //System.out.println("Område: " + specificMeal.strArea);
 
                     if (specificMeal.strArea.equalsIgnoreCase(category)){ // om område motsvarar kategori som valts
                         mealsMatching.add(specificMeal);
