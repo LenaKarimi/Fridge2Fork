@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.Recipe;
+import Model.Ingredient;
+import Model.Cuisine;
 import TheMealDbAPI.MealMapper;
 import TheMealDbAPI.MealRepository;
 import TheMealDbAPI.HttpTheMealDbClient;
@@ -9,6 +11,7 @@ import TheMealDbAPI.TheMealDbDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeController {
     //hanterar logik kring recept, 70% gräns osv
@@ -18,49 +21,25 @@ public class RecipeController {
     private final MealMapper mealMapper;
 
     public RecipeController() {
+
+        //initierar de klasser som behövs för att prata med api:et
         this.mealRepository = new MealRepository(new HttpTheMealDbClient());
         this.mealMapper = new MealMapper();
 
     }
 
+    /**
+     * Huvudmetod för att hitta recept baserat på användarens val av ingredienser
+     * Tar emot en map med kategorier och en lista med önskad kök
+     * (Kolla upp med kost och om det ska ens finnas kvar!!!!)
+     */
+
     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
-    public List<Recipe> searchRecipes(List<String> proteins) throws Exception {
+    public List<Recipe> searchRecipes(Map<String>, List<String> categoryMap, List <Cuisine> selectedCuisines) throws Exception {
 
-        List<Recipe> recipes = new ArrayList<>();
+        //Kontrollera att varje 
 
-        if (proteins == null || proteins.isEmpty()) {
-            return recipes;
-        }
 
-        final int MAX_MEALS_PER_INGREDIENT = 5; // begränsa antal detaljanrop per ingrediens för snabbare respons
-
-        for (String protein : proteins) {
-            if (protein == null || protein.isBlank()) {
-                continue;
-            }
-            System.out.println("RecipeController: fetching meals for protein = " + protein);
-            List<TheMealDbDTO> meals = mealRepository.getMealsByIngredient(protein);
-
-            if (meals != null) {
-                int count = 0;
-                for (TheMealDbDTO meal : meals) {
-                    if (meal == null || meal.idMeal == null) continue;
-                    if (count >= MAX_MEALS_PER_INGREDIENT) break;
-                    count++;
-
-                    System.out.println("RecipeController: fetching detail for id = " + meal.idMeal);
-                    TheMealDbDTO detailedMeal = mealRepository.getMealById(meal.idMeal);
-                    if (detailedMeal != null) {
-                        Recipe recipe = mealMapper.toDomain(detailedMeal);
-                        System.out.println("Recipe name after mapping: " + recipe.getName());
-                        recipes.add(recipe);
-                    }
-                }
-            } else {
-                System.out.println("RecipeController: no meals returned for " + protein);
-            }
-        }
-        return recipes;
     }
 
     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
