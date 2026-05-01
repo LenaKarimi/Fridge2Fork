@@ -19,8 +19,18 @@ public class HomeView extends BorderPane {
         //Inlogg och registrering
         HBox authButtons = new HBox(10);
         authButtons.setAlignment(Pos.TOP_RIGHT);
+
         Button loginBtn = new Button("Log in");
         Button registerBtn = new Button("Create account");
+
+        loginBtn.setOnAction(e->{
+            Fridge2ForkApp.root.setCenter(new LoginView());
+        });
+
+        registerBtn.setOnAction(e->{
+            Fridge2ForkApp.root.setCenter(new RegisterView());
+        });
+
         //transparent färg för aesthetics lol
         loginBtn.setStyle("-fx-background-color: transparent; -fx-border-color: tan; -fx-border-radius: 5;");
         registerBtn.setStyle("-fx-background-color: tan; -fx-text-fill: white; -fx-background-radius: 5;");
