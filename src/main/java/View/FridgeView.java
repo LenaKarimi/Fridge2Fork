@@ -20,8 +20,10 @@ import java.util.List;
 public class FridgeView extends StackPane {
 
     private Label errorLabel;
-    //Här ska alla checkboxar från alla kategorier sparas
-    private List<CheckBox> allCheckBoxes = new ArrayList<>();
+
+    //Nytt vi har tagt bort den gamla listan med checkboxar och skapat denna lista
+    //med vboxar istället för att kunna dela upp ingredienserna i kategorier
+    private List<VBox> categorySections = new ArrayList<>();
 
     public FridgeView(){
         VBox mainContent = new VBox(20);
@@ -36,6 +38,70 @@ public class FridgeView extends StackPane {
         errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold;");
         errorLabel.setVisible(false);
         mainContent.getChildren().add(errorLabel);
+
+        //NYTT: vi spara nu varje kategori i categorysection direkt när de skapas
+        //detta behvös ändras så att vi kan kolla vilka boxar som är ikryssade i alla kategorier
+
+        categorySections.add(createCategorySection("Carbohydrates",  "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
+                "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats", "None"));
+
+
+        categorySections.add(createCategorySection("Protein", "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
+                "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish",
+                "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa",
+                "Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas", "None"));
+
+
+        categorySections.add(createCategorySection("Vegetables", "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato",
+                "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage",
+                "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
+                "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom",
+                "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "none"));
+
+        categorySections.add(createCategorySection("Fruits", "Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut",
+                "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "none"));
+
+
+        categorySections.add(createCategorySection("Dairy", "Milk", "Butter", "Cheese", "Cheddar", "Mozzarella",
+                "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone",
+                "Ghee", "Creme Fraiche", "none"));
+
+
+
+
+        categorySections.add(createCategorySection("Pantry", "Olive oil", "Garlic", "Canned tomatoes",
+                "Chickpeas", "Lentils", "Nuts", "None"));
+
+
+
+
+        categorySections.add(createCategorySection("Spices & herbs", "Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika",
+                "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary",
+                "Coriander", "Bay Leaves", "None"));
+
+
+
+
+        categorySections.add(createCategorySection("Sauce", "Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard",
+                "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
+
+
+        categorySections.add(createCategorySection("Liquid", "Water", "Stock", "Chicken Stock",
+                "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk", "None"));
+
+
+        categorySections.add(createCategorySection("Nuts and seeds", "Almonds", "Cashews", "Peanuts",
+                "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
+
+
+        categorySections.add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
+
+
+
+
+
+
+
 
         //Kolhydrater
         mainContent.getChildren().add(createCategorySection("Carbohydrates", "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
