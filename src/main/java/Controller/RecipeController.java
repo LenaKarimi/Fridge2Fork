@@ -141,4 +141,31 @@ public class RecipeController {
         }
         return dtos;
     }
+
+    public List<RecipeDTO> getFilteredRecipes (List<String> selectedIngredients) throws Exception{
+        //Om listan är tom som visas i guit
+        if (selectedIngredients == null || selectedIngredients.isEmpty()){
+            throw new IllegalArgumentException("Vänligen välj minst en ingrediens innan du går vidare!");
+        }
+
+        //hämta domänobjekt
+        List<Recipe> allFoundRecipes = searchRecipesByIngredients(selectedIngredients);
+
+        //kontrollera om api:et hittade något
+        if (allFoundRecipes == null || allFoundRecipes.isEmpty()){
+            return new ArrayList<>();
+        }
+
+        //konvertera domänobjekt till dtoer som guit kan hanter
+        return getRecipeDTOList(allFoundRecipes);
+
+    }
+
+
+
+
+
+
+
+
 }
