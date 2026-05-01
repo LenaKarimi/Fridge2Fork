@@ -14,7 +14,9 @@ import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FridgeView extends StackPane {
@@ -42,46 +44,48 @@ public class FridgeView extends StackPane {
         //NYTT: vi spara nu varje kategori i categorysection direkt när de skapas
         //detta behvös ändras så att vi kan kolla vilka boxar som är ikryssade i alla kategorier
 
+        //Kolhydrater
         categorySections.add(createCategorySection("Carbohydrates",  "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
                 "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats", "None"));
 
-
+        //protein
         categorySections.add(createCategorySection("Protein", "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
                 "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish",
                 "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa",
                 "Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas", "None"));
 
-
+        //Grönsaker
         categorySections.add(createCategorySection("Vegetables", "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato",
                 "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage",
                 "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
                 "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom",
-                "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "none"));
+                "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "None"));
 
+        //Frukter
         categorySections.add(createCategorySection("Fruits", "Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut",
-                "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "none"));
+                "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "None"));
 
-
+        //mejeri
         categorySections.add(createCategorySection("Dairy", "Milk", "Butter", "Cheese", "Cheddar", "Mozzarella",
                 "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone",
-                "Ghee", "Creme Fraiche", "none"));
+                "Ghee", "Creme Fraiche", "None"));
 
 
 
-
+        //skafferi
         categorySections.add(createCategorySection("Pantry", "Olive oil", "Garlic", "Canned tomatoes",
                 "Chickpeas", "Lentils", "Nuts", "None"));
 
 
 
-
+        //örter och kryddor
         categorySections.add(createCategorySection("Spices & herbs", "Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika",
                 "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary",
                 "Coriander", "Bay Leaves", "None"));
 
 
 
-
+        //sås
         categorySections.add(createCategorySection("Sauce", "Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard",
                 "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
 
@@ -94,57 +98,17 @@ public class FridgeView extends StackPane {
                 "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
 
 
-        categorySections.add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
+        categorySections.add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin",
+                "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
 
 
-
-
-
-
-
-
-        //Kolhydrater
-        mainContent.getChildren().add(createCategorySection("Carbohydrates", "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
-                "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats", "none"));
-
-        //Protein
-        mainContent.getChildren().add(createCategorySection("Protein", "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
-                "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish",
-                "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa",
-                "Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas", "none"));
-
-
-        //Grönsaker
-        mainContent.getChildren().add(createCategorySection("Vegetables", "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato", "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage", "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
-                "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom", "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "none"));
-
-        //Frukter:
-        mainContent.getChildren().add(createCategorySection("Fruits", "Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut", "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "none"));
-
-
-        //Mejeri
-        mainContent.getChildren().add(createCategorySection("Dairy", "Milk", "Butter", "Cheese", "Cheddar", "Mozzarella", "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone", "Ghee", "Creme Fraiche", "none"));
-
-        //Skafferi
-        mainContent.getChildren().add(createCategorySection("Pantry", "Olive oil", "Garlic", "Canned tomatoes",
-                "Chickpeas", "Lentils", "Nuts", "None"));
-
-        //örter & kryddor
-        mainContent.getChildren().add(createCategorySection("Spices & herbs", "Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika", "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary", "Coriander", "Bay Leaves", "None"));
-
-        mainContent.getChildren().add(createCategorySection("Sause", "Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard", "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
-
-        mainContent.getChildren().add(createCategorySection("Liquid", "Water", "Stock", "Chicken Stock", "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk", "None"));
-
-        mainContent.getChildren().add(createCategorySection("Nuts and seeds", "Almonds", "Cashews", "Peanuts", "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
-
-        mainContent.getChildren().add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin", "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
-
+        //NYTT vi lägger till hela listan av kategorier i vår huvudlayout
+        mainContent.getChildren().addAll(categorySections);
 
 
         //Nästa-knappen
         Button nextButton = new Button("Next step");
-        nextButton.setStyle("-fx-font-size; 16px -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
+        nextButton.setStyle("-fx-font-size: 16px -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
                 "fx-text-fill: white; -fx-font-weight: bold;");
         nextButton.setCursor(javafx.scene.Cursor.HAND);
         nextButton.setOnAction(e -> handleNextStep());
@@ -158,58 +122,76 @@ public class FridgeView extends StackPane {
         this.getChildren().add(scrollPane);
     }
 
-    private void handleNextStep(){
-        //Samla ihop alla ikryssade ingredienser & hoppa över none
+    //NYTT denna metod går in i en specifik kategori lista och hämtar
+    //namnen på de ingredienser användaren valt
 
-        List<String> selectedIngredients = new ArrayList<>();
-        for (CheckBox cb : allCheckBoxes){
-            if(cb.isSelected() && !cb.getText().equalsIgnoreCase("none")){
-                selectedIngredients.add(cb.getText());
+    private List<String> getSelectedFromSection(VBox section){
+        List<String> selected = new ArrayList<>();
+
+        //Nytt här hämtas flowpane där alla checkboxar är som ligger inuti kategorin
+        FlowPane flow = (FlowPane) section.getChildren().get(1);
+
+        for (javafx.scene.Node node : flow.getChildren()){
+            if (node instanceof CheckBox){
+                CheckBox cb = (CheckBox) node;
+                if (cb.isSelected()){
+                    selected.add(cb.getText());
+                }
             }
         }
+        return selected;
+    }
 
-        if (selectedIngredients.isEmpty()){
-            showErrorMessage("Please select at least one ingredient before continuing!");
-            return;
+
+    private void handleNextStep(){
+        //NYTT vi skapar en map , de nya formatet som controller kräver
+        Map<String, List<String>> categoryMap = new HashMap<>();
+
+        //vi loopar genom varje kategori en efter en
+        for (VBox section : categorySections){
+            //hämta namet på kategorin från rubriken label
+            Label catLabel = (Label) section.getChildren().get(0);
+            String categoryName = catLabel.getText();
+
+            //Nytt hämta de valda ingredienserna per kategori
+            List<String> selection = getSelectedFromSection(section);
+
+            //Nytt här sker den obligatoriska kontrollen om listan är tom
+            if (selection.isEmpty()){
+                showErrorMessage("Please select at least one option in: " + categoryName);
+                return;
+
+            }
+            //Nytt vi sparar kategorins namn och valen i vår map
+            categoryMap.put(categoryName, selection);
         }
-
         clearErrorMessage();
-
-        try {
+        try{
             RecipeController controller = new RecipeController();
-            Fridge2ForkApp.root.setCenter(new DietView(selectedIngredients, controller));
-        } catch (Exception ex){
+            //Vi skickar mappen (categoryMap)
+            Fridge2ForkApp.root.setCenter(new DietView(categoryMap, controller));
+        }catch (Exception ex){
             showErrorMessage("Something went wrong when searching for recipes. Please try again!");
-
             ex.printStackTrace();
         }
     }
 
-
-
-
-
-
-        //"..." betyder att metoden tar emot hur många strängar som helst
-    private VBox createCategorySection(String categoryName, String...ingredients) {
+    private VBox createCategorySection(String categoryName, String... ingredients){
         VBox section = new VBox(10);
         Label catLabel = new Label(categoryName);
-        catLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: darkseagreen");
+        catLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: darkseagreen;");
+
         FlowPane ingredientFlow = new FlowPane(15, 10);
 
-        for (String ingredient : ingredients) {
+        for(String ingredient : ingredients){
             CheckBox cb = new CheckBox(ingredient);
-            cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
-            allCheckBoxes.add(cb);
+            cb.setStyle("-fx-font-size: 14px;");
             ingredientFlow.getChildren().add(cb);
-
         }
-
         section.getChildren().addAll(catLabel, ingredientFlow);
-        section.setPadding(new Insets(0, 0, 20, 0));
         return section;
-
     }
+
 
     //Tänkt att använda för att felhantera om val saknas
     public void showErrorMessage(String message){
