@@ -1,10 +1,13 @@
 package org.example;
 
 import App.Fridge2ForkApp;
+import Controller.UserController;
 import View.HomeView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+
+import javax.swing.*;
 
 public class RegisterView extends VBox {
 
@@ -23,6 +26,14 @@ public class RegisterView extends VBox {
         PasswordField password = new PasswordField();
         password.setPromptText("Password");
         password.setMaxWidth(200);
+
+        TextField name = new TextField();
+        username.setPromptText("Name");
+        username.setMaxWidth(200);
+
+        TextField email = new TextField();
+        username.setPromptText("Email");
+        username.setMaxWidth(200);
 
         Button registerBtn = new Button("Create account");
         Button backBtn = new Button("Back");

@@ -2,6 +2,7 @@ package org.example;
 
 
 import App.Fridge2ForkApp;
+import Controller.UserController;
 import View.HomeView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
