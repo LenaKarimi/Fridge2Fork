@@ -62,7 +62,7 @@ public class RecipeResultsView extends VBox {
 
         //NYTT logiken för vad som ska hända när man klikcat på en recept
         card.setOnMouseClicked(e ->{
-            Fridge2ForkApp.root.setCenter(new RecipeView(recipe));
+            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, this));
         });
 
         //Debug
