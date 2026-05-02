@@ -59,13 +59,22 @@ public class RecipeController {
 
                 //hämta fullständiga detaljer dvs ingredienser, isntruktioner osv.
                 TheMealDbDTO detailedMeal = mealRepository.getMealById(mealSummary.idMeal);
+
+                if (detailedMeal == null){
+                    continue;
+                }
+
                 Recipe recipeObject = mealMapper.toDomain(detailedMeal);
+
+                if(recipeObject == null){
+                    continue;
+                }
 
                 //filterring baserad på kök
                 if (!isCorrectCuisine(recipeObject, selectedCuisines)) continue;
 
                 //beräkna 50% matchningen
-                if (calculateMatchPercentage(recipeObject, userFridge) >= 0.5){
+                if (calculateMatchPercentage(recipeObject, userFridge) >= 0.0){
                     matchingRecipes.add(recipeObject);
                 }
                 if (matchingRecipes.size() >= 4) return matchingRecipes;
@@ -97,7 +106,7 @@ public class RecipeController {
 
                     //HÄR görs ingredienser om till små bokstäver för att matcha api
                     //kolla senare om detta med understreck
-                    allIngredients.add(ingredient.toLowerCase());
+                    allIngredients.add(ingredient.toLowerCase().trim());
                 }
             }
         }
