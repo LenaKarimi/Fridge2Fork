@@ -3,6 +3,7 @@ package View;
 import App.Fridge2ForkApp;
 import Controller.RecipeController;
 import Model.Cuisine;
+import Model.CuisineGroup;
 import Model.Recipe;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
@@ -115,13 +116,18 @@ public class DietView extends StackPane {
         //om any cuisine är vald skickar vi en tom lista, då visas alla kök
         for (CheckBox cb : cuisineCheckBoxes) {
             if (cb.isSelected()) {
-                if (cb.getText().equals("Any Cuisine (None)")) {
+                if (cb.getText().equals("Any Cuisine (None)"))
                     return new ArrayList<>();
-                }
+
+                String groupName = cb.getText().toLowerCase().replace(" ", "_");
                 try {
-                    //här görs texten om till en cuisine enum
-                    String enumName = cb.getText().toUpperCase().replace(" ", "_");
-                    selected.add(Cuisine.valueOf(enumName));
+                    CuisineGroup selectedGroup = CuisineGroup.valueOf(groupName);
+                    //Hämta alla länder som till hör denna grupp
+                    for (Cuisine c : Cuisine.values()){
+                        if (c.getCuisineGroup() == selectedGroup){
+                            selected.add(c);
+                        }
+                    }
                 } catch (IllegalArgumentException e) {
                     //om namnet inte matchar enumet hoppar vi över det
                 }
