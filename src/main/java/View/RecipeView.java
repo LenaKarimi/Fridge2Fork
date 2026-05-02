@@ -10,12 +10,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
 public class RecipeView extends StackPane {
 
-    public RecipeView(Recipe recipe){
+    //NYTT vi sparar en referens till resultatlistan så vi kan hoppa tillbaka till den
+    private final RecipeResultsView previousView;
+
+    public RecipeView(Recipe recipe, RecipeResultsView previousView){
+        this.previousView = previousView;
+
+
+
 
         //grundinställningar för vyn
         this.setPadding(new Insets(40));
@@ -31,6 +39,11 @@ public class RecipeView extends StackPane {
         Button backButton = new Button ("← Back to Results");
         backButton.setStyle("-fx-background-color: darkseagreen; -fx-text-fill: white; -fx-font-weight: bold;");
         backButton.setCursor(javafx.scene.Cursor.HAND);
+
+        //NYTT detta är logken för att kunna gå tillbaka
+        backButton.setOnAction(e ->{
+        Fridge2ForkApp.root.setCenter(previousView);
+        });
 
         //Rubkrik: receptets namn och kommer från recipe objektet
         Label title = new Label(recipe.getName());
@@ -61,23 +74,42 @@ public class RecipeView extends StackPane {
         Label instructionsTitle = new Label("Instructions");
         instructionsTitle.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
 
+        //NYTT här hämntas texten och kollas om det faktiskt finns
+        String instrText = recipe.getInstructions();
+        if (instrText == null || instrText.isBlank()){
+            instrText = " No instruction found for this recipe. Please try another one!";
+        }
+
+        //NYTT Vi använder instrText istället för direktanropet och sätter svart färg
         //här hämtas instruktionstexten wraptext behövs!!! så texten ej fortsätter utanför fönstret kant
-        Label instructionsText = new Label(recipe.getInstructions());
-        instructionsText.setStyle("-fx-font-size: 16px; -fx-line-spacing: 5px;");
-        instructionsText.setWrapText(true);
+       Text instructionsText = new Text(instrText);
+        instructionsText.setStyle("-fx-font-size: 16px;");
+
+
+        //NYTT sätt en maxbredd på labeln så att wrapText aktiveras korrekt
+        instructionsText.setWrappingWidth(750);
 
         instructionsBox.getChildren().addAll(instructionsTitle, instructionsText);
-
-        //Scrollpane eftersom recepettet kan vara långt lägger vi vår innehåll i sne scrollpane
-        //så att användaren kan skrolla ner för att fortsätta läsa.
-        ScrollPane scrollPane = new ScrollPane(content);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
 
         //lägger till alla delar i innehållslådan
         content.getChildren().addAll(backButton, title, ingredientsBox, instructionsBox);
 
+        //Scrollpane eftersom recepettet kan vara långt lägger vi vår innehåll i sne scrollpane
+        //så att användaren kan skrolla ner för att fortsätta läsa.
+        ScrollPane scrollPane = new ScrollPane(content);
+        scrollPane.setContent(content);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+
+
         //till sist lägger vi scroll-vyn i vår stackpane så att den visas på skärmen
         this.getChildren().add(scrollPane);
+
+        //NYTT DETTA SYNS O KONSOLEN
+        System.out.println("Visar recept: "+ recipe.getName() );
+        //?= är frågan sann, om ja skrivs ja ut on falsk skrivs nej (null
+        //DETTA MÅSTE VARA KVAR, för att säker ställa i konsolen att mealmapper och api
+        //gör sitt jobb annars vet vi att det behöver hanteras i view
+        System.out.println("Instruktioner i objektet: " + (recipe.getInstructions() !=null ? "JA" : "NEJ (NULL)"));
     }
 }
