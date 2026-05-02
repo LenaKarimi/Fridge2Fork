@@ -70,7 +70,7 @@ public class MealMapper {
             case "Turkish" -> Cuisine.Turkish;
             case "Ukrainian" -> Cuisine.Ukrainian;
             case "Uruguayan" -> Cuisine.Uruguayan;
-            case "Venezulan" -> Cuisine.Venezulan;
+            case "Venezulan" -> Cuisine.Venezuelan;
             case "Vietnamese" -> Cuisine.Vietnamese;
             default -> null;
         };

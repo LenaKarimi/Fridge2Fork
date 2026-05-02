@@ -50,7 +50,7 @@ public class SideBarView extends VBox {
             if(text.equals("Hem")){
                 Fridge2ForkApp.root.setCenter(new HomeView());
             } else if (text.equals("Recept")){
-                Fridge2ForkApp.root.setCenter(new RecipeView());
+                //Fridge2ForkApp.root.setCenter(new RecipeView());
             }
             System.out.println("Du klickade på: " + text);
         });

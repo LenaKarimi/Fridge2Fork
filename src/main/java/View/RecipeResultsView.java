@@ -1,6 +1,8 @@
 package View;
 
+import App.Fridge2ForkApp;
 import Model.Recipe;
+import javafx.scene.Cursor;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
@@ -54,6 +56,14 @@ public class RecipeResultsView extends VBox {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
         card.setPrefWidth(250);
+
+        //NYTT gör så att muspekare ser ut som en hand när man hovrar över receptkortet
+        card.setCursor(Cursor.HAND);
+
+        //NYTT logiken för vad som ska hända när man klikcat på en recept
+        card.setOnMouseClicked(e ->{
+            Fridge2ForkApp.root.setCenter(new RecipeView(recipe));
+        });
 
         //Debug
         System.out.println("RecipeResultsView debug: name=" + recipe.getName() + ", cuisine=" + recipe.getCuisine());

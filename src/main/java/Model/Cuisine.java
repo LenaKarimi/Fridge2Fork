@@ -36,7 +36,7 @@ public enum Cuisine {
     Turkish (CuisineGroup.middle_eastern),
     Ukrainian (CuisineGroup.european),
     Uruguayan (CuisineGroup.latin_american),
-    Venezulan (CuisineGroup.latin_american),
+    Venezuelan (CuisineGroup.latin_american),
     Vietnamese (CuisineGroup.asian);
 
     private final CuisineGroup cuisineGroup;

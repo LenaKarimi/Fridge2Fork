@@ -21,6 +21,10 @@ public class HttpTheMealDbClient {
     }
 
     public String filterByIngredient(String mainIngredient) throws IOException, InterruptedException {
+
+        //NYTT detta ersätter mellanslag med understreck för att udnvika krasch i URL
+        mainIngredient = mainIngredient.replace(" ", "_");
+
         String url = baseUrl + "/filter.php?i=" + mainIngredient; //här bygger jag URL
         return sendRequest(url);
     }

@@ -2,6 +2,8 @@ package View;
 
 import App.Fridge2ForkApp;
 import Controller.RecipeController;
+import Model.Cuisine;
+import Model.CuisineGroup;
 import Model.Recipe;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
@@ -13,11 +15,14 @@ import javafx.scene.control.CheckBox;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DietView extends StackPane {
 
-    private final List<String> selectedIngredients;
+    //Nytt vi behöver map istället för list pga controller
+    private final Map<String, List<String>> selectedIngredients;
     private final RecipeController controller;
     //Behåll dina gamla kommentarer som du hade
     //Label dietTitle = new Label("Dietary preferences");
@@ -27,7 +32,10 @@ public class DietView extends StackPane {
     private final Label errorLabel;
     private final Button findRecipesBtn;
 
-    public DietView(List<String> selectedIngredients, RecipeController controller){
+    //NYTT en lista för att hålla ordning på checkboxarna för kök
+    private final List<CheckBox> cuisineCheckBoxes = new ArrayList<>();
+
+    public DietView(Map<String, List<String>> selectedIngredients, RecipeController controller) {
         this.selectedIngredients = selectedIngredients;
         this.controller = controller;
 
@@ -54,10 +62,19 @@ public class DietView extends StackPane {
         //CheckBox lowCarb = new CheckBox("Low carb");
 
         CheckBox asian = new CheckBox("Asian");
-        CheckBox middleEastern = new CheckBox("Middle eastern");
+        CheckBox middleEastern = new CheckBox("Middle Eastern");
         CheckBox european = new CheckBox("European");
         CheckBox american = new CheckBox("American");
-        CheckBox latinAmerican = new CheckBox("Latin america");
+        CheckBox latinAmerican = new CheckBox("Latin American");
+        CheckBox anyCuisine = new CheckBox("Any Cuisine (None)");
+
+        //lägger till dem i en lista så de ska kunna gå att loopa igenom dem
+        cuisineCheckBoxes.add(asian);
+        cuisineCheckBoxes.add(middleEastern);
+        cuisineCheckBoxes.add(european);
+        cuisineCheckBoxes.add(american);
+        cuisineCheckBoxes.add(latinAmerican);
+        cuisineCheckBoxes.add(anyCuisine);
 
         //Stilen på alla kryssrutor
         String checkStyle = "-fx-font-size: 16px;";
@@ -76,19 +93,64 @@ public class DietView extends StackPane {
         //lowCarb.setStyle(checkStyle);
 
         //Lägg allt i VBox
-        VBox content = new VBox(15, kitchenTitle, asian,
-                middleEastern, european, american, latinAmerican, findRecipesBtn, errorLabel);
+        //NYTT hämtar alla namn samtidigt istyället för att skriva ut dem en och en
+
+        VBox content = new VBox(15);
+        content.getChildren().add(kitchenTitle);
+
+        //NYTT här lägg checkboxarna till
+        content.getChildren().addAll(cuisineCheckBoxes);
+        //knapp och felmeddelande
+        content.getChildren().addAll(findRecipesBtn, errorLabel);
+
         content.setAlignment(Pos.CENTER_LEFT);
         content.setPadding(new Insets(40));
 
         this.getChildren().add(content);
     }
 
+    //Nytt en metod för att se vilka kök användaren valt
+    private List<Cuisine> getSelectedCuisines() {
+        List<Cuisine> selected = new ArrayList<>();
+
+        //om any cuisine är vald skickar vi en tom lista, då visas alla kök
+        for (CheckBox cb : cuisineCheckBoxes) {
+            if (cb.isSelected()) {
+                if (cb.getText().equals("Any Cuisine (None)"))
+                    return new ArrayList<>();
+
+                String groupName = cb.getText().toLowerCase().replace(" ", "_");
+                try {
+                    CuisineGroup selectedGroup = CuisineGroup.valueOf(groupName);
+                    //Hämta alla länder som till hör denna grupp
+                    for (Cuisine c : Cuisine.values()){
+                        if (c.getCuisineGroup() == selectedGroup){
+                            selected.add(c);
+                        }
+                    }
+                } catch (IllegalArgumentException e) {
+                    //om namnet inte matchar enumet hoppar vi över det
+                }
+            }
+        }
+        return selected;
+    }
+
     //Kör sökningen i bakgrundstråd, visa fel i errorLabel vid failure
     private void fetchRecipesInBackground() {
+        //Nytt hämtar de valda köken innan sökning av recept startar
+        List<Cuisine> chosenCuisines = getSelectedCuisines();
+
+        //NYTT användaren måste välja minst ett kök
+
+        if (chosenCuisines.isEmpty() && !isAnyCuisineSelected()) {
+            errorLabel.setText("Please select at least one cuisine type or 'Any cuisine'.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
         // Rensa tidigare fel
         errorLabel.setVisible(false);
-        errorLabel.setText("");
 
         //Inaktivera knapp medan sökning pågår
         findRecipesBtn.setDisable(true);
@@ -98,7 +160,7 @@ public class DietView extends StackPane {
             @Override
             protected List<Recipe> call() throws Exception {
                 //Kör sökningen i bakgrunden (kan kasta Exception)
-                return controller.searchRecipes(selectedIngredients);
+                return controller.searchRecipes(selectedIngredients, chosenCuisines);
             }
         };
 
@@ -128,5 +190,15 @@ public class DietView extends StackPane {
         Thread th = new Thread(task);
         th.setDaemon(true);
         th.start();
+    }
+
+    //NYTT metod för att se om any cuisine är vald
+    private boolean isAnyCuisineSelected() {
+        for (CheckBox cb : cuisineCheckBoxes) {
+            if (cb.getText().equals("Any Cuisine (None)") && cb.isSelected()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
