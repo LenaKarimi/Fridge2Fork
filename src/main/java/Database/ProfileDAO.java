@@ -9,7 +9,7 @@ public class ProfileDAO {
 
     //denna metod koppar upp sig till databasen och skapar en ny användare
     public void createProfile(Profile profile) throws SQLException{
-        String sql = "INSERT INTO Profile (username, password_hash, name, email) VALUES (?, ?, ?, ?)"; // det vi vill skriva
+        String sql = "INSERT INTO profiles (username, password_hash, name, email) VALUES (?, ?, ?, ?)"; // det vi vill skriva
         try (Connection connection = DbConnection.getConnection(); // försöker connecta via connaction klassen
              PreparedStatement insertObject = connection.prepareStatement(sql)) { // objekt som håller sql-query och kör den mot darabasen
             insertObject.setString(1, profile.getUsername());
@@ -22,7 +22,7 @@ public class ProfileDAO {
 
     // denna metoden kopplar upp sig mot databasen och hämtar användaren baserat på användarnamn
     public Profile getProfileByUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM Profile WHERE username = ?"; // vår sql query
+        String sql = "SELECT * FROM profiles WHERE username = ?"; // vår sql query
         try (Connection connection = DbConnection.getConnection(); // försöker göra en koppling
              PreparedStatement selectObject = connection.prepareStatement(sql)) { // vårt insert objekt
             selectObject.setString(1, username); // användarnamnet v skcikar in från parametern
