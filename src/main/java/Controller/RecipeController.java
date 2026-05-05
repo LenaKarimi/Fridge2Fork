@@ -49,7 +49,7 @@ public class RecipeController {
         for(String ingredient : userFridge){
             //här sker förfrågningen om specifik ingrediens
             List<TheMealDbDTO> apiResponse = mealRepository.getMealsByIngredient(ingredient);
-             //om inte ingrediens finns ska programmet fortsätta till nästa ignrediens och inte krascha
+             //om inte ingrediens finns ska programmet fortsätta till nästa ingrediens och inte krascha
             if (apiResponse == null) continue;
 
             for (TheMealDbDTO mealSummary : apiResponse){
@@ -116,7 +116,6 @@ public class RecipeController {
     //kontroll om receptets ursprung matchar användarens val av kök
     private boolean isCorrectCuisine(Recipe recipe, List<Cuisine> selectedCuisines){
         //om användaren ej val kök godkänns alla recept
-        //ska man ha ett val för none kanske??
         if (selectedCuisines == null || selectedCuisines.isEmpty()) return true;
         return selectedCuisines.contains(recipe.getCuisine());
     }
