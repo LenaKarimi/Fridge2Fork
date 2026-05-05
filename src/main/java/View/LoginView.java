@@ -3,6 +3,7 @@ package org.example;
 
 import App.Fridge2ForkApp;
 import Controller.UserController;
+import DTO.ProfileDTO;
 import View.HomeView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
@@ -33,8 +34,8 @@ public class LoginView extends VBox {
             String user = username.getText();
             String pass = password.getText();
 
-            //boolean success = userController.login(user,pass);
-            if (true){ // ska var success
+            ProfileDTO isUser = userController.login(user,pass);
+            if (isUser != null){ // ska var success
                 Fridge2ForkApp.root.setCenter(new HomeView(userController));
             }
             else {

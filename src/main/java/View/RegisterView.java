@@ -28,12 +28,12 @@ public class RegisterView extends VBox {
         password.setMaxWidth(200);
 
         TextField name = new TextField();
-        username.setPromptText("Name");
-        username.setMaxWidth(200);
+        name.setPromptText("Name");
+        name.setMaxWidth(200);
 
         TextField email = new TextField();
-        username.setPromptText("Email");
-        username.setMaxWidth(200);
+        email.setPromptText("Email");
+        email.setMaxWidth(200);
 
         Button registerBtn = new Button("Create account");
         Button backBtn = new Button("Back");
@@ -48,10 +48,10 @@ public class RegisterView extends VBox {
             String firstName = name.getText();
             String emailAdress = email.getText();
 
-            //userController.registerUser(user,pass,firstName,emailAdress);
+            userController.registerUser(user,pass,firstName,emailAdress);
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
-        this.getChildren().addAll(title, username, password, registerBtn, backBtn);
+        this.getChildren().addAll(title, username, password, name, email, registerBtn, backBtn);
     }
 }

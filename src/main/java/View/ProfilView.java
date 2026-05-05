@@ -22,35 +22,11 @@ public class ProfilView extends VBox {
 
         Label title = new Label("MY PROFILE");
 
-        VBox leftside = new VBox();
-        leftside.setSpacing(15);
-        leftside.setAlignment(Pos.TOP_CENTER);
-        leftside.setPrefWidth(150);
-
         StackPane profilePicture = new StackPane();
         profilePicture.setPrefSize(120,120);
         profilePicture.setStyle("-fx-background-color: lightgray;");
         Label pictureLabel = new Label("Photo");
         profilePicture.getChildren().add(pictureLabel);
-
-        Region spacer = new Region();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-
-        Button saveButton = new Button("Save");
-        saveButton.setPrefWidth(120);
-
-        saveButton.setOnAction(e -> {
-            System.out.println("Profile saved");
-        });
-
-        leftside.getChildren().addAll(
-                profilePicture,
-                spacer,
-                saveButton
-        );
-
-        VBox rightSide = new VBox(10);
-        rightSide.setPrefWidth(300);
 
         Label userNameLabel = new Label("Username");
         TextField userName = new TextField();
@@ -68,18 +44,20 @@ public class ProfilView extends VBox {
         TextField name = new TextField();
         name.setMaxWidth(200);
 
-        rightSide.getChildren().addAll(
+        Button saveButton = new Button("Save");
+        saveButton.setPrefWidth(120);
+
+        saveButton.setOnAction(e -> {
+            System.out.println("Profile saved");
+        });
+
+        this.getChildren().addAll(
+                profilePicture,
                 userNameLabel, userName,
                 emailLabel, email,
                 passwordLabel, password,
-                nameLabel, name
+                nameLabel, name,
+                saveButton
         );
-
-        HBox mainContent = new HBox(40);
-        mainContent.setPadding(new Insets(20,0,0,0));
-        VBox.setVgrow(mainContent, Priority.ALWAYS);
-        mainContent.getChildren().addAll(leftside, rightSide);
-        this.getChildren().addAll(title, mainContent);
-
     }
 }
