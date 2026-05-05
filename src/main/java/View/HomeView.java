@@ -1,6 +1,7 @@
 package View;
 
 import App.Fridge2ForkApp;
+import Controller.UserController;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,7 +14,7 @@ public class HomeView extends BorderPane {
 
     private Label welcomeLabel;
 
-    public HomeView(){
+    public HomeView(UserController userController){
         this.setPadding(new Insets(20));
 
         //Inlogg och registrering
@@ -24,11 +25,11 @@ public class HomeView extends BorderPane {
         Button registerBtn = new Button("Create account");
 
         loginBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new org.example.LoginView());
+            Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
         });
 
         registerBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new org.example.RegisterView());
+            Fridge2ForkApp.root.setCenter(new org.example.RegisterView(userController));
         });
 
         //transparent färg för aesthetics lol

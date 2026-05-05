@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class RegisterView extends VBox {
 
-    public RegisterView() {
+    public RegisterView(UserController userController) {
 
         this.setSpacing(10);
         this.setPadding(new Insets(20));
@@ -39,11 +39,17 @@ public class RegisterView extends VBox {
         Button backBtn = new Button("Back");
 
         registerBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new HomeView());
+            Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
         backBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new HomeView());
+            String user = username.getText();
+            String pass = password.getText();
+            String firstName = name.getText();
+            String emailAdress = email.getText();
+
+            //userController.registerUser(user,pass,firstName,emailAdress);
+            Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
         this.getChildren().addAll(title, username, password, registerBtn, backBtn);
