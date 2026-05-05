@@ -21,7 +21,7 @@ public class Fridge2ForkApp extends Application {
         UserController userController = new UserController(); //skapat controllern en gån här
 
         //Sidebaren med färger
-        root.setLeft(new SideBarView());
+        root.setLeft(new SideBarView(userController));
 
         //Välkomstsidan i mitten
         root.setCenter(new HomeView(userController)); // skickar in controllern till homeview så resterande vyer kan jobba med den
