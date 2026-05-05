@@ -9,28 +9,38 @@ public class UserController {
     private final ProfileDAO profileDAO = new ProfileDAO();
 
     // denna metod är till för kontroller vid skapandet av nytt konto
-    public boolean registerUser(String username, String password, String name, String email) throws SQLException {
+    public boolean registerUser(String username, String password, String name, String email) {
+        try {
+            Profile existing = profileDAO.getProfileByUsername(username);
 
-        Profile existing = profileDAO.getProfileByUsername(username);
+            if (existing != null) {
+                return false;
+            }
 
-        if (existing != null) {
+            Profile newProfile = new Profile(username, password, name, email);
+            profileDAO.createProfile(newProfile);
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
-
-        Profile newProfile = new Profile(username, password, name, email);
-        profileDAO.createProfile(newProfile);
-        return true;
     }
 
     // vid inloggning returnerar den en profil dto till guit annars null
-    public ProfileDTO login(String username, String password) throws SQLException {
-        Profile profile = profileDAO.getProfileByUsername(username);
-        if (profile != null) {
+    public ProfileDTO login(String username, String password) {
+        try {
+            Profile profile = profileDAO.getProfileByUsername(username);
+            if (profile == null) {
+                return null;
+            }
+            if (!profile.getPassword().equals(password)) {
+                return null;
+            }
+            return new ProfileDTO(profile.getId(), profile.getUsername(), profile.getPassword(), profile.getName(), profile.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-        if (!profile.getPassword().equals(password)) {
-            return null;
-        }
-        return new ProfileDTO(profile.getId(), profile.getUsername(), profile.getPassword(), profile.getName(), profile.getEmail());
     }
 }
