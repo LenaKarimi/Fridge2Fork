@@ -1,5 +1,6 @@
 package App;
 
+import Controller.UserController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -17,11 +18,13 @@ public class Fridge2ForkApp extends Application {
         //1.Här skapar vi huvudramen för programmet
         root = new BorderPane();
 
+        UserController userController = new UserController(); //skapat controllern en gån här
+
         //Sidebaren med färger
         root.setLeft(new SideBarView());
 
         //Välkomstsidan i mitten
-        root.setCenter(new HomeView());
+        root.setCenter(new HomeView(userController)); // skickar in controllern till homeview så resterande vyer kan jobba med den
 
         //2.Innehållet och lägg i ramen, storlek 800x600
         Scene scene = new Scene(root, 800, 600);

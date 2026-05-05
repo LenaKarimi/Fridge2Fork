@@ -10,7 +10,7 @@ import javafx.geometry.*;
 
 public class LoginView extends VBox {
 
-    public LoginView() {
+    public LoginView(UserController userController) {
 
         this.setSpacing(10);
         this.setPadding(new Insets(20));
@@ -30,11 +30,21 @@ public class LoginView extends VBox {
         Button backBtn = new Button("Back");
 
         loginBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new HomeView());
+            String user = username.getText();
+            String pass = password.getText();
+
+            //boolean success = userController.login(user,pass);
+            if (true){ // ska var success
+                Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            }
+            else {
+                //vi behöver bestämma hur vi ska visa felmeddelande
+            }
+
         });
 
         backBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new HomeView());
+            Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
         this.getChildren().addAll(title, username, password, loginBtn, backBtn);
