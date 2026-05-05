@@ -88,6 +88,7 @@ public class DietView extends StackPane {
         european.setStyle(checkStyle);
         american.setStyle(checkStyle);
         latinAmerican.setStyle(checkStyle);
+        anyCuisine.setStyle(checkStyle);
 
         //extraProtein.setStyle(checkStyle);
         //lowCarb.setStyle(checkStyle);
