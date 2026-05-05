@@ -1,7 +1,6 @@
 package View;
 
 import App.Fridge2ForkApp;
-import View.DietView;
 import Controller.RecipeController;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.FlowPane;
@@ -39,7 +38,8 @@ public class FridgeView extends StackPane {
         errorLabel = new Label("");
         errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold;");
         errorLabel.setVisible(false);
-        mainContent.getChildren().add(errorLabel);
+        //mainContent.getChildren().add(errorLabel);
+        //mainContent.getChildren().add(errorLabel);
 
         //NYTT: vi spara nu varje kategori i categorysection direkt när de skapas
         //detta behvös ändras så att vi kan kolla vilka boxar som är ikryssade i alla kategorier
@@ -113,7 +113,7 @@ public class FridgeView extends StackPane {
         nextButton.setCursor(javafx.scene.Cursor.HAND);
         nextButton.setOnAction(e -> handleNextStep());
 
-        mainContent.getChildren().add(nextButton);
+        mainContent.getChildren().addAll(nextButton, errorLabel);
 
         //ScrollPane om listan blir lite för lång
         ScrollPane scrollPane = new ScrollPane(mainContent);
