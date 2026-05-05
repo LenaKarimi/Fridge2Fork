@@ -13,6 +13,7 @@ public class SideBarView extends VBox {
     private UserController userController;
 
     public SideBarView(UserController userController){
+        this.userController = userController;
         //1. Inställningar för själva sidebaren (VBox)
         this.setSpacing(10); //Mellanrum mellan raderna
         this.setPadding(new Insets(10)); //Marginal från kanten
@@ -52,7 +53,7 @@ public class SideBarView extends VBox {
             if(text.equals("Home")){
                 Fridge2ForkApp.root.setCenter(new HomeView(userController));
             } else if (text.equals("Profile")) {
-                Fridge2ForkApp.root.setCenter(new ProfilView(userController));
+                Fridge2ForkApp.root.setCenter(new ProfilView(userController, userController.getCurrentUser()));
             } else if (text.equals("Recept")){
                 //Fridge2ForkApp.root.setCenter(new RecipeView());
             }

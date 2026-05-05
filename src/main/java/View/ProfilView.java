@@ -1,6 +1,7 @@
 package View;
 
 import Controller.UserController;
+import DTO.ProfileDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.PasswordField;
@@ -14,7 +15,7 @@ import javafx.scene.control.Button;
 public class ProfilView extends VBox {
     private UserController userController;
 
-    public ProfilView (UserController userController){
+    public ProfilView (UserController userController, ProfileDTO profileDTO){
 
         this.setSpacing(20);
         this.setPadding(new Insets(30));
@@ -48,6 +49,15 @@ public class ProfilView extends VBox {
         saveButton.setPrefWidth(120);
 
         saveButton.setOnAction(e -> {
+            if (profileDTO != null){
+                profileDTO.setUsername(userName.getText());
+                profileDTO.setEmail(email.getText());
+                profileDTO.setName(name.getText());
+
+                if (!password.getText().isEmpty()){
+                    profileDTO.setPassword(password.getText());
+                }
+            }
             System.out.println("Profile saved");
         });
 

@@ -39,10 +39,6 @@ public class RegisterView extends VBox {
         Button backBtn = new Button("Back");
 
         registerBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new HomeView(userController));
-        });
-
-        backBtn.setOnAction(e -> {
             String user = username.getText();
             String pass = password.getText();
             String firstName = name.getText();
@@ -50,6 +46,11 @@ public class RegisterView extends VBox {
 
             userController.registerUser(user,pass,firstName,emailAdress);
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
+        });
+
+        backBtn.setOnAction(e -> {
+            Fridge2ForkApp.root.setCenter(new HomeView(userController));
+
         });
 
         this.getChildren().addAll(title, username, password, name, email, registerBtn, backBtn);

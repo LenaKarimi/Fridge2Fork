@@ -7,6 +7,9 @@ import DTO.*;
 public class UserController {
 
     private final ProfileDAO profileDAO = new ProfileDAO();
+    private ProfileDTO currentUser;
+
+
 
     // denna metod är till för kontroller vid skapandet av nytt konto
     public boolean registerUser(String username, String password, String name, String email) {
@@ -37,10 +40,16 @@ public class UserController {
             if (!profile.getPassword().equals(password)) {
                 return null;
             }
-            return new ProfileDTO(profile.getId(), profile.getUsername(), profile.getPassword(), profile.getName(), profile.getEmail());
+            ProfileDTO loggedInUser = new ProfileDTO(profile.getId(), profile.getUsername(), profile.getPassword(), profile.getName(), profile.getEmail());
+            this.currentUser = loggedInUser;
+            return loggedInUser;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public ProfileDTO getCurrentUser() {
+        return currentUser;
     }
 }
