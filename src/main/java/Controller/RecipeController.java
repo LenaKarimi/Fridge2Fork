@@ -77,7 +77,7 @@ public class RecipeController {
                 if (calculateMatchPercentage(recipeObject, userFridge) >= 0.0){
                     matchingRecipes.add(recipeObject);
                 }
-                if (matchingRecipes.size() >= 4) return matchingRecipes;
+                if (matchingRecipes.size() >= 6) return matchingRecipes;
 
 
             }
