@@ -1,5 +1,6 @@
 package View;
 
+import Controller.UserController;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -9,8 +10,9 @@ import App.Fridge2ForkApp;
 
 
 public class SideBarView extends VBox {
+    private UserController userController;
 
-    public SideBarView(){
+    public SideBarView(UserController userController){
         //1. Inställningar för själva sidebaren (VBox)
         this.setSpacing(10); //Mellanrum mellan raderna
         this.setPadding(new Insets(10)); //Marginal från kanten
@@ -47,8 +49,10 @@ public class SideBarView extends VBox {
 
         //Det som händer vid klick
         box.setOnMouseClicked(e -> {
-            if(text.equals("Hem")){
-                Fridge2ForkApp.root.setCenter(new HomeView());
+            if(text.equals("Home")){
+                Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            } else if (text.equals("Profile")) {
+                Fridge2ForkApp.root.setCenter(new ProfilView(userController));
             } else if (text.equals("Recept")){
                 //Fridge2ForkApp.root.setCenter(new RecipeView());
             }
