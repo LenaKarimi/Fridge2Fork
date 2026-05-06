@@ -43,9 +43,18 @@ public class UserController {
             ProfileDTO loggedInUser = new ProfileDTO(profile.getId(), profile.getUsername(), profile.getPassword(), profile.getName(), profile.getEmail());
             this.currentUser = loggedInUser;
             return loggedInUser;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void updateProfile(int id, String username, String password, String name, String email) {
+        try {
+            Profile updated = new Profile(id, username, password, name, email);
+            profileDAO.updateProfile(updated);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

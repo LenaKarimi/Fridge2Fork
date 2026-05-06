@@ -45,9 +45,40 @@ public class ProfilView extends VBox {
         TextField name = new TextField();
         name.setMaxWidth(200);
 
+        // racil lade till
+        if (profileDTO != null) {
+            userName.setText(profileDTO.getUsername());
+            email.setText(profileDTO.getEmail());
+            password.setText(profileDTO.getPassword());
+            name.setText(profileDTO.getName());
+        }
+
         Button saveButton = new Button("Save");
         saveButton.setPrefWidth(120);
 
+        //delen racil ändrade till
+        saveButton.setOnAction(event -> {
+            if (profileDTO != null) {
+                String newPassword;
+                if(password.getText().isEmpty()) {
+                    newPassword = profileDTO.getPassword();
+                } else {
+                    newPassword = password.getText();
+                }
+
+                userController.updateProfile(
+                        profileDTO.getId(),
+                        userName.getText(),
+                        newPassword,
+                        name.getText(),
+                        email.getText()
+                );
+                System.out.println("Profile updated successfully");
+            }
+        });
+
+
+        /** //lenas orginella stycke
         saveButton.setOnAction(e -> {
             if (profileDTO != null){
                 profileDTO.setUsername(userName.getText());
@@ -60,6 +91,7 @@ public class ProfilView extends VBox {
             }
             System.out.println("Profile saved");
         });
+         **/
 
         this.getChildren().addAll(
                 profilePicture,
