@@ -24,9 +24,9 @@ public class DbConnection {
     }
 
     /**
-    private static final String URL = "jdbc:postgresql://postgres.mau.se:55432/fridge2fork";
-    private static final String User = "aq2327";
-    private static final String Password = "fdblm85i";
+    private static final String URL = "";
+    private static final String User = "";
+    private static final String Password = "";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, User, Password);
