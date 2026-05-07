@@ -35,8 +35,10 @@ public class LoginView extends VBox {
             String pass = password.getText();
 
             ProfileDTO isUser = userController.login(user,pass);
-            if (isUser != null){ // ska var success
-                Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            if (isUser != null){// ska var success
+                HomeView homeView = new HomeView(userController);
+                homeView.setUserName(isUser.getName());
+                Fridge2ForkApp.root.setCenter(homeView);
             }
             else {
                 //vi behöver bestämma hur vi ska visa felmeddelande

@@ -49,8 +49,8 @@ public class RegisterView extends VBox {
         });
 
         backBtn.setOnAction(e -> {
-
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
+
         });
 
         this.getChildren().addAll(title, username, password, name, email, registerBtn, backBtn);
