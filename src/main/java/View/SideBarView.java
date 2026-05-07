@@ -50,8 +50,10 @@ public class SideBarView extends VBox {
 
         //Det som händer vid klick
         box.setOnMouseClicked(e -> {
-            if(text.equals("Hem")){
+            if(text.equals("Home")){
                 Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            } else if (text.equals("Profile")) {
+                Fridge2ForkApp.root.setCenter(new ProfilView(userController, userController.getCurrentUser()));
             } else if (text.equals("Recept")){
                 //Fridge2ForkApp.root.setCenter(new RecipeView());
             }
