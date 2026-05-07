@@ -16,20 +16,12 @@ public class DbConnection {
             connection = DriverManager.getConnection(
                     "", // url
                     "", // user
-                    "" // lösen //
+                    "" // lösen 
 
             );
         }
         return connection;
     }
 
-    /**
-    private static final String URL = "";
-    private static final String User = "";
-    private static final String Password = "";
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, User, Password);
-    }
-     **/
 }
