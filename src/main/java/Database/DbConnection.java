@@ -16,7 +16,7 @@ public class DbConnection {
             connection = DriverManager.getConnection(
                     "", // url
                     "", // user
-                    "" // lösen
+                    "" // lösen //
 
             );
         }
