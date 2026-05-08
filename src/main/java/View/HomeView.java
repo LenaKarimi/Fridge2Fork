@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import View.LoginView;
 
 public class HomeView extends BorderPane {
 
