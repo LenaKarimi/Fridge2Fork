@@ -6,6 +6,7 @@ import View.HomeView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+import View.*;
 
 import javax.swing.*;
 
@@ -45,7 +46,7 @@ public class RegisterView extends VBox {
             String emailAdress = email.getText();
 
             userController.registerUser(user,pass,firstName,emailAdress);
-            Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
         });
 
         backBtn.setOnAction(e -> {
