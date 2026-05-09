@@ -2,6 +2,7 @@ package View;
 
 import App.Fridge2ForkApp;
 import Controller.RecipeController;
+import Controller.UserController;
 import Model.Cuisine;
 import Model.CuisineGroup;
 import Model.Recipe;
@@ -31,13 +32,16 @@ public class DietView extends StackPane {
     //Ny label för att visa felmeddelanden i UI
     private final Label errorLabel;
     private final Button findRecipesBtn;
+    private final UserController userController;
 
     //NYTT en lista för att hålla ordning på checkboxarna för kök
     private final List<CheckBox> cuisineCheckBoxes = new ArrayList<>();
 
-    public DietView(Map<String, List<String>> selectedIngredients, RecipeController controller) {
+    public DietView(Map<String, List<String>> selectedIngredients, RecipeController controller,
+                    UserController userController) {
         this.selectedIngredients = selectedIngredients;
         this.controller = controller;
+        this.userController = userController;
 
         Label kitchenTitle = new Label("Cuisine type");
         kitchenTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -61,19 +65,19 @@ public class DietView extends StackPane {
         //CheckBox extraProtein = new CheckBox("Extra protein");
         //CheckBox lowCarb = new CheckBox("Low carb");
 
-        CheckBox asian = new CheckBox("Asian");
-        CheckBox middleEastern = new CheckBox("Middle Eastern");
-        CheckBox european = new CheckBox("European");
         CheckBox american = new CheckBox("American");
+        CheckBox asian = new CheckBox("Asian");
+        CheckBox european = new CheckBox("European");
         CheckBox latinAmerican = new CheckBox("Latin American");
-        CheckBox anyCuisine = new CheckBox("Any Cuisine (None)");
+        CheckBox middleEastern = new CheckBox("Middle Eastern");
+        CheckBox anyCuisine = new CheckBox("Any Cuisine");
 
         //lägger till dem i en lista så de ska kunna gå att loopa igenom dem
-        cuisineCheckBoxes.add(asian);
-        cuisineCheckBoxes.add(middleEastern);
-        cuisineCheckBoxes.add(european);
         cuisineCheckBoxes.add(american);
+        cuisineCheckBoxes.add(asian);
+        cuisineCheckBoxes.add(european);
         cuisineCheckBoxes.add(latinAmerican);
+        cuisineCheckBoxes.add(middleEastern);
         cuisineCheckBoxes.add(anyCuisine);
 
         //Stilen på alla kryssrutor
@@ -117,7 +121,7 @@ public class DietView extends StackPane {
         //om any cuisine är vald skickar vi en tom lista, då visas alla kök
         for (CheckBox cb : cuisineCheckBoxes) {
             if (cb.isSelected()) {
-                if (cb.getText().equals("Any Cuisine (None)"))
+                if (cb.getText().equals("Any Cuisine"))
                     return new ArrayList<>();
 
                 String groupName = cb.getText().toLowerCase().replace(" ", "_");
@@ -172,7 +176,8 @@ public class DietView extends StackPane {
             findRecipesBtn.setText("Find Recipes");
 
             //Navigera till resultatsidan (på FX-thread)
-            Platform.runLater(() -> Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes)));
+            Platform.runLater(() -> Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes,
+                    userController)));
         });
 
         task.setOnFailed(evt -> {
@@ -196,7 +201,7 @@ public class DietView extends StackPane {
     //NYTT metod för att se om any cuisine är vald
     private boolean isAnyCuisineSelected() {
         for (CheckBox cb : cuisineCheckBoxes) {
-            if (cb.getText().equals("Any Cuisine (None)") && cb.isSelected()) {
+            if (cb.getText().equals("Any Cuisine") && cb.isSelected()) {
                 return true;
             }
         }

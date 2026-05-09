@@ -3,6 +3,7 @@ package View;
 import App.Fridge2ForkApp;
 import Model.Recipe;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
@@ -11,19 +12,28 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import Controller.UserController;
 
 import java.util.List;
 
 public class RecipeResultsView extends VBox {
+    private final UserController userController;
 
-    public RecipeResultsView(List<Recipe> recipes) {
+    public RecipeResultsView(List<Recipe> recipes, UserController userController) {
         this.setPadding(new Insets(40));
         this.setSpacing(30);
         this.setAlignment(Pos.TOP_CENTER);
+        this.userController = userController;
 
         Label title = new Label("Matching recipes");
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
+
+        Button newSearchBtn = new Button("← New search");
+        newSearchBtn.setStyle("-fx-background-color: transparent; -fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;");
+        newSearchBtn.setCursor(Cursor.HAND);
+        newSearchBtn.setOnAction(e -> Fridge2ForkApp.root.setCenter(new FridgeView(userController)));
+        this.getChildren().add(newSearchBtn);
 
         if (recipes == null || recipes.isEmpty()) {
             Label noResults = new Label("No recipes found for your ingredients try selecting more!");
@@ -62,7 +72,7 @@ public class RecipeResultsView extends VBox {
 
         //NYTT logiken för vad som ska hända när man klikcat på en recept
         card.setOnMouseClicked(e ->{
-            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, this));
+            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, this, userController));
         });
 
         //Debug

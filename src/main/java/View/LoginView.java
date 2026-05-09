@@ -60,8 +60,9 @@ public class LoginView extends VBox {
             if (loggedInUser != null) {
                 //om inte tom, skapa HomeView och sätt välkomstmeddelandet och byt center.
 
-                //skapa hemvy
+                //skapa hemvy + ändra till bilden
                 HomeView homeView = new HomeView(userController);
+                Fridge2ForkApp.sideBar.updateProfilePicture();
 
                 //sätt i "inloggat-läge"
                 homeView.setupLoggedInState(loggedInUser);

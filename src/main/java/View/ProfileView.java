@@ -9,9 +9,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 
 
 public class ProfileView extends VBox {
@@ -29,12 +31,20 @@ public class ProfileView extends VBox {
         Label statusLabel = new Label();
         statusLabel.setWrapText(true);
 
-        StackPane profilePicture = new StackPane();
-        profilePicture.setPrefSize(120,120);
-        profilePicture.setStyle("-fx-background-color: lightgray; -fx-background-radius: 40;");
+        //default profilbild från nätet
+        String defaultProfileImageUrl = "https://static.vecteezy.com/system/resources/previews/037/336/395/non_2x/user-profile-flat-illustration-avatar-person-icon-gender-neutral-silhouette-profile-picture-free-vector.jpg";
+        Image profileImage = new Image(defaultProfileImageUrl, true);
+        ImageView profileImageView = new ImageView(profileImage);
+        profileImageView.setFitWidth(120);
+        profileImageView.setFitHeight(120);
+        profileImageView.setPreserveRatio(true);
 
-        Label pictureLabel = new Label("Photo");
-        profilePicture.getChildren().add(pictureLabel);
+        //gör bilden rund
+        Circle clip = new Circle(60, 60, 60);
+        profileImageView.setClip(clip);
+
+        StackPane profilePicture = new StackPane(profileImageView);
+        profilePicture.setPrefSize(120, 120);
 
         //Fälten
         Label userNameLabel = new Label("Username");
@@ -125,7 +135,8 @@ public class ProfileView extends VBox {
 
         //logik för Logout
         logoutButton.setOnAction(e -> {
-            //skicka tbx till en helt ren HomeView (dvs utloggad)
+            userController.logout();
+            Fridge2ForkApp.sideBar.resetProfilePicture();
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
@@ -134,7 +145,7 @@ public class ProfileView extends VBox {
                 new Label("Username"),
                 userName,
 
-                new Label("@Email"),
+                new Label("Email"),
                 email,
 
                 new Label("Full Name"),

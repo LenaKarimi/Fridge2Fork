@@ -4,6 +4,8 @@ import App.Fridge2ForkApp;
 import Controller.UserController;
 import DTO.ProfileDTO;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -11,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.util.Duration;
 
 
 public class HomeView extends BorderPane {
@@ -20,6 +23,7 @@ public class HomeView extends BorderPane {
     private UserController userController;
 
     public HomeView(UserController userController){
+        this.userController = userController;
         this.setPadding(new Insets(20));
 
         //Inlogg och registrering
@@ -56,15 +60,44 @@ public class HomeView extends BorderPane {
         Label subText = new Label("Discover recipes based on what you already have at home.");
         subText.setStyle("-fx-font-size: 16px;");
 
-        //Knappen
         Button BSubText = new Button("What's in your fridge?");
         BSubText.setStyle("-fx-font-size: 14px; -fx-padding: 10 20 10 20;");
         BSubText.setCursor(javafx.scene.Cursor.HAND);
-        BSubText.setOnAction(e ->{
-            Fridge2ForkApp.root.setCenter(new FridgeView());
+        BSubText.setOnAction(e -> Fridge2ForkApp.root.setCenter(new FridgeView(userController)));
+
+        //info-ikonen
+        Label homeInfoIcon = new Label("i");
+        homeInfoIcon.setStyle(
+                "-fx-background-color: darkseagreen; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-family: 'Serif'; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-shape: 'M 10 0 A 10 10 0 1 0 10 20 A 10 10 0 1 0 10 0'; " +
+                        "-fx-min-width: 20px; -fx-min-height: 20px; " +
+                        "-fx-alignment: center; -fx-cursor: help;"
+        );
+
+        //tooltip vid hover
+        Tooltip homeTooltip = new Tooltip("Click to start searching for recipes based on your ingredients!");
+        homeTooltip.setShowDelay(Duration.millis(100));
+        Tooltip.install(homeInfoIcon, homeTooltip);
+
+        //klickbar för mer info
+        homeInfoIcon.setOnMouseClicked(e -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Getting Started");
+            alert.setHeaderText("Welcome to Fridge2Fork!");
+            alert.setContentText("Click the button to list the ingredients you have at home. " +
+                    "We will then help you find delicious recipes you can cook right now!");
+            alert.showAndWait();
         });
 
-        VBox centercontent = new VBox(20, welcomeLabel, subText, BSubText);
+        //knapp + ikon i samma rad
+        HBox buttonBox = new HBox(15, BSubText, homeInfoIcon);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        VBox centercontent = new VBox(20, welcomeLabel, subText, buttonBox);
         centercontent.setAlignment(Pos.CENTER);
         this.setCenter(centercontent);
 
@@ -89,7 +122,7 @@ public class HomeView extends BorderPane {
                "-fx-text-fill: red;");
        logoutBtn.setCursor(Cursor.HAND);
 
-       //Vid utloggning: återställ till ursprungsläge
+       //vid utloggning, återställ till ursprungsläge
        logoutBtn.setOnAction(e -> {
            welcomeLabel.setText("Welcome to Fridge2Fork!");
            authButtons.getChildren().clear();
@@ -104,16 +137,15 @@ public class HomeView extends BorderPane {
            loginBtn.setCursor(Cursor.HAND);
            registerBtn.setCursor(Cursor.HAND);
 
-           loginBtn.setOnAction(ev -> {
-               Fridge2ForkApp.root.setCenter(new LoginView(userController));
-               registerBtn.setOnAction(ev2 -> {
-                   Fridge2ForkApp.root.setCenter(new RegisterView(userController));
+           loginBtn.setOnAction(ev -> Fridge2ForkApp.root.setCenter(new LoginView(userController)));
+           registerBtn.setOnAction(ev -> Fridge2ForkApp.root.setCenter(new RegisterView(userController)));
 
-                   authButtons.getChildren().addAll(loginBtn, registerBtn);
-               });
+           authButtons.getChildren().addAll(loginBtn, registerBtn);
 
-               authButtons.getChildren().addAll(loggedInAs, logoutBtn);
-           });
+           //återställ profilbilden i sidebaren + jag gjorde debugging
+           System.out.println("sideBar är: " + Fridge2ForkApp.sideBar);
+           userController.logout();
+           Fridge2ForkApp.sideBar.resetProfilePicture();
        });
    }
 }

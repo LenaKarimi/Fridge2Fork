@@ -61,4 +61,9 @@ public class UserController {
     public ProfileDTO getCurrentUser() {
         return currentUser;
     }
+
+    //jag la bara till en liten logout metod :D //Maya
+    public void logout() {
+        this.currentUser = null;
+    }
 }
