@@ -3,6 +3,7 @@ package View;
 import App.Fridge2ForkApp;
 import Controller.UserController;
 import DTO.ProfileDTO;
+import javafx.scene.Cursor;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,12 +17,13 @@ public class HomeView extends BorderPane {
 
     private Label welcomeLabel;
     private HBox authButtons;
+    private UserController userController;
 
     public HomeView(UserController userController){
         this.setPadding(new Insets(20));
 
         //Inlogg och registrering
-        HBox authButtons = new HBox(10);
+        authButtons = new HBox(10);
         authButtons.setAlignment(Pos.TOP_RIGHT);
 
         Button loginBtn = new Button("Log in");
@@ -68,10 +70,10 @@ public class HomeView extends BorderPane {
 
     }
 
-    //Tänkt att anropas för inloggning
+    //Anropas vid inloggning/utloggning
    public void setupLoggedInState(ProfileDTO user){
-        //uppdatera välkomstmeddelande med usernamet
-       welcomeLabel.setText("Welcome " + user.getName() + " !");
+        //Vid inloggning: uppdatera välkomstmeddelande med usernamet
+       welcomeLabel.setText("Welcome " + user.getName() + "!");
 
        //ta bort inloggningsknappar helt
        authButtons.getChildren().clear();
@@ -80,6 +82,38 @@ public class HomeView extends BorderPane {
        Label loggedInAs = new Label("Logged in as " +  user.getName());
        loggedInAs.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
        authButtons.getChildren().add(loggedInAs);
-   }
 
+       //utloggning
+       Button logoutBtn = new Button("Log out");
+       logoutBtn.setStyle("-fx-background-color: transparent; -fx-border-color: red; -fx-border-radius: 5;" +
+               "-fx-text-fill: red;");
+       logoutBtn.setCursor(Cursor.HAND);
+
+       //Vid utloggning: återställ till ursprungsläge
+       logoutBtn.setOnAction(e -> {
+           welcomeLabel.setText("Welcome to Fridge2Fork!");
+           authButtons.getChildren().clear();
+
+           Button loginBtn = new Button("Log in");
+           Button registerBtn = new Button("Create account");
+
+           loginBtn.setStyle("-fx-background-color: transparent; -fx-border-color: tan;" +
+                   "-fx-border-radius: 5;");
+           registerBtn.setStyle("-fx-background-color: tan; -fx-text-fill: white;" +
+                   "-fx-background-radius: 5;");
+           loginBtn.setCursor(Cursor.HAND);
+           registerBtn.setCursor(Cursor.HAND);
+
+           loginBtn.setOnAction(ev -> {
+               Fridge2ForkApp.root.setCenter(new LoginView(userController));
+               registerBtn.setOnAction(ev2 -> {
+                   Fridge2ForkApp.root.setCenter(new RegisterView(userController));
+
+                   authButtons.getChildren().addAll(loginBtn, registerBtn);
+               });
+
+               authButtons.getChildren().addAll(loggedInAs, logoutBtn);
+           });
+       });
+   }
 }
