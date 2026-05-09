@@ -59,9 +59,16 @@ public class LoginView extends VBox {
 
             if (loggedInUser != null) {
                 //om inte tom, skapa HomeView och sätt välkomstmeddelandet och byt center.
+
+                //skapa hemvy
                 HomeView homeView = new HomeView(userController);
-                homeView.setUserName(loggedInUser.getName());
+
+                //sätt i "inloggat-läge"
+                homeView.setupLoggedInState(loggedInUser);
+
+                //visa den
                 Fridge2ForkApp.root.setCenter(homeView);
+
             } else {
                 //vid misslyckad inlogg, visa felmeddelande
                 errorLabel.setText("Invalid username or password.");

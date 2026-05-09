@@ -53,7 +53,7 @@ public class SideBarView extends VBox {
             if(text.equals("Home")){
                 Fridge2ForkApp.root.setCenter(new HomeView(userController));
             } else if (text.equals("Profile")) {
-                Fridge2ForkApp.root.setCenter(new ProfilView(userController, userController.getCurrentUser()));
+                Fridge2ForkApp.root.setCenter(new ProfileView(userController, userController.getCurrentUser()));
             } else if (text.equals("Recept")){
                 //Fridge2ForkApp.root.setCenter(new RecipeView());
             }

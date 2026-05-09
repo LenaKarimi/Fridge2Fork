@@ -2,6 +2,7 @@ package View;
 
 import App.Fridge2ForkApp;
 import Controller.UserController;
+import DTO.ProfileDTO;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -9,11 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-import View.LoginView;
+
 
 public class HomeView extends BorderPane {
 
     private Label welcomeLabel;
+    private HBox authButtons;
 
     public HomeView(UserController userController){
         this.setPadding(new Insets(20));
@@ -25,12 +27,13 @@ public class HomeView extends BorderPane {
         Button loginBtn = new Button("Log in");
         Button registerBtn = new Button("Create account");
 
+        //actions
         loginBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
+            Fridge2ForkApp.root.setCenter(new LoginView(userController));
         });
 
         registerBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new org.example.RegisterView(userController));
+            Fridge2ForkApp.root.setCenter(new RegisterView(userController));
         });
 
         //transparent färg för aesthetics lol
@@ -65,8 +68,18 @@ public class HomeView extends BorderPane {
 
     }
 
-    //Tänkt att anropa för inloggning
-    public void setUserName(String name){
-        welcomeLabel.setText("Welcome, " + name + "!");
-    }
+    //Tänkt att anropas för inloggning
+   public void setupLoggedInState(ProfileDTO user){
+        //uppdatera välkomstmeddelande med usernamet
+       welcomeLabel.setText("Welcome " + user.getName() + " !");
+
+       //ta bort inloggningsknappar helt
+       authButtons.getChildren().clear();
+
+       //text istället för knapparna så man vet man är inloggad
+       Label loggedInAs = new Label("Logged in as " +  user.getName());
+       loggedInAs.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+       authButtons.getChildren().add(loggedInAs);
+   }
+
 }
