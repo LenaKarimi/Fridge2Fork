@@ -62,10 +62,33 @@ public class RecipeDAO {
         }
     }
 
-    // mapper som gör om rad från databasen till ett objekt
+    // mapper som gör om rad från databasen (resultSet) till ett objekt
     private Recipe mapToRecipe(ResultSet resultSet) throws SQLException {
-        String
+        String cuisineString = resultSet.getString("cuisine"); // hämtar cuisine som text från databasen
+        Cuisine cuisine = null;
+        if (cuisineString != null) {
+            try {
+                cuisine = Cuisine.valueOf(cuisineString); // konverterar text till enum värde
+            } catch (IllegalArgumentException ignored) {} // om en match ej finns förblir det null
+        }
+
+        List<Ingredient> ingredients = new ArrayList<>();
+        String ingredientsJson = resultSet.getString("ingredients"); // hämtar ingridienserna som json-sträng
+        if (ingredientsJson != null) {
+            ingredients = mapper.readValue( //konverterar json sträng till ingridiens objekt
+                    ingredientsJson,
+                    mapper.getTypeFactory().constructCollectionType(List.class, Ingredient.class) // talar om för object mapper att json ska bli en list
+            );
+        }
+
+        //skapar och returnerar ett nytt recepie objekt med data från databasen
+        return new Recipe(
+                resultSet.getString("meal_id"),
+                resultSet.getString("name"),
+                resultSet.getString("instructions"),
+                resultSet.getString("image_url"),
+                ingredients,
+                cuisine
+        );
     }
-
-
 }
