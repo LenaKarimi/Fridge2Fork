@@ -2,6 +2,7 @@ package Database;
 
 import Model.*;
 import Database.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class RecipeDAO {
 
     private final ObjectMapper mapper = new ObjectMapper(); // skapar ett mapper objekt
 
-    public void saveRecipe(Recipe recipe) throws SQLException { // sparar recept i databasen
+    public void saveRecipe(Recipe recipe) throws SQLException, JsonProcessingException { // sparar recept i databasen
        // on confilct = inget görs om receptet redan finns
         String sql = """
                 INSERT INTO recipes (meal_id, name, instructions, image_url, cuisine, cuisine_group, ingredients)
@@ -31,7 +32,7 @@ public class RecipeDAO {
         }
     }
 
-    public Recipe getRecipeById(String mealId) throws SQLException { // hämta recept från databasen
+    public Recipe getRecipeById(String mealId) throws SQLException, JsonProcessingException { // hämta recept från databasen
         String sql = "SELECT * FROM recipes WHERE meal_id = ?"; // hämtar alla kolumner där meal id matchar efterfrågan
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -44,7 +45,7 @@ public class RecipeDAO {
         return null;
     }
 
-    public List<Recipe> getLikedRecipes(int profileId) throws SQLException { // hämtar alla recept som en profil gillat
+    public List<Recipe> getLikedRecipes(int profileId) throws SQLException, JsonProcessingException { // hämtar alla recept som en profil gillat
         String sql = """
                 SELECT r.* FROM recipes r
                 JOIN liked_recipes lr ON r.meal_id = lr.meal_id
@@ -63,7 +64,7 @@ public class RecipeDAO {
     }
 
     // mapper som gör om rad från databasen (resultSet) till ett objekt
-    private Recipe mapToRecipe(ResultSet resultSet) throws SQLException {
+    private Recipe mapToRecipe(ResultSet resultSet) throws SQLException, JsonProcessingException {
         String cuisineString = resultSet.getString("cuisine"); // hämtar cuisine som text från databasen
         Cuisine cuisine = null;
         if (cuisineString != null) {
