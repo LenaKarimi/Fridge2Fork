@@ -36,9 +36,23 @@ public class RegisterView extends VBox {
         email.setPromptText("Email");
         email.setMaxWidth(200);
 
+        Label errorLable = new Label();
+        errorLable.setStyle("-fx-text-fill: red;");
+
         Button registerBtn = new Button("Create account");
         Button backBtn = new Button("Back");
 
+        registerBtn.setOnAction(event -> {
+            String error = userController.registerUser(username.getText(), password.getText(), name.getText(), email.getText());
+
+            if (error != null) {
+                errorLable.setText(error);
+            } else {
+                Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
+            }
+        });
+
+        /** // orginalmetod
         registerBtn.setOnAction(e -> {
             String user = username.getText();
             String pass = password.getText();
@@ -48,12 +62,13 @@ public class RegisterView extends VBox {
             userController.registerUser(user,pass,firstName,emailAdress);
             Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
         });
+         */
 
         backBtn.setOnAction(e -> {
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
 
         });
 
-        this.getChildren().addAll(title, username, password, name, email, registerBtn, backBtn);
+        this.getChildren().addAll(title, username, password, name, email, errorLable, registerBtn, backBtn);
     }
 }

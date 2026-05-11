@@ -27,9 +27,25 @@ public class LoginView extends VBox {
         password.setPromptText("Password");
         password.setMaxWidth(200);
 
+        Label errorLable = new Label();
+        errorLable.setStyle("-fx-text-fill: red;"); // fellable skrivit av racil
+
         Button loginBtn = new Button("Login");
         Button backBtn = new Button("Back");
 
+        loginBtn.setOnAction(event -> {
+            ProfileDTO isUser = userController.login(username.getText(), password.getText());
+
+            if (isUser == null) {
+                errorLable.setText(userController.getLoginError());
+            } else {
+                HomeView homeView = new HomeView(userController);
+                homeView.setUserName(isUser.getName());
+                Fridge2ForkApp.root.setCenter(homeView);
+            }
+        });
+
+        /** //orginalmetod
         loginBtn.setOnAction(e -> {
             String user = username.getText();
             String pass = password.getText();
@@ -45,11 +61,12 @@ public class LoginView extends VBox {
             }
 
         });
+         */
 
         backBtn.setOnAction(e -> {
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
-        this.getChildren().addAll(title, username, password, loginBtn, backBtn);
+        this.getChildren().addAll(title, username, password, errorLable, loginBtn, backBtn);
     }
 }
