@@ -13,6 +13,7 @@ public class Recipe{
     private int estimatedTime;
     private Diet diet; //frågan är om vi ska ha kvar detta? måste gruppera manuellt isf då det ej framgår i API?
     private Cuisine cuisine;
+    private double matchPercentage;
 
     public Recipe(String id, String name, String instructions, String imageUrl, List<Ingredient> ingredients, Cuisine cuisine){
         this.id = id;
@@ -72,5 +73,14 @@ public class Recipe{
 
     public void setCuisine(Cuisine cuisine) {
         this.cuisine = cuisine;
+    }
+
+    //Detta ska användas för att visa på recipecard hur mycket procent match det är.
+    public void setMatchPercentage(double matchPercentage) {
+        this.matchPercentage = matchPercentage;
+    }
+    //Detta ska användas för att visa på recipecard hur mycket procent match det är.
+    public double getMatchPercentage() {
+        return matchPercentage;
     }
 }
