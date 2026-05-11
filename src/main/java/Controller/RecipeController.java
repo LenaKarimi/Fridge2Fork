@@ -12,7 +12,6 @@ import TheMealDbAPI.TheMealDbDTO;
 import java.util.*;
 
 public class RecipeController {
-    //hanterar logik kring recept, 70% gräns osv
 
     //De olika klasserna som används från Api:et
     private final MealRepository mealRepository;
@@ -35,7 +34,7 @@ public class RecipeController {
     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
     public List<Recipe> searchRecipes(Map<String, List<String>> categoryMap, List <Cuisine> selectedCuisines) throws Exception {
 
-        //Kontrollera att varje kategor i Gui har fått minst ett val none inkluderad.
+        //Kontrollera att varje kategori i Gui har fått minst ett val none inkluderad.
 
         validateAllCategories(categoryMap);
 
