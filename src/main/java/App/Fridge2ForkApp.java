@@ -2,6 +2,7 @@ package App;
 
 import Controller.UserController;
 import javafx.application.Application;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -12,6 +13,7 @@ public class Fridge2ForkApp extends Application {
 
     //Static så hittar SideBarView den
     public static BorderPane root;
+    public static SideBarView sideBar;
 
     @Override
     public void start(Stage stage){
@@ -21,7 +23,8 @@ public class Fridge2ForkApp extends Application {
         UserController userController = new UserController(); //skapat controllern en gån här
 
         //Sidebaren med färger
-        root.setLeft(new SideBarView(userController));
+       sideBar = (new SideBarView(userController));
+       root.setLeft(sideBar);
 
         //Välkomstsidan i mitten
         root.setCenter(new HomeView(userController)); // skickar in controllern till homeview så resterande vyer kan jobba med den

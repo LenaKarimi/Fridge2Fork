@@ -2,42 +2,86 @@ package View;
 
 import App.Fridge2ForkApp;
 import Controller.RecipeController;
-import javafx.scene.control.CheckBox;
+import Controller.UserController;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collections;
+import javafx.scene.layout.HBox;
+import javafx.util.Duration;
+import javafx.scene.control.Alert;
+import java.util.*;
 
 
 public class FridgeView extends StackPane {
 
     private Label errorLabel;
+    private final UserController userController;
 
     //Nytt vi har tagt bort den gamla listan med checkboxar och skapat denna lista
     //med vboxar istället för att kunna dela upp ingredienserna i kategorier
     private List<VBox> categorySections = new ArrayList<>();
 
-    public FridgeView(){
+    public FridgeView(UserController userController){
+        this.userController = userController;
+
         VBox mainContent = new VBox(20);
         mainContent.setPadding(new Insets(40));
         mainContent.setAlignment(Pos.TOP_LEFT);
 
         Label title = new Label("What's in your fridge?");
         title.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;");
-        mainContent.getChildren().add(title);
+
+        //skapa info-symbolen
+        Label infoIcon = new Label("i");
+        infoIcon.setStyle(
+                "-fx-background-color: darkseagreen; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-family: 'Serif'; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-shape: 'M 10 0 A 10 10 0 1 0 10 20 A 10 10 0 1 0 10 0'; " + //gör den rund
+                        "-fx-min-width: 20px; " +
+                        "-fx-min-height: 20px; " +
+                        "-fx-alignment: center; " +
+                        "-fx-cursor: help;"
+        );
+
+        //skapa själva hjälptexten
+        Tooltip tooltip = new Tooltip("Select all the ingredients you have at home.\nChoose 'None'" +
+                " if a category is empty.");
+        tooltip.setShowDelay(Duration.millis(100)); // Visas snabbt
+        tooltip.setStyle("-fx-font-size: 14px;");
+        Tooltip.install(infoIcon, tooltip);
+
+        //för info-symbol klickbar
+        infoIcon.setOnMouseClicked(e -> {
+            Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+            infoAlert.setTitle("How to use");
+            infoAlert.setHeaderText("Instructions for Fridge2Fork");
+            infoAlert.setContentText(
+                    "1. Browse through the categories.\n" +
+                            "2. Check the ingredients you have at home.\n" +
+                            "3. If you don't have anything in a category, check 'None'.\n" +
+                            "4. Click 'Next step' when you're ready!"
+            );
+            infoAlert.showAndWait();
+        });
+
+        //lägg till både titel och info i en HBox så de hamnar bredvid varandra
+        HBox titleBox = new HBox(15, title, infoIcon);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+        mainContent.getChildren().add(titleBox);
 
         errorLabel = new Label("");
         errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold;");
         errorLabel.setVisible(false);
+
+
         //mainContent.getChildren().add(errorLabel);
         //mainContent.getChildren().add(errorLabel);
 
@@ -129,7 +173,7 @@ public class FridgeView extends StackPane {
         List<String> selected = new ArrayList<>();
 
         //Nytt här hämtas flowpane där alla checkboxar är som ligger inuti kategorin
-        FlowPane flow = (FlowPane) section.getChildren().get(1);
+        FlowPane flow = (FlowPane) section.getChildren().get(2);
 
         for (javafx.scene.Node node : flow.getChildren()){
             if (node instanceof CheckBox){
@@ -146,6 +190,7 @@ public class FridgeView extends StackPane {
     private void handleNextStep(){
         //NYTT vi skapar en map , de nya formatet som controller kräver
         Map<String, List<String>> categoryMap = new HashMap<>();
+        List<String> missingCategories = new ArrayList<>(); //för att samla felen
 
         //vi loopar genom varje kategori en efter en
         for (VBox section : categorySections) {
@@ -155,7 +200,7 @@ public class FridgeView extends StackPane {
 
             //Här hämtar vi ALLA valda rutor för att kontrollera kravet (även "None")
             List<String> allSelected = new ArrayList<>();
-            FlowPane flow = (FlowPane) section.getChildren().get(1);
+            FlowPane flow = (FlowPane) section.getChildren().get(2);
 
             for (javafx.scene.Node node : flow.getChildren()) {
                 if (node instanceof CheckBox) {
@@ -167,11 +212,10 @@ public class FridgeView extends StackPane {
             }
             //Här sker den obligatoriska kontrollen att minst ett val gjorts per kategori
             if (allSelected.isEmpty()) {
-                showErrorMessage("Please select at least one option in: " + categoryName + " (choose 'None' if empty)");
-                return;
-            }
-
-            //Här skapar vi en lista för de faktiska ingredienserna utan "None"
+                missingCategories.add(categoryName);
+            } else {
+                //om ej tom, lägg till ingredienser i mappen
+            } //Här skapar vi en lista för de faktiska ingredienserna utan "None"
             List<String> realIngredients = new ArrayList<>();
             for (String item : allSelected) {
                 if (!item.equalsIgnoreCase("None")) {
@@ -183,11 +227,18 @@ public class FridgeView extends StackPane {
                 categoryMap.put(categoryName, realIngredients);
             }
         }
+
+        //Kolla om vi hittade några fel
+        if (!missingCategories.isEmpty()){           //string.join sätter ihop strängarna
+            showErrorMessage("Missing selection in: " + String.join(", ", missingCategories));
+            return;
+        }
+
         clearErrorMessage();
         try {
             RecipeController controller = new RecipeController();
             //Vi skickar mappen (categoryMap)
-            Fridge2ForkApp.root.setCenter(new DietView(categoryMap, controller));
+            Fridge2ForkApp.root.setCenter(new DietView(categoryMap, controller, userController));
         } catch (Exception ex) {
             showErrorMessage("Something went wrong when searching for recipes. Please try again!");
             ex.printStackTrace();
@@ -196,17 +247,81 @@ public class FridgeView extends StackPane {
 
     private VBox createCategorySection(String categoryName, String... ingredients){
         VBox section = new VBox(10);
+        section.setStyle("-fx-background-color: #f2ede4; -fx-background-radius: 10; -fx-padding: 15;");
         Label catLabel = new Label(categoryName);
         catLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: darkseagreen;");
-
         FlowPane ingredientFlow = new FlowPane(15, 10);
 
-        for(String ingredient : ingredients){
+        Button selectAll = new Button("Select all");
+        Button clearAll = new Button("Clear all");
+
+        String btnStyle = "-fx-font-size: 11px; -fx-padding: 2 8; -fx-background-color: transparent; " +
+                "-fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;";
+        selectAll.setStyle(btnStyle);
+        clearAll.setStyle(btnStyle);
+        selectAll.setCursor(javafx.scene.Cursor.HAND);
+        clearAll.setCursor(javafx.scene.Cursor.HAND);
+
+        selectAll.setOnAction(e -> {
+            for (javafx.scene.Node node : ingredientFlow.getChildren()) {
+                if (node instanceof CheckBox cb && !cb.getText().equalsIgnoreCase("None")) {
+                    cb.setSelected(true);
+                }
+            }
+        });
+
+        clearAll.setOnAction(e -> {
+            for (javafx.scene.Node node : ingredientFlow.getChildren()) {
+                if (node instanceof CheckBox cb) {
+                    cb.setSelected(false);
+                }
+            }
+        });
+
+        //gör om arrayen till en lista  för att sortera alfabetisk ordning
+        List<String> sortedList = new ArrayList<>(Arrays.asList(ingredients));
+
+        //ta bort "none" och sortera resten
+        sortedList.remove("None");
+        Collections.sort(sortedList);
+        sortedList.add("None");
+
+        //loopa genom sorterade listan
+        for(String ingredient : sortedList){
             CheckBox cb = new CheckBox(ingredient);
-            cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+
+            if (ingredient.equalsIgnoreCase("None")) {
+                cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black; -fx-font-style: bold;" +
+                        "-fx-font-style: italic; -fx-border-color: black; -fx-border-radius: 5;" +
+                        " -fx-padding: 2 6;");
+
+                //om "none" klickas, avkryssa alla andra
+                cb.setOnAction(e -> {
+                    if (cb.isSelected()){
+                        for (javafx.scene.Node node: ingredientFlow.getChildren()){
+                            if (node instanceof CheckBox other && !other.getText().equalsIgnoreCase("None")){
+                                other.setSelected(false);
+                            }
+                        }
+                    }
+                });
+            } else {
+                cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+                //om en ingrediens klickas, avkryssa "none"
+                cb.setOnAction(e -> {
+                    if (cb.isSelected()){
+                        for (javafx.scene.Node node : ingredientFlow.getChildren()){
+                            if (node instanceof CheckBox other && other.getText().equalsIgnoreCase("None")){
+                                other.setSelected(false);
+                            }
+                        }
+                    }
+                });
+            }
             ingredientFlow.getChildren().add(cb);
         }
-        section.getChildren().addAll(catLabel, ingredientFlow);
+        HBox buttons = new HBox(10, selectAll, clearAll);
+        section.getChildren().addAll(catLabel, buttons, ingredientFlow);
         return section;
     }
 

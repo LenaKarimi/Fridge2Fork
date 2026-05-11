@@ -3,6 +3,7 @@ package View;
 import App.Fridge2ForkApp;
 import Model.Recipe;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
@@ -11,19 +12,28 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import Controller.UserController;
 
 import java.util.List;
 
 public class RecipeResultsView extends VBox {
+    private final UserController userController;
 
-    public RecipeResultsView(List<Recipe> recipes) {
+    public RecipeResultsView(List<Recipe> recipes, UserController userController) {
         this.setPadding(new Insets(40));
         this.setSpacing(30);
         this.setAlignment(Pos.TOP_CENTER);
+        this.userController = userController;
 
         Label title = new Label("Matching recipes");
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
+
+        Button newSearchBtn = new Button("← New search");
+        newSearchBtn.setStyle("-fx-background-color: transparent; -fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;");
+        newSearchBtn.setCursor(Cursor.HAND);
+        newSearchBtn.setOnAction(e -> Fridge2ForkApp.root.setCenter(new FridgeView(userController)));
+        this.getChildren().add(newSearchBtn);
 
         if (recipes == null || recipes.isEmpty()) {
             Label noResults = new Label("No recipes found for your ingredients try selecting more!");
@@ -54,15 +64,16 @@ public class RecipeResultsView extends VBox {
 
     private VBox createRecipeCard(Recipe recipe) {
         VBox card = new VBox(10);
-        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
+        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 15; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
         card.setPrefWidth(250);
 
-        //NYTT gör så att muspekare ser ut som en hand när man hovrar över receptkortet
+        //gör så att muspekare ser ut som en hand när man hovrar över receptkortet
         card.setCursor(Cursor.HAND);
 
-        //NYTT logiken för vad som ska hända när man klikcat på en recept
+        //logiken för vad som ska hända när man klikcat på en recept
         card.setOnMouseClicked(e ->{
-            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, this));
+            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, this, userController));
         });
 
         //Debug
@@ -79,10 +90,6 @@ public class RecipeResultsView extends VBox {
         Label cuisineLabel = new Label(cuisineText);
         cuisineLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: gray;");
 
-        //Behållare för all text
-        VBox textContainer = new VBox(5);
-        textContainer.getChildren().addAll(titleLabel, cuisineLabel);
-
         //Bild
         String imageUrl = recipe.getImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
@@ -92,12 +99,29 @@ public class RecipeResultsView extends VBox {
                 imageView.setFitWidth(220);
                 imageView.setFitHeight(150);
                 imageView.setPreserveRatio(true);
-                card.getChildren().addAll(imageView, textContainer);
+                card.getChildren().addAll(imageView);
             } catch (Exception e) {
-                card.getChildren().add(textContainer);
             }
-        } else {
-            card.getChildren().add(textContainer);
+        }
+        //Text
+        card.getChildren().addAll(titleLabel, cuisineLabel);
+
+        // Hjärta - visas bara om användaren är inloggad
+        if (userController.getCurrentUser() != null) {
+            Button heartBtn = new Button("\u2661");
+            heartBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
+            heartBtn.setCursor(Cursor.HAND);
+
+            heartBtn.setOnMouseClicked(e -> {
+                e.consume();
+                if (heartBtn.getText().equals("\u2661")) {
+                    heartBtn.setText("\u2665");
+                } else {
+                    heartBtn.setText("\u2661");
+                }
+            });
+
+            card.getChildren().add(heartBtn);
         }
 
         return card;
