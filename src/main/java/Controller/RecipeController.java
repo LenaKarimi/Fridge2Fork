@@ -70,11 +70,18 @@ public class RecipeController {
                     continue;
                 }
 
+                //detta beräknar procentmatchning
+                double percentage = calculateMatchPercentage(recipeObject, userFridge);
+
+                recipeObject.setMatchPercentage(percentage);
+                //detta syns i terminalen för att se hur mycket match plus om det ens beräknar procent.
+                System.out.println("Recept: " + recipeObject.getName() + " Matchning: " + (percentage *100) + "%");
+
                 //filterring baserad på kök
                 if (!isCorrectCuisine(recipeObject, selectedCuisines)) continue;
 
                 //beräkna 50% matchningen
-                if (calculateMatchPercentage(recipeObject, userFridge) >= 0.0){
+                if (percentage  >= 0.5){
                     matchingRecipes.add(recipeObject);
                 }
                 if (matchingRecipes.size() >= 6) return matchingRecipes;
