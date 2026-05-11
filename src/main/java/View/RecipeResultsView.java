@@ -79,14 +79,6 @@ public class RecipeResultsView extends VBox {
         Label cuisineLabel = new Label(cuisineText);
         cuisineLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: gray;");
 
-        //NYTT skapa label för matchningsprocent
-        //här hämtas värdet vi sparade i recipe-objektet via controllern
-        int displayPercent = (int) (recipe.getMatchPercentage() * 100);
-        Label matchLabel = new Label(displayPercent +  "% Match");
-
-        matchLabel.setStyle("-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-padding: 3 8; " +
-                "-fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 12px;");
-
         //Behållare för all text
         VBox textContainer = new VBox(5);
         textContainer.getChildren().addAll(titleLabel, cuisineLabel);
