@@ -51,41 +51,45 @@ public class RecipeController {
              //om inte ingrediens finns ska programmet fortsätta till nästa ingrediens och inte krascha
             if (apiResponse == null) continue;
 
-            for (TheMealDbDTO mealSummary : apiResponse){
+            for (TheMealDbDTO mealSummary : apiResponse) {
                 //sparar inte recept som redan är hämtade.
                 if (discoveredMealIds.contains(mealSummary.idMeal)) continue;
                 discoveredMealIds.add(mealSummary.idMeal);
 
-                //hämta fullständiga detaljer dvs ingredienser, isntruktioner osv.
-                TheMealDbDTO detailedMeal = mealRepository.getMealById(mealSummary.idMeal);
+                try {
+                    //hämta fullständiga detaljer dvs ingredienser, isntruktioner osv.
+                    TheMealDbDTO detailedMeal = mealRepository.getMealById(mealSummary.idMeal);
 
-                if (detailedMeal == null){
-                    continue;
+                    if (detailedMeal == null) {
+                        continue;
+                    }
+
+                    Recipe recipeObject = mealMapper.toDomain(detailedMeal);
+
+                    if (recipeObject == null) {
+                        continue;
+                    }
+
+                    //detta beräknar procentmatchning
+                    double percentage = calculateMatchPercentage(recipeObject, userFridge);
+
+                    recipeObject.setMatchPercentage(percentage);
+                    //detta syns i terminalen för att se hur mycket match plus om det ens beräknar procent.
+                    System.out.println("Recept: " + recipeObject.getName() + " Matchning: " + (percentage * 100) + "%");
+
+                    //filterring baserad på kök
+                    if (!isCorrectCuisine(recipeObject, selectedCuisines)) continue;
+
+                    //beräkna 50% matchningen
+                    if (percentage >= 0.5) {
+                        matchingRecipes.add(recipeObject);
+                    }
+                    if (matchingRecipes.size() >= 6) return matchingRecipes;
+
+
+                } catch (Exception e) {
+                    System.out.println("debug: Hoppar över recept ID: " + mealSummary.idMeal + " pga fel: " + e.getMessage());
                 }
-
-                Recipe recipeObject = mealMapper.toDomain(detailedMeal);
-
-                if(recipeObject == null){
-                    continue;
-                }
-
-                //detta beräknar procentmatchning
-                double percentage = calculateMatchPercentage(recipeObject, userFridge);
-
-                recipeObject.setMatchPercentage(percentage);
-                //detta syns i terminalen för att se hur mycket match plus om det ens beräknar procent.
-                System.out.println("Recept: " + recipeObject.getName() + " Matchning: " + (percentage *100) + "%");
-
-                //filterring baserad på kök
-                if (!isCorrectCuisine(recipeObject, selectedCuisines)) continue;
-
-                //beräkna 50% matchningen
-                if (percentage  >= 0.5){
-                    matchingRecipes.add(recipeObject);
-                }
-                if (matchingRecipes.size() >= 6) return matchingRecipes;
-
-
             }
         }
         return matchingRecipes;
