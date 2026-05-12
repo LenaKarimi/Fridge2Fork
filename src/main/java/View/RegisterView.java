@@ -1,4 +1,4 @@
-package org.example;
+package View;
 
 import App.Fridge2ForkApp;
 import Controller.UserController;
@@ -48,7 +48,7 @@ public class RegisterView extends VBox {
             if (error != null) {
                 errorLable.setText(error);
             } else {
-                Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
+                Fridge2ForkApp.root.setCenter(new LoginView(userController));
             }
         });
 

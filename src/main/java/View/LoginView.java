@@ -1,4 +1,4 @@
-package org.example;
+package View;
 
 
 import App.Fridge2ForkApp;
@@ -40,7 +40,7 @@ public class LoginView extends VBox {
                 errorLable.setText(userController.getLoginError());
             } else {
                 HomeView homeView = new HomeView(userController);
-                homeView.setUserName(isUser.getName());
+                homeView.setupLoggedInState(isUser);
                 Fridge2ForkApp.root.setCenter(homeView);
             }
         });
