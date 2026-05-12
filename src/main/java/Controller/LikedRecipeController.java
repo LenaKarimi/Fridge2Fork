@@ -21,6 +21,34 @@ public class LikedRecipeController {
     }
 
     //ta bort gillning
+    public void unlikeRecipe(int profieId, String mealId)  {
+        try {
+            likedRecipeDAO.unlikeRecipe(profieId, mealId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     //hämta alla gillade recept för en användare
+    public List<Recipe> getLikedRecipes(int profieId) {
+        try {
+            return recipeDAO.getLikedRecipes(profieId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    //denna metod behövs så att hjärtat är ifyllt ifall receptet
+    //visas under en senare generering, då hjärtat alltid ska vara
+    // ifyllt om det är likat av en användraen
+    public boolean isLiked(int profieId, String mealId) {
+        try {
+            return likedRecipeDAO.isLiked(profieId, mealId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }
