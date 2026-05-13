@@ -89,7 +89,7 @@ public class HomeView extends BorderPane {
             alert.setTitle("Getting Started");
             alert.setHeaderText("Welcome to Fridge2Fork!");
             alert.setContentText("Click the button to list the ingredients you have at home. " +
-                    "We will then help you find delicious recipes you can cook right now!");
+                    "We will then help you find six delicious recipes that matches what you have in at least 50% that you can cook right now!");
             alert.showAndWait();
         });
 
