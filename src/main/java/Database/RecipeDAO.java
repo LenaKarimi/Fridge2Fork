@@ -16,7 +16,7 @@ public class RecipeDAO {
        // on confilct = inget görs om receptet redan finns
         String sql = """
                 INSERT INTO recipes (meal_id, name, instructions, image_url, cuisine, cuisine_group, ingredients)
-                VALUES (?, ?, ?, ?, ?, ?::jsonb)
+                VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)
                 ON CONFLICT (meal_id) DO NOTHING 
                 """;
         try (Connection connection = DbConnection.getConnection();

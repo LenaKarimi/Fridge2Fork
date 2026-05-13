@@ -1,6 +1,7 @@
 package View;
 
 import App.Fridge2ForkApp;
+import Controller.LikedRecipeController;
 import Controller.UserController;
 import Model.Recipe;
 import javafx.geometry.Insets;
@@ -60,6 +61,7 @@ public class LikedRecipesView extends VBox {
     }
 
     private VBox createRecipeCard(Recipe recipe) {
+        System.out.println("skapar kort för;" + recipe.getName());
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 15; " +
                 "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
@@ -88,22 +90,30 @@ public class LikedRecipesView extends VBox {
         Label titleLabel = new Label(recipe.getName());
         titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         titleLabel.setWrapText(true);
+        titleLabel.setMaxWidth(160); // kollar om detta lägger till namnet i liked recipe view
 
         //LIKE-knapp i hörnet (fyllt hjärta \u2665)
         Button unlikeBtn = new Button("\u2665");
         unlikeBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
         unlikeBtn.setCursor(Cursor.HAND);
 
+
+
         //Action för att ta bort (Racils del sen)
         unlikeBtn.setOnAction(e -> {
-            System.out.println("Removing from favorites: " + recipe.getName());
-            //Här anropas DAO:n sen. Döljer korten nu för demo
-            card.setVisible(false);
-            card.setManaged(false);
+            if (userController.getCurrentUser() != null) {
+                LikedRecipeController likedRecipeController = new LikedRecipeController();
+                int profileId = userController.getCurrentUser().getId();
+                likedRecipeController.unlikeRecipe(profileId, recipe.getId()); // tar bort från db
+                card.setVisible(false);
+                card.setManaged(false);
+            }
+
         });
 
         HBox footer = new HBox(10, titleLabel, unlikeBtn);
         footer.setAlignment(Pos.CENTER_LEFT);
+        footer.setMaxWidth(210); // kollar om detta adderar namnet på liked recipe view
         HBox.setHgrow(titleLabel, javafx.scene.layout.Priority.ALWAYS);
 
         card.getChildren().addAll(imageView, footer);

@@ -1,6 +1,7 @@
 package View;
 
 import App.Fridge2ForkApp;
+import Controller.LikedRecipeController;
 import Model.Recipe;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -124,6 +125,7 @@ public class RecipeResultsView extends VBox {
         card.getChildren().add(textContainer);
 
         // Hjärta - visas bara om användaren är inloggad
+        /** Orginal metod som maya skapa
         if (userController.getCurrentUser() != null) {
             Button heartBtn = new Button("\u2661");
             heartBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
@@ -141,6 +143,33 @@ public class RecipeResultsView extends VBox {
             card.getChildren().add(heartBtn);
         }
 
+        return card;
+         */
+
+        if (userController.getCurrentUser() != null) {
+            LikedRecipeController likedRecipeController = new LikedRecipeController();
+            int profileId = userController.getCurrentUser().getId();
+
+            //kolla om redan gillat
+            boolean liked = likedRecipeController.isLiked(profileId, recipe.getId());
+            Button heartBtn = new Button(liked ? "\u2665" : "\u2661");
+            heartBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
+            heartBtn.setCursor(Cursor.HAND);
+
+            heartBtn.setOnMouseClicked(e -> {
+                e.consume();
+                if (heartBtn.getText().equals("\u2661")) {
+                    heartBtn.setText("\u2665");
+                    likedRecipeController.likeRecipe(profileId, recipe); // sparar i db
+
+                } else  {
+                    heartBtn.setText("\u2661");
+                    likedRecipeController.unlikeRecipe(profileId, recipe.getId()); // tar bort från db
+                }
+            });
+
+            card.getChildren().add(heartBtn);
+        }
         return card;
     }
 }

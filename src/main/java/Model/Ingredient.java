@@ -6,6 +6,10 @@ public class Ingredient {
     private String measure;
     private Category category;
 
+    public Ingredient() {
+
+    }
+
     public Ingredient(String name, String measure){
         this.name = name;
         this.measure = measure;

@@ -1,7 +1,10 @@
 package View;
 
+import Controller.LikedRecipeController;
 import Controller.UserController;
 import java.util.List;
+
+import Model.Recipe;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -64,9 +67,17 @@ public class SideBarView extends VBox {
                     Fridge2ForkApp.root.setCenter(new LoginView(userController));
                 }
             } else if (text.equals("Liked recipes")) {
-                //hämta listan från databasen sen (Racils DAO)
-                //skickar tom lista tills databasen är klar
-                Fridge2ForkApp.root.setCenter(new LikedRecipesView(new java.util.ArrayList<>(), userController));
+                System.out.println("getCurrentUser: " + userController.getCurrentUser());
+                if (userController.getCurrentUser() == null) { // om man ej är inloggad
+                    Fridge2ForkApp.root.setCenter(new LoginView(userController));
+                } else {
+                    LikedRecipeController likedRecipeController = new LikedRecipeController(); // annars hämta recept från db via controller
+                    int profileId = userController.getCurrentUser().getId();
+                    List<Recipe> likedRecipes = likedRecipeController.getLikedRecipes(profileId);
+                    Fridge2ForkApp.root.setCenter(new LikedRecipesView(likedRecipes, userController));
+                }
+            } else if (text.equals("Purchases")) { // bara en tom vy visas då detta ej är klart
+                Fridge2ForkApp.root.setCenter(new VBox());
             }
             System.out.println("Du klickade på: " + text);
         });
