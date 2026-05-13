@@ -92,6 +92,7 @@ public class RecipeController {
                 }
             }
         }
+        matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
         return matchingRecipes;
     }
 
