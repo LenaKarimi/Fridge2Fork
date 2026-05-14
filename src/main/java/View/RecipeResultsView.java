@@ -16,25 +16,44 @@ import javafx.geometry.Insets;
 import Controller.UserController;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class RecipeResultsView extends VBox {
     private final UserController userController;
+    private final List<Recipe> allFetchedRecipes;
+    private HBox recipeContainer;
 
     public RecipeResultsView(List<Recipe> recipes, UserController userController) {
         this.setPadding(new Insets(40));
         this.setSpacing(30);
         this.setAlignment(Pos.TOP_CENTER);
         this.userController = userController;
+        this.allFetchedRecipes = recipes;
 
         Label title = new Label("Matching recipes");
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
+
+        //Knappar för navigering
+        HBox navButtons = new HBox(15);
+        navButtons.setAlignment(Pos.CENTER);
 
         Button newSearchBtn = new Button("← New search");
         newSearchBtn.setStyle("-fx-background-color: transparent; -fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;");
         newSearchBtn.setCursor(Cursor.HAND);
         newSearchBtn.setOnAction(e -> Fridge2ForkApp.root.setCenter(new FridgeView(userController)));
         this.getChildren().add(newSearchBtn);
+
+        //NYTT slumpa knappen
+        Button randomizeBtn = new Button("Show other recipes");
+        randomizeBtn.setStyle ("-fx-background-color: darkseagreen; -fx-text-fill: white; -fx-font-weight: bold;");
+        randomizeBtn.setCursor(Cursor.HAND);
+
+        randomizeBtn.setOnAction(e -> showRandomRecipes());
+
+        navButtons.getChildren().addAll(newSearchBtn, randomizeBtn);
+        this.getChildren().add(navButtons);
 
         if (recipes == null || recipes.isEmpty()) {
             Label noResults = new Label("No recipes found for your ingredients try selecting more!");
@@ -45,7 +64,7 @@ public class RecipeResultsView extends VBox {
 
 
         //HBox så de syns bredvid varandra
-        HBox recipeContainer = new HBox(20);
+        this.recipeContainer = new HBox(20);
         recipeContainer.setAlignment(Pos.CENTER_LEFT);
         recipeContainer.setPadding(new Insets(10));
 
@@ -59,6 +78,29 @@ public class RecipeResultsView extends VBox {
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
 
         this.getChildren().add(scrollPane);
+
+        //Här visas första urvalet direkt
+        showRandomRecipes();
+
+    }
+
+    private void showRandomRecipes(){
+        if ( allFetchedRecipes == null || allFetchedRecipes.isEmpty()) return;
+
+        //Töm behållaren så vi kan lägga till nya kort
+        recipeContainer.getChildren().clear();
+
+        //Skapa en kopia och blanda den
+        List<Recipe> shuffleList = new ArrayList<>(allFetchedRecipes);
+        Collections.shuffle(shuffleList);
+
+        //Välj de första 6 eller färre om listan
+        int limit = Math.min(6, shuffleList.size());
+        for (int i = 0; i < limit; i++){
+            //Här anropar du din befintliga metod createRecipeCard
+            recipeContainer.getChildren().add(createRecipeCard(shuffleList.get(i)));
+        }
+
 
     }
 
