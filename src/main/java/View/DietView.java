@@ -177,7 +177,7 @@ public class DietView extends StackPane {
 
             //Navigera till resultatsidan (på FX-thread)
             Platform.runLater(() -> Fridge2ForkApp.root.setCenter(new RecipeResultsView(recipes,
-                    userController)));
+                    userController, controller)));
         });
 
         task.setOnFailed(evt -> {
