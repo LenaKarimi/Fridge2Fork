@@ -81,10 +81,10 @@ public class RecipeController {
                     if (!isCorrectCuisine(recipeObject, selectedCuisines)) continue;
 
                     //beräkna 50% matchningen
-                    if (percentage >= 0.5) {
+                    if (percentage > 0) {
                         matchingRecipes.add(recipeObject);
                     }
-                    if (matchingRecipes.size() >= 6) return matchingRecipes;
+                    //if (matchingRecipes.size() >= 6) return matchingRecipes;
 
 
                 } catch (Exception e) {
@@ -93,6 +93,9 @@ public class RecipeController {
             }
         }
         matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+        if(matchingRecipes.size() > 6){
+            return new ArrayList<>(matchingRecipes.subList(0, 6));
+        }
         return matchingRecipes;
     }
 
@@ -163,13 +166,13 @@ public class RecipeController {
         return dtos;
     }
 
+    public boolean shouldShowWarning(List<Recipe> recipes){
+        if(recipes == null || recipes.isEmpty()) {
+            return false;
+        }
 
 
-
-
-
-
-
-
+        return recipes.size() < 6 || recipes.get(recipes.size() - 1).getMatchPercentage() < 0.5;
+    }
 
 }
