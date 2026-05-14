@@ -14,13 +14,14 @@ import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import Controller.UserController;
+import Controller.RecipeController;
 
 import java.util.List;
 
 public class RecipeResultsView extends VBox {
     private final UserController userController;
 
-    public RecipeResultsView(List<Recipe> recipes, UserController userController) {
+    public RecipeResultsView(List<Recipe> recipes, UserController userController, RecipeController recipeController) {
         this.setPadding(new Insets(40));
         this.setSpacing(30);
         this.setAlignment(Pos.TOP_CENTER);
@@ -29,6 +30,12 @@ public class RecipeResultsView extends VBox {
         Label title = new Label("Matching recipes");
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
+
+        if(recipeController.shouldShowWarning(recipes)){
+            Label warningLabel = new Label ("Tyvärr fanns inte 6 recept över 50% matchning, men här är de närmsta vi hittade: ");
+            warningLabel.setStyle("-fx-text-fill: #856404; -fx-background-color: #fff3cd; -fx-padding: 10; -fx-background-radius: 5; -fx-font-weight: bold;");
+            this.getChildren().add(warningLabel);
+        }
 
         Button newSearchBtn = new Button("← New search");
         newSearchBtn.setStyle("-fx-background-color: transparent; -fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;");
