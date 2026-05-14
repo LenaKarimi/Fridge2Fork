@@ -84,13 +84,15 @@ public class RecipeController {
                     if (percentage >= 0.5) {
                         matchingRecipes.add(recipeObject);
                     }
-                    if (matchingRecipes.size() >= 6) return matchingRecipes;
+                    //samla 30 recept
+                    if (matchingRecipes.size() >= 30) break;
 
 
                 } catch (Exception e) {
                     System.out.println("debug: Hoppar över recept ID: " + mealSummary.idMeal + " pga fel: " + e.getMessage());
                 }
             }
+            if (matchingRecipes.size() >= 30) break;
         }
         matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
         return matchingRecipes;
