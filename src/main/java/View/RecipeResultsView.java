@@ -96,9 +96,17 @@ public class RecipeResultsView extends VBox {
 
         //Välj de första 6 eller färre om listan
         int limit = Math.min(6, shuffleList.size());
+        List<Recipe> selectedSix = new ArrayList<>();
         for (int i = 0; i < limit; i++){
+            selectedSix.add(shuffleList.get(i));
+        }
+
+        selectedSix.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+
+
+        for (Recipe recipe : selectedSix){
             //Här anropar du din befintliga metod createRecipeCard
-            recipeContainer.getChildren().add(createRecipeCard(shuffleList.get(i)));
+            recipeContainer.getChildren().add(createRecipeCard(recipe));
         }
 
 
