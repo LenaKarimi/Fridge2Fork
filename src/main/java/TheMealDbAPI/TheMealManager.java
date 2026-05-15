@@ -1,5 +1,7 @@
 package TheMealDbAPI;
 
+import Model.Recipe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,13 +9,15 @@ public class TheMealManager {
     //denna sköter logik, frågar mealrepo om alla recetp som matchar en ingrediens, går igenom alla recept
     //filtrerar bort de som inte matchar med valda området utifrån kök
         private MealRepository repository;
+        private MealMapper mapper = new MealMapper();
 
         public TheMealManager(MealRepository repository){
             this.repository = repository;
         }
 
-        public List<TheMealDbDTO> searchForRecepie (String mainIngredient, String category){
-            List<TheMealDbDTO> mealsMatching = new ArrayList<>(); // skapar lista med alla matchade recept
+        public List<Recipe> searchForRecepie (String mainIngredient, String cuisine, String diet){
+            //List<TheMealDbDTO> mealsMatching = new ArrayList<>(); // skapar lista med alla matchade recept
+            List<Recipe> mealsMatching = new ArrayList<>(); // skapar lista med alla matchade recept
 
             try{
                 List<TheMealDbDTO> allMeals = repository.getMealsByIngredient(mainIngredient);
@@ -25,8 +29,13 @@ public class TheMealManager {
                     TheMealDbDTO specificMeal = repository.getMealById(meal.idMeal);
                     //System.out.println("Område: " + specificMeal.strArea);
 
-                    if (specificMeal.strArea.equalsIgnoreCase(category)){ // om område motsvarar kategori som valts
-                        mealsMatching.add(specificMeal);
+                    Recipe recipe = mapper.toDomain(specificMeal);
+
+                    boolean hasCuisine = specificMeal.strArea.equalsIgnoreCase(cuisine);
+                    boolean hasDiet = specificMeal.strCategory.equalsIgnoreCase(diet);
+
+                    if (hasCuisine && hasDiet){ // om område motsvarar kategori som valts
+                        mealsMatching.add(recipe);
                     }
                 }
             }
