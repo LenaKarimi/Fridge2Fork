@@ -5,6 +5,8 @@ import Controller.UserController;
 import java.util.List;
 
 import Model.Recipe;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -58,6 +60,29 @@ public class SideBarView extends VBox {
 
         //Det som händer vid klick
         box.setOnMouseClicked(e -> {
+            if (Fridge2ForkApp.root.getCenter() instanceof FridgeView) { // kollar om användaren är i recept genereringen
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Lämna sidan?");
+                alert.setHeaderText(null);
+                alert.setContentText("Om du byter panel sparas ej dina val.");
+
+                ButtonType stannaKvar = new ButtonType("Stanna kvar");
+                ButtonType byt = new ButtonType("Byt panel");
+                alert.getButtonTypes().setAll(stannaKvar, byt);
+
+                alert.showAndWait().ifPresent(svar -> {
+                    if (svar == byt) {
+                        navigera(text); // byt panel
+                    }
+                    // annars häder ingenting
+                });
+            } else {
+                navigera(text); //byt direkt om man inte är i fridgeView
+            }
+            System.out.println("Du klickade på: " + text);
+
+
+            /** //Mayas orginalmetod
             if(text.equals("Home")){
                 Fridge2ForkApp.root.setCenter(new HomeView(userController));
             } else if (text.equals("Profile")) {
@@ -86,7 +111,9 @@ public class SideBarView extends VBox {
         box.getChildren().add(label);
 
         return box;
-    }
+        */
+
+    });
 
     //Anropas efter inloggning för att byta ut Profile texten till bilden
     public void updateProfilePicture() {
