@@ -50,7 +50,7 @@ public class SideBarView extends VBox {
         this.getChildren().addAll(topRow, rect1, rect2, rect3);
     }
 
-    private StackPane createBox(String color, double width, double height, String text){
+    private StackPane createBox(String color, double width, double height, String text) {
         StackPane box = new StackPane();
         box.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 5;");
         box.setPrefSize(width, height);
@@ -80,40 +80,37 @@ public class SideBarView extends VBox {
                 navigera(text); //byt direkt om man inte är i fridgeView
             }
             System.out.println("Du klickade på: " + text);
-
-
-            /** //Mayas orginalmetod
-            if(text.equals("Home")){
-                Fridge2ForkApp.root.setCenter(new HomeView(userController));
-            } else if (text.equals("Profile")) {
-                if (userController.getCurrentUser() != null) {
-                    Fridge2ForkApp.root.setCenter(new ProfileView(userController, userController.getCurrentUser()));
-                } else {
-                    Fridge2ForkApp.root.setCenter(new LoginView(userController));
-                }
-            } else if (text.equals("Liked recipes")) {
-                System.out.println("getCurrentUser: " + userController.getCurrentUser());
-                if (userController.getCurrentUser() == null) { // om man ej är inloggad
-                    Fridge2ForkApp.root.setCenter(new LoginView(userController));
-                } else {
-                    LikedRecipeController likedRecipeController = new LikedRecipeController(); // annars hämta recept från db via controller
-                    int profileId = userController.getCurrentUser().getId();
-                    List<Recipe> likedRecipes = likedRecipeController.getLikedRecipes(profileId);
-                    Fridge2ForkApp.root.setCenter(new LikedRecipesView(likedRecipes, userController));
-                }
-            } else if (text.equals("Purchases")) { // bara en tom vy visas då detta ej är klart
-                Fridge2ForkApp.root.setCenter(new VBox());
-            }
-            System.out.println("Du klickade på: " + text);
         });
-
-        Label label = new Label(text);
-        box.getChildren().add(label);
-
+        Label lable = new Label(text);
+        box.getChildren().addAll(lable);
         return box;
-        */
 
-    });
+    }
+
+    private void navigera(String text) {
+         //Mayas orginalmetod
+         if(text.equals("Home")) {
+             Fridge2ForkApp.root.setCenter(new HomeView(userController));
+         } else if (text.equals("Profile")) {
+             if (userController.getCurrentUser() != null) {
+                 Fridge2ForkApp.root.setCenter(new ProfileView(userController, userController.getCurrentUser()));
+             } else {
+                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
+             }
+         } else if (text.equals("Liked recipes")) {
+             System.out.println("getCurrentUser: " + userController.getCurrentUser());
+             if (userController.getCurrentUser() == null) { // om man ej är inloggad
+                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
+             } else {
+                 LikedRecipeController likedRecipeController = new LikedRecipeController(); // annars hämta recept från db via controller
+                 int profileId = userController.getCurrentUser().getId();
+                 List<Recipe> likedRecipes = likedRecipeController.getLikedRecipes(profileId);
+                 Fridge2ForkApp.root.setCenter(new LikedRecipesView(likedRecipes, userController));
+             }
+         } else if (text.equals("Purchases")) { // bara en tom vy visas då detta ej är klar
+             Fridge2ForkApp.root.setCenter(new VBox());
+         }
+    }
 
     //Anropas efter inloggning för att byta ut Profile texten till bilden
     public void updateProfilePicture() {
