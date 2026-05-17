@@ -1,8 +1,6 @@
 package TheMealDbAPI;
 
-import Model.Cuisine;
-import Model.Ingredient;
-import Model.Recipe;
+import Model.*;
 import Model.Recipe;
 
 import java.util.ArrayList;
@@ -29,11 +27,28 @@ public class MealMapper {
         }
 
         Cuisine cuisine = mapCuisin(theMealDbDTO.strArea);
+        Diet diet = mapDiet(theMealDbDTO.strCategory);
 
-        return new Recipe(theMealDbDTO.idMeal, theMealDbDTO.strMeal, theMealDbDTO.strInstructions,theMealDbDTO.strMealThumb, recipeIngredients, cuisine);
+        Recipe recipe = new Recipe(theMealDbDTO.idMeal, theMealDbDTO.strMeal, theMealDbDTO.strInstructions,theMealDbDTO.strMealThumb, recipeIngredients, cuisine);
+        recipe.setDiet(diet);
+        return recipe;
+    }
+
+    private Diet mapDiet(String strCategory){
+        if (strCategory == null){
+            return null;
+        }
+        return switch (strCategory){
+            case "Vegan" -> Diet.VEGAN;
+            case "Vegetarian" -> Diet.VEGETARIAN;
+            default -> null;
+        };
     }
 
     private Cuisine mapCuisin(String strArea){
+        if (strArea == null){
+            return null;
+        }
 
         return switch (strArea){
             case "Algerian"-> Cuisine.Algerian;
