@@ -21,6 +21,7 @@ public class ProfileView extends VBox {
 
     public ProfileView(UserController userController, ProfileDTO profileDTO){
 
+        this.userController = userController;
         this.setSpacing(20);
         this.setPadding(new Insets(30));
         this.setAlignment(Pos.TOP_CENTER);
@@ -67,7 +68,6 @@ public class ProfileView extends VBox {
         if (profileDTO != null) {
             userName.setText(profileDTO.getUsername());
             email.setText(profileDTO.getEmail());
-            password.setText(profileDTO.getPassword());
             name.setText(profileDTO.getName());
         }
 
@@ -136,12 +136,19 @@ public class ProfileView extends VBox {
         //logik för Logout
         logoutButton.setOnAction(e -> {
             userController.logout();
-            Fridge2ForkApp.sideBar.resetProfilePicture();
+            //återskapa sidebar och home för att UI ska uppdateras korrekt
+            Fridge2ForkApp.root.setLeft(new SideBarView(userController));
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
+        //separat container som blir scrollbar
+        VBox contentContainer = new VBox(12);
+        contentContainer.setAlignment(Pos.TOP_CENTER);
+        contentContainer.setPadding(new Insets(30));
+        contentContainer.setStyle("-fx-background-color: white;");
+
         //lägg till alla element
-        this.getChildren().addAll(title, statusLabel, profilePicture,
+        contentContainer.getChildren().addAll(title, statusLabel, profilePicture,
                 new Label("Username"),
                 userName,
 
@@ -154,12 +161,31 @@ public class ProfileView extends VBox {
                 new Label("Change Password"),
                 password,
 
-                new Separator(),  //liten linje för att dela av
-                saveButton,
-                backButton,
-                logoutButton
+                new Separator() //liten linje för att dela av
         );
 
+        //knapparna i egen HBox
+        HBox buttons = new HBox(12);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.getChildren().addAll(saveButton, backButton);
+        contentContainer.getChildren().add(buttons);
+
+        //Visa logout-knappen endast om användaren är inloggad
+        if (userController != null && userController.getCurrentUser() != null) {
+            contentContainer.getChildren().add(logoutButton);
+        }
+
+        //wrappa i ScrollPane så allt kan nås
+        ScrollPane scrollPane = new ScrollPane(contentContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPannable(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+
+        //rensa och lägg till ScrollPane som enda barn i denna VBox
+        this.getChildren().clear();
+        this.getChildren().add(scrollPane);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
         /** //lenas orginella stycke
         saveButton.setOnAction(e -> {
