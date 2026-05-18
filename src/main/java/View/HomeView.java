@@ -6,8 +6,11 @@ import DTO.ProfileDTO;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
@@ -16,11 +19,13 @@ import javafx.geometry.Insets;
 import javafx.util.Duration;
 
 
+
 public class HomeView extends BorderPane {
 
     private Label welcomeLabel;
     private HBox authButtons;
     private UserController userController;
+    private ImageView fridgeImageView;
 
     public HomeView(UserController userController){
         this.userController = userController;
@@ -89,7 +94,8 @@ public class HomeView extends BorderPane {
             alert.setTitle("Getting Started");
             alert.setHeaderText("Welcome to Fridge2Fork!");
             alert.setContentText("Click the button to list the ingredients you have at home. " +
-                    "We will then help you find six delicious recipes that matches what you have in at least 50% that you can cook right now!");
+                    "We will then help you find six delicious recipes that matches what you have in at least" +
+                    " 50% that you can cook right now!");
             alert.showAndWait();
         });
 
@@ -97,10 +103,81 @@ public class HomeView extends BorderPane {
         HBox buttonBox = new HBox(15, BSubText, homeInfoIcon);
         buttonBox.setAlignment(Pos.CENTER);
 
-        VBox centercontent = new VBox(20, welcomeLabel, subText, buttonBox);
-        centercontent.setAlignment(Pos.CENTER);
-        this.setCenter(centercontent);
+        //välkomsttext + bild + knapp (overlay för allt)
+        StackPane centerStack = new StackPane();
+        centerStack.setAlignment(Pos.CENTER);
 
+        //ladda bilden (synkront för felsökning)
+        String fridgeImageUrl = "https://images.stockcake.com/public/e/5/5/e557df37-e25c-42d9-ad93-9a9d692580d2_large/stocked-fridge-interior-stockcake.jpg";
+        Image fridgeImage = new Image(fridgeImageUrl, false);
+        ImageView bg = new ImageView(fridgeImage);
+
+        //bilden ska fylla hela ytan
+        bg.setPreserveRatio(true); //false betyder täck hela området
+        bg.setSmooth(true);
+
+        //bind imageview till homeview så den alltid fyller bakgrunden
+        bg.fitWidthProperty().bind(this.widthProperty());
+        bg.fitHeightProperty().bind(this.heightProperty());
+
+        //skugga/effekt
+        bg.setStyle("-fx-opacity: 0.95;");
+
+        //overlay, text + knapp i en VBox (transparent bakgrund så man ser bilden bakom)
+        VBox overlay = new VBox(20);
+        overlay.setAlignment(Pos.CENTER);
+        overlay.setPadding(new Insets(40)); //ger lite luft från toppen
+        overlay.setMaxWidth(800); //begränsa bredd på innehåll så det inte blir för utspritt
+
+        //welcomeLabel, subText och knapp
+        overlay.getChildren().addAll(welcomeLabel, subText, buttonBox);
+
+        //styling på overlay så texten syns mot bilden
+        welcomeLabel.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;");
+        subText.setStyle("-fx-font-size: 16px; -fx-text-fill: #444;");
+
+        //först bakgrunden, sedan overlay, den hamnar ovanpå och fångar musklick
+        centerStack.getChildren().addAll(bg, overlay);
+
+        //placera StackPane i center
+        this.setCenter(centerStack);
+
+        //om användare redan är inloggad när denna view skapas så visas välkomstmeddelande direkt
+        if (userController != null && userController.getCurrentUser() != null) {
+            //konstruktor kallar setup för att visa namnet och ta bort knapparna
+            setupLoggedInState(userController.getCurrentUser());
+        }
+
+    }
+
+    /**
+     * Skapar och laddar ImageView för startsidans kylskåpsbild.
+     * Laddar synkront för att lätt upptäcka fel
+     */
+    private ImageView createAndLoadFridgeImage() {
+        try {
+            String fridgeImageUrl = "https://images.stockcake.com/public/e/5/5/e557df37-e25c-42d9-ad93-9a9d692580d2_large/stocked-fridge-interior-stockcake.jpg";
+
+            //ladda bild
+            Image fridgeImage = new Image(fridgeImageUrl, false);
+
+            if (fridgeImage.isError()) {
+                System.out.println("HomeView: FAILED TO LOAD FRIDGE IMAGE -> " + fridgeImage.getException());
+                return null;
+            }
+
+            //skapa ImageView
+            ImageView iv = new ImageView(fridgeImage);
+            iv.setFitWidth(360);
+            iv.setPreserveRatio(true);
+            iv.setSmooth(true);
+            iv.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
+
+            return iv;
+        } catch (Exception ex) {
+            System.out.println("HomeView: Exception while loading fridge image -> " + ex);
+            return null;
+        }
     }
 
     //Anropas vid inloggning/utloggning

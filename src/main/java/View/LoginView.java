@@ -70,5 +70,8 @@ public class LoginView extends VBox {
         });
 
         this.getChildren().addAll(title, username, password, errorLabel, loginBtn, backBtn);
+
+        //tar bort fokuset från textboxen
+        javafx.application.Platform.runLater(() -> this.requestFocus());
     }
 }

@@ -57,7 +57,19 @@ public class SideBarView extends VBox {
             Button logoutBtn = new Button("Log out");
             logoutBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;" +
                     "-fx-font-size: 10px; -fx-background-radius: 5;");
-            logoutBtn.setCursor(Cursor.HAND);
+            javafx.scene.effect.DropShadow logoutShadow = new javafx.scene.effect.DropShadow();
+            logoutShadow.setColor(javafx.scene.paint.Color.rgb(231, 76, 60, 0.4)); // En rödaktig skugga
+            logoutShadow.setRadius(10);
+
+            logoutBtn.setOnMouseEntered(e -> {
+                logoutBtn.setEffect(logoutShadow);
+                logoutBtn.setTranslateY(-2); // Ett litet lyft
+            });
+
+            logoutBtn.setOnMouseExited(e -> {
+                logoutBtn.setEffect(null);
+                logoutBtn.setTranslateY(0);
+            });
 
             //dialog innan utlogg
             logoutBtn.setOnAction(e -> {
@@ -107,21 +119,40 @@ public class SideBarView extends VBox {
         box.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 5;");
 
         //sätt endast pref size om bredden är större än 0, annars maxWidth
+        if (width > 0) box.setPrefWidth(width);
         box.setPrefSize(width, height);
 
         //Knapptrycken för vänsterpanelen
         box.setCursor(javafx.scene.Cursor.HAND);
 
+        //skugga, rörelse
+        javafx.scene.effect.DropShadow shadow = new javafx.scene.effect.DropShadow();
+        shadow.setColor(javafx.scene.paint.Color.rgb(0, 0, 0, 0.3));
+        shadow.setRadius(10);
+        shadow.setOffsetY(3);
+
+        //när musen kommer in på knappen (hover)
+        box.setOnMouseEntered(e -> {
+            box.setEffect(shadow);  // Lägg till skugga
+            box.setTranslateY(-3);  // Lyft knappen 3 pixlar uppåt
+        });
+
+        //mär musen lämnar knappen
+        box.setOnMouseExited(e -> {
+            box.setEffect(null);    // Ta bort skuggan
+            box.setTranslateY(0);   // Sätt tillbaka knappen
+        });
+
         //Det som händer vid klick
         box.setOnMouseClicked(e -> {
             if (Fridge2ForkApp.root.getCenter() instanceof FridgeView) { //kollar om användaren är i receptgenereringen
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Lämna sidan?");
+                alert.setTitle("Leave this page?");
                 alert.setHeaderText(null);
-                alert.setContentText("Om du byter panel sparas ej dina val.");
+                alert.setContentText("If you exit this page, your choices won't be saved.");
 
-                ButtonType stannaKvar = new ButtonType("Stanna kvar");
-                ButtonType byt = new ButtonType("Byt panel");
+                ButtonType stannaKvar = new ButtonType("Stay");
+                ButtonType byt = new ButtonType("Switch panel");
                 alert.getButtonTypes().setAll(stannaKvar, byt);
 
                 alert.showAndWait().ifPresent(svar -> {
@@ -135,6 +166,7 @@ public class SideBarView extends VBox {
             }
             System.out.println("Du klickade på: " + text);
         });
+
         Label lable = new Label(text);
         box.getChildren().addAll(lable);
         return box;

@@ -70,5 +70,8 @@ public class RegisterView extends VBox {
         });
 
         this.getChildren().addAll(title, username, password, name, email, errorLable, registerBtn, backBtn);
+
+        //tar bort fokuset från textboxen
+        javafx.application.Platform.runLater(() -> this.requestFocus());
     }
 }
