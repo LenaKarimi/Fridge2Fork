@@ -117,11 +117,18 @@ public final class CsvStore {
     private static Cuisine parseCuisine(String area) {
         if (area == null || area.isBlank()) return null;
         try {
-            return Cuisine.valueOf(area.trim().toUpperCase());
-        } catch (IllegalArgumentException e) {
+            for (Cuisine cuisine : Cuisine.values()) {
+                if (cuisine.name().equalsIgnoreCase(area.trim())) {
+                    return cuisine;
+                }
+            }
+
+            return null;
+        } catch (Exception e) {
             return null;
         }
     }
+
 
     private record RecipeRow(
             String id,
