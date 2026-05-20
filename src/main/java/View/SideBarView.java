@@ -5,12 +5,13 @@ import Controller.UserController;
 import java.util.List;
 
 import Model.Recipe;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import App.Fridge2ForkApp;
 import javafx.scene.image.Image;
@@ -24,16 +25,79 @@ public class SideBarView extends VBox {
 
     public SideBarView(UserController userController){
         this.userController = userController;
+
         //1. Inställningar för själva sidebaren (VBox)
-        this.setSpacing(10); //Mellanrum mellan raderna
+        this.setSpacing(12); //Mellanrum mellan raderna
         this.setPadding(new Insets(10)); //Marginal från kanten
         this.setStyle("-fx-background-color: darkseagreen;");
 
         //2. Översta raden med två kvadrater (HBox)
         HBox topRow = new HBox(10);
+
+        //left square finns alltid, lägg till profile som standard
         leftSquare = createBox("#f2ede4", 100, 70, "Profile");
-        //StackPane rightSquare = createBox("lightpink", 70, 70, "Likes");
         topRow.getChildren().addAll(leftSquare);
+
+        //om användaren är inloggad, byt ut leftsquare innehåll till profilbild
+        if (userController != null && userController.getCurrentUser() != null) {
+            updateProfilePicture();
+        } else {
+            resetProfilePicture();
+        }
+
+        //Visa användarnamn + logout-knapp om inloggad
+        if (userController != null && userController.getCurrentUser() != null){
+            VBox userInfo = new VBox(5);
+            userInfo.setAlignment(Pos.CENTER_LEFT);
+
+            Label userLabel = new Label(userController.getCurrentUser().getUsername());
+            userLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
+
+            //log out knapp
+            Button logoutBtn = new Button("Log out");
+            logoutBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;" +
+                    "-fx-font-size: 10px; -fx-background-radius: 5;");
+            javafx.scene.effect.DropShadow logoutShadow = new javafx.scene.effect.DropShadow();
+            logoutShadow.setColor(javafx.scene.paint.Color.rgb(231, 76, 60, 0.4)); // En rödaktig skugga
+            logoutShadow.setRadius(10);
+
+            logoutBtn.setOnMouseEntered(e -> {
+                logoutBtn.setEffect(logoutShadow);
+                logoutBtn.setTranslateY(-2); // Ett litet lyft
+            });
+
+            logoutBtn.setOnMouseExited(e -> {
+                logoutBtn.setEffect(null);
+                logoutBtn.setTranslateY(0);
+            });
+
+            //dialog innan utlogg
+            logoutBtn.setOnAction(e -> {
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Confirm logout");
+                confirm.setHeaderText(null);
+                confirm.setContentText("Are you sure you want to log out?");
+
+                ButtonType yes = new ButtonType("Yes");
+                ButtonType no = new ButtonType("No", ButtonType.NO.getButtonData());
+                confirm.getButtonTypes().setAll(yes, no);
+
+                confirm.showAndWait().ifPresent(choice -> {
+                    if (choice == yes) {
+                        userController.logout();
+
+                        //återskapa sidebar + gå till home, leftsquare ska bli profile igen
+                        Fridge2ForkApp.root.setLeft(new SideBarView(userController));
+                        Fridge2ForkApp.root.setCenter(new HomeView(userController));
+                    }
+                });
+            });
+
+            userInfo.getChildren().addAll(userLabel, logoutBtn);
+            topRow.getChildren().add(userInfo);
+            HBox.setHgrow(userInfo, Priority.ALWAYS);
+        }
+
 
         //Fyra rektanglar som fyller ut bredden automatiskt
         StackPane rect1 = createBox("white", 0, 80, "Home");
@@ -53,34 +117,56 @@ public class SideBarView extends VBox {
     private StackPane createBox(String color, double width, double height, String text) {
         StackPane box = new StackPane();
         box.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 5;");
+
+        //sätt endast pref size om bredden är större än 0, annars maxWidth
+        if (width > 0) box.setPrefWidth(width);
         box.setPrefSize(width, height);
 
         //Knapptrycken för vänsterpanelen
         box.setCursor(javafx.scene.Cursor.HAND);
 
+        //skugga, rörelse
+        javafx.scene.effect.DropShadow shadow = new javafx.scene.effect.DropShadow();
+        shadow.setColor(javafx.scene.paint.Color.rgb(0, 0, 0, 0.3));
+        shadow.setRadius(10);
+        shadow.setOffsetY(3);
+
+        //när musen kommer in på knappen (hover)
+        box.setOnMouseEntered(e -> {
+            box.setEffect(shadow);  // Lägg till skugga
+            box.setTranslateY(-3);  // Lyft knappen 3 pixlar uppåt
+        });
+
+        //mär musen lämnar knappen
+        box.setOnMouseExited(e -> {
+            box.setEffect(null);    // Ta bort skuggan
+            box.setTranslateY(0);   // Sätt tillbaka knappen
+        });
+
         //Det som händer vid klick
         box.setOnMouseClicked(e -> {
-            if (Fridge2ForkApp.root.getCenter() instanceof FridgeView) { // kollar om användaren är i recept genereringen
+            if (Fridge2ForkApp.root.getCenter() instanceof FridgeView) { //kollar om användaren är i receptgenereringen
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Lämna sidan?");
+                alert.setTitle("Leave this page?");
                 alert.setHeaderText(null);
-                alert.setContentText("Om du byter panel sparas ej dina val.");
+                alert.setContentText("If you exit this page, your choices won't be saved.");
 
-                ButtonType stannaKvar = new ButtonType("Stanna kvar");
-                ButtonType byt = new ButtonType("Byt panel");
+                ButtonType stannaKvar = new ButtonType("Stay");
+                ButtonType byt = new ButtonType("Switch panel");
                 alert.getButtonTypes().setAll(stannaKvar, byt);
 
                 alert.showAndWait().ifPresent(svar -> {
                     if (svar == byt) {
                         navigera(text); // byt panel
                     }
-                    // annars häder ingenting
+                    // annars händer ingenting
                 });
             } else {
                 navigera(text); //byt direkt om man inte är i fridgeView
             }
             System.out.println("Du klickade på: " + text);
         });
+
         Label lable = new Label(text);
         box.getChildren().addAll(lable);
         return box;
@@ -88,7 +174,7 @@ public class SideBarView extends VBox {
     }
 
     private void navigera(String text) {
-         //Mayas orginalmetod
+         //Mayas originalmetod
          if(text.equals("Home")) {
              Fridge2ForkApp.root.setCenter(new HomeView(userController));
          } else if (text.equals("Profile")) {
@@ -112,23 +198,41 @@ public class SideBarView extends VBox {
          }
     }
 
-    //Anropas efter inloggning för att byta ut Profile texten till bilden
+    //anropas efter inloggning för att byta ut till bild
     public void updateProfilePicture() {
         String defaultProfileImageUrl = "https://static.vecteezy.com/system/resources/previews/037/336/395/non_2x/user-profile-flat-illustration-avatar-person-icon-gender-neutral-silhouette-profile-picture-free-vector.jpg";
-        Image profileImage = new Image(defaultProfileImageUrl, true);
+        Image profileImage = new Image(defaultProfileImageUrl, false);
+
+        //felkontroll
+        if (profileImage.isError()) {
+            System.out.println("SideBarView: IMAGE LOAD ERROR -> " + profileImage.getException());
+            //om fel, återställ till text
+            resetProfilePicture();
+            return;
+        } else {
+            System.out.println("SideBarView: IMAGE LOADED, SIZE = " + profileImage.getWidth() + "x" +
+                    profileImage.getHeight());
+        }
+
         ImageView profileImageView = new ImageView(profileImage);
         profileImageView.setFitWidth(60);
         profileImageView.setFitHeight(60);
         profileImageView.setPreserveRatio(true);
+        profileImageView.setSmooth(true);
 
         Circle clip = new Circle(30, 30, 30);
         profileImageView.setClip(clip);
 
+        leftSquare.setMinWidth(80);
+        leftSquare.setMinHeight(70);
+        leftSquare.setPrefWidth(100);
+
+        //rensar och lägger till bild
         leftSquare.getChildren().clear();
         leftSquare.getChildren().add(profileImageView);
     }
 
-    //Anropas vid utloggning för att återställa Profile texten från bilden
+    //Anropas vid utloggning för att återställa profile texten från bilden
     public void resetProfilePicture() {
         leftSquare.getChildren().clear();
         Label profileLabel = new Label("Profile");

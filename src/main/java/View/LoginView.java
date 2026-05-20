@@ -27,8 +27,8 @@ public class LoginView extends VBox {
         password.setPromptText("Password");
         password.setMaxWidth(200);
 
-        Label errorLable = new Label();
-        errorLable.setStyle("-fx-text-fill: red;"); // fellable skrivit av racil
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;"); // fellable skrivit av racil
 
         Button loginBtn = new Button("Login");
         Button backBtn = new Button("Back");
@@ -37,11 +37,13 @@ public class LoginView extends VBox {
             ProfileDTO isUser = userController.login(username.getText(), password.getText());
 
             if (isUser == null) {
-                errorLable.setText(userController.getLoginError());
+                errorLabel.setText(userController.getLoginError());
             } else {
                 HomeView homeView = new HomeView(userController);
                 homeView.setupLoggedInState(isUser);
+
                 Fridge2ForkApp.root.setCenter(homeView);
+                Fridge2ForkApp.root.setLeft(new SideBarView(userController));
             }
         });
 
@@ -67,6 +69,9 @@ public class LoginView extends VBox {
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
-        this.getChildren().addAll(title, username, password, errorLable, loginBtn, backBtn);
+        this.getChildren().addAll(title, username, password, errorLabel, loginBtn, backBtn);
+
+        //tar bort fokuset från textboxen
+        javafx.application.Platform.runLater(() -> this.requestFocus());
     }
 }
