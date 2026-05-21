@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Diet;
 import Model.Recipe;
 import Model.Ingredient;
 import Model.Cuisine;
@@ -17,7 +18,7 @@ public class RecipeController {
 
     //offline=false då körs csv
     //online=true då körs api
-    private static final boolean IS_ONLINE = false;
+    private static final boolean IS_ONLINE = true ;
 
     //De olika klasserna som används från Api:et
     private final MealRepository mealRepository;
@@ -43,7 +44,7 @@ public class RecipeController {
 
 
     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
-    public List<Recipe> searchRecipes(Map<String, List<String>> categoryMap, List<Cuisine> selectedCuisines) throws Exception {
+    public List<Recipe> searchRecipes(Map<String, List<String>> categoryMap, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) throws Exception {
 
         //Kontrollera att varje kategori i Gui har fått minst ett val none inkluderad.
         validateAllCategories(categoryMap);
@@ -53,14 +54,14 @@ public class RecipeController {
 
         //beroende på IS_ONLINE söker vi antingen via API eller CSV
         if (IS_ONLINE) {
-            return searchFromApi(userFridge, selectedCuisines);
+            return searchFromApi(userFridge, selectedCuisines, selectedDiets);
         } else {
-            return searchFromCsv(userFridge, selectedCuisines);
+            return searchFromCsv(userFridge, selectedCuisines, selectedDiets);
         }
     }
 
     //söker recept via API, samma logik som tidigare
-    private List<Recipe> searchFromApi(List<String> userFridge, List<Cuisine> selectedCuisines) throws Exception {
+    private List<Recipe> searchFromApi(List<String> userFridge, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) throws Exception {
 
         //Sökningen sker här för möjliga recept baserad på valda ingredienser
         Set<String> discoveredMealIds = new HashSet<>();
@@ -101,6 +102,7 @@ public class RecipeController {
                     //filterring baserad på kök
                     if (!isCorrectCuisine(recipeObject, selectedCuisines)) continue;
 
+                    if (!isCorrectDiet(recipeObject, selectedDiets)) continue;
                     //beräkna 50% matchningen
                     if (percentage >= 0.5) {
                         matchingRecipes.add(recipeObject);
@@ -120,18 +122,22 @@ public class RecipeController {
     }
 
     //söker recept lokalt från CSV-listan istället för API
-    private List<Recipe> searchFromCsv(List<String> userFridge, List<Cuisine> selectedCuisines) {
+    private List<Recipe> searchFromCsv(List<String> userFridge, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) {
         List<Recipe> matchingRecipes = new ArrayList<>();
 
         for (Recipe recipe : localRecipes) {
             //filterring baserad på kök
             if (!isCorrectCuisine(recipe, selectedCuisines)) continue;
 
+            if (!isCorrectDiet(recipe, selectedDiets)) continue;
+
             //detta beräknar procentmatchning
             double percentage = calculateMatchPercentage(recipe, userFridge);
 
             //beräkna 50% matchningen
-            if (percentage < 0.5) continue;f
+            if (percentage < 0.5) continue;
+
+
 
             recipe.setMatchPercentage(percentage);
             matchingRecipes.add(recipe);
@@ -178,6 +184,11 @@ public class RecipeController {
         //om användaren ej val kök godkänns alla recept
         if (selectedCuisines == null || selectedCuisines.isEmpty()) return true;
         return selectedCuisines.contains(recipe.getCuisine());
+    }
+
+    private boolean isCorrectDiet(Recipe recipe, List<Diet> selectedDiets){
+        if (selectedDiets == null || selectedDiets.isEmpty()) return true;
+        return selectedDiets.contains(recipe.getDiet());
     }
 
     //här sker beräkningen av receptets ingredienser som matchar anvädnarens val
