@@ -213,7 +213,7 @@ public class DietView extends StackPane {
             @Override
             protected List<Recipe> call() throws Exception {
                 //Kör sökningen i bakgrunden (kan kasta Exception)
-                return controller.searchRecipes(selectedIngredients, chosenCuisines); // chosenDiets behöver läggas till som en sista parameter, men möjligt när controller hanterat
+                return controller.searchRecipes(selectedIngredients, chosenCuisines,chosenDiets ); // chosenDiets behöver läggas till som en sista parameter, men möjligt när controller hanterat
             }
         };
 
