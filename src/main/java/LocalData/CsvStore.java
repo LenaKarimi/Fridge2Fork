@@ -44,7 +44,7 @@ public final class CsvStore {
                     ingredients,
                     cuisine
             );
-
+            recipe.setDiet(parseDiet(row.category));
             recipes.add(recipe);
         }
 
@@ -113,6 +113,15 @@ public final class CsvStore {
         }
 
         return result;
+    }
+
+    private static Diet parseDiet(String category) {
+        if (category == null || category.isBlank()) return null;
+        return switch (category.trim()) {
+            case "Vegan" -> Diet.VEGAN;
+            case "Vegetarian" -> Diet.VEGETARIAN;
+            default -> null;
+        };
     }
 
     private static Cuisine parseCuisine(String area) {
