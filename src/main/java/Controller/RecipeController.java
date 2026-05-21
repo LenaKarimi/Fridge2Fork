@@ -8,20 +8,30 @@ import TheMealDbAPI.MealRepository;
 import TheMealDbAPI.HttpTheMealDbClient;
 import DTO.*;
 import TheMealDbAPI.TheMealDbDTO;
+import LocalData.CsvStore;
 
+import java.nio.file.Path;
 import java.util.*;
 
 public class RecipeController {
 
+    //offline=false då körs csv
+    //online=true då körs api
+    private static final boolean IS_ONLINE = false;
+
     //De olika klasserna som används från Api:et
     private final MealRepository mealRepository;
     private final MealMapper mealMapper;
+   //listan med recept som laddas in från csv när programmet är offline
+    private final List<Recipe> localRecipes;
 
-    public RecipeController() {
+    public RecipeController() throws Exception{
 
         //initierar de klasser som behövs för att prata med api:et
         this.mealRepository = new MealRepository(new HttpTheMealDbClient());
         this.mealMapper = new MealMapper();
+        //läser in alla recept från CSV-filerna vid start
+        this.localRecipes = CsvStore.readMeals(Path.of("data"));
 
     }
 
@@ -31,24 +41,35 @@ public class RecipeController {
      * (Kolla upp med kost och om det ska ens finnas kvar!!!!)
      */
 
+
     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
-    public List<Recipe> searchRecipes(Map<String, List<String>> categoryMap, List <Cuisine> selectedCuisines) throws Exception {
+    public List<Recipe> searchRecipes(Map<String, List<String>> categoryMap, List<Cuisine> selectedCuisines) throws Exception {
 
         //Kontrollera att varje kategori i Gui har fått minst ett val none inkluderad.
-
         validateAllCategories(categoryMap);
 
         //samla alla valda ingredienser och rensa bort none valen inna vi skickar vidar
-        List <String> userFridge = extractAllIngredients(categoryMap);
+        List<String> userFridge = extractAllIngredients(categoryMap);
+
+        //beroende på IS_ONLINE söker vi antingen via API eller CSV
+        if (IS_ONLINE) {
+            return searchFromApi(userFridge, selectedCuisines);
+        } else {
+            return searchFromCsv(userFridge, selectedCuisines);
+        }
+    }
+
+    //söker recept via API, samma logik som tidigare
+    private List<Recipe> searchFromApi(List<String> userFridge, List<Cuisine> selectedCuisines) throws Exception {
 
         //Sökningen sker här för möjliga recept baserad på valda ingredienser
         Set<String> discoveredMealIds = new HashSet<>();
         List<Recipe> matchingRecipes = new ArrayList<>();
 
-        for(String ingredient : userFridge){
+        for (String ingredient : userFridge) {
             //här sker förfrågningen om specifik ingrediens
             List<TheMealDbDTO> apiResponse = mealRepository.getMealsByIngredient(ingredient);
-             //om inte ingrediens finns ska programmet fortsätta till nästa ingrediens och inte krascha
+            //om inte ingrediens finns ska programmet fortsätta till nästa ingrediens och inte krascha
             if (apiResponse == null) continue;
 
             for (TheMealDbDTO mealSummary : apiResponse) {
@@ -87,16 +108,42 @@ public class RecipeController {
                     //samla 30 recept
                     if (matchingRecipes.size() >= 30) break;
 
-
                 } catch (Exception e) {
                     System.out.println("debug: Hoppar över recept ID: " + mealSummary.idMeal + " pga fel: " + e.getMessage());
                 }
             }
             if (matchingRecipes.size() >= 30) break;
         }
+
         matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
         return matchingRecipes;
     }
+
+    //söker recept lokalt från CSV-listan istället för API
+    private List<Recipe> searchFromCsv(List<String> userFridge, List<Cuisine> selectedCuisines) {
+        List<Recipe> matchingRecipes = new ArrayList<>();
+
+        for (Recipe recipe : localRecipes) {
+            //filterring baserad på kök
+            if (!isCorrectCuisine(recipe, selectedCuisines)) continue;
+
+            //detta beräknar procentmatchning
+            double percentage = calculateMatchPercentage(recipe, userFridge);
+
+            //beräkna 50% matchningen
+            if (percentage < 0.5) continue;
+
+            recipe.setMatchPercentage(percentage);
+            matchingRecipes.add(recipe);
+
+            //samla 30 recept
+            if (matchingRecipes.size() >= 30) break;
+        }
+
+        matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+        return matchingRecipes;
+    }
+
 
     //här kontrolleras att minst ett val gjorts per kategor.
     private void validateAllCategories(Map<String, List<String>> categoryMap){
@@ -164,14 +211,6 @@ public class RecipeController {
         }
         return dtos;
     }
-
-
-
-
-
-
-
-
 
 
 }
