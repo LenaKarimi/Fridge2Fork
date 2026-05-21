@@ -131,7 +131,7 @@ public class RecipeController {
             double percentage = calculateMatchPercentage(recipe, userFridge);
 
             //beräkna 50% matchningen
-            if (percentage < 0.5) continue;
+            if (percentage < 0.5) continue;f
 
             recipe.setMatchPercentage(percentage);
             matchingRecipes.add(recipe);
