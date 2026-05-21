@@ -3,6 +3,7 @@ package LocalData;
 import Model.Cuisine;
 import Model.Ingredient;
 import Model.Recipe;
+import Model.Diet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
