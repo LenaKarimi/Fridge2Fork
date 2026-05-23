@@ -55,6 +55,13 @@ public class RecipeResultsView extends VBox {
         navButtons.getChildren().addAll(newSearchBtn, randomizeBtn);
         this.getChildren().add(navButtons);
 
+        boolean isSuggestions = recipes != null && !recipes.isEmpty() && recipes.stream().allMatch(r -> r.getMatchPercentage() < 0.5);
+        if (isSuggestions) {
+            Label suggestionLabel = new Label("We could not find any recipes over 50% match, but here are some suggestions:");
+            suggestionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: gray; -fx-font-style: italic;");
+            this.getChildren().add(suggestionLabel);
+        }
+
         if (recipes == null || recipes.isEmpty()) {
             Label noResults = new Label("No recipes found for your ingredients try selecting more!");
             noResults.setStyle("-fx-font-size: 16px; -fx-text-fill: grey;");
