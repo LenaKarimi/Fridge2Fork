@@ -18,7 +18,7 @@ public class RecipeController {
 
     //offline=false då körs csv
     //online=true då körs api
-    private static final boolean IS_ONLINE = true ;
+    private static final boolean IS_ONLINE = false ;
 
     //De olika klasserna som används från Api:et
     private final MealRepository mealRepository;
@@ -67,6 +67,9 @@ public class RecipeController {
         Set<String> discoveredMealIds = new HashSet<>();
         List<Recipe> matchingRecipes = new ArrayList<>();
 
+        //samlar recept under 50% som förslag om inga över 50% hittas
+        List<Recipe> suggestions = new ArrayList<>();
+
         for (String ingredient : userFridge) {
             //här sker förfrågningen om specifik ingrediens
             List<TheMealDbDTO> apiResponse = mealRepository.getMealsByIngredient(ingredient);
@@ -106,6 +109,8 @@ public class RecipeController {
                     //beräkna 50% matchningen
                     if (percentage >= 0.5) {
                         matchingRecipes.add(recipeObject);
+                    } else if (percentage > 0.0){
+                        suggestions.add(recipeObject);
                     }
                     //samla 30 recept
                     if (matchingRecipes.size() >= 30) break;
@@ -117,13 +122,21 @@ public class RecipeController {
             if (matchingRecipes.size() >= 30) break;
         }
 
-        matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
-        return matchingRecipes;
+        //om vi hittade recept över 50% returneras de
+        if (!matchingRecipes.isEmpty()) {
+            matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+            return matchingRecipes;
+        }
+        //annars returneras förslag under 50%
+        suggestions.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+        return suggestions.subList(0, Math.min(30, suggestions.size()));
+
     }
 
     //söker recept lokalt från CSV-listan istället för API
     private List<Recipe> searchFromCsv(List<String> userFridge, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) {
         List<Recipe> matchingRecipes = new ArrayList<>();
+        List<Recipe> suggestions = new ArrayList<>();
 
         for (Recipe recipe : localRecipes) {
             //filterring baserad på kök
@@ -133,21 +146,31 @@ public class RecipeController {
 
             //detta beräknar procentmatchning
             double percentage = calculateMatchPercentage(recipe, userFridge);
+            recipe.setMatchPercentage(percentage);
 
             //beräkna 50% matchningen
-            if (percentage < 0.5) continue;
+            if (percentage >= 0.5) {
+                matchingRecipes.add(recipe);
+            } else if (percentage > 0.0) {
+                suggestions.add(recipe);
+            }
 
-
-
-            recipe.setMatchPercentage(percentage);
-            matchingRecipes.add(recipe);
-
+            System.out.println("Suggestion: " + recipe.getName() + " " + percentage);
             //samla 30 recept
             if (matchingRecipes.size() >= 30) break;
         }
 
-        matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
-        return matchingRecipes;
+
+        if (!matchingRecipes.isEmpty()) {
+            matchingRecipes.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+            return matchingRecipes;
+        }
+
+
+        //inga recept över 50%, returnera förslag sorterade
+        suggestions.sort((r1, r2) -> Double.compare(r2.getMatchPercentage(), r1.getMatchPercentage()));
+        return suggestions.subList(0, Math.min(30, suggestions.size()));
+
     }
 
 
@@ -199,8 +222,13 @@ public class RecipeController {
         for (Ingredient ing : recipeIngredients){
             String name = ing.getName().toLowerCase();
 
-            if (userFridge.contains(name)){
-                matchCount++;
+            //kolla om något av användarens val finns i ingrediensnamnet
+            for (String fridgeItem : userFridge){
+                if (name.contains(fridgeItem) || fridgeItem.contains(name)){
+                    matchCount++;
+
+                    break;
+                }
             }
         }
         return matchCount / recipeIngredients.size();
