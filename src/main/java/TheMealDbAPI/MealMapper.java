@@ -6,13 +6,23 @@ import Model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-// denna klass tar emot rå API datai form av TheMealDbDTO, gör om det till ett recept objekt
-// loopar igenom alla ingredienser,lägger till den i en lista - gjord av ingrediens objekt, och ändrar land till cuisine-enum
+/**
+ * Maps API data from TheMealDbDTO into domain objects
+ * It is responsible for transforming raw data from the API into
+ * the application models (Recipe, ingredient, Cuisine, Diet).
+ * @author Lena
+ */
 public class MealMapper {
 
+    /**
+     * Converts a TheMealDbDTO oject into a Recipe object.
+     * It extracts ingredients and their measurements,
+     * builds a list of ingredient objects
+     * and maos cuisine and diet values to enums
+     * @param theMealDbDTO the API data transfer object
+     * @return a fully conctructed Recioe object
+     */
     public Recipe toDomain(TheMealDbDTO theMealDbDTO){
-
-        //ingredienslistan
         List<Ingredient> recipeIngredients = new ArrayList<>();
         for (int i = 1; i<=20; i++){
 
@@ -25,7 +35,6 @@ public class MealMapper {
             Ingredient ingredient = new Ingredient(ingredientName, ingredientMeasure);
             recipeIngredients.add(ingredient);
         }
-
         Cuisine cuisine = mapCuisin(theMealDbDTO.strArea);
         Diet diet = mapDiet(theMealDbDTO.strCategory);
 
@@ -34,6 +43,11 @@ public class MealMapper {
         return recipe;
     }
 
+    /**
+     * Maps a category string from the API to a Diet enum.
+     * @param strCategory the category string from the API
+     * @return the corresponding Diet or null if not applicable
+     */
     private Diet mapDiet(String strCategory){
         if (strCategory == null){
             return null;
@@ -45,6 +59,11 @@ public class MealMapper {
         };
     }
 
+    /**
+     * Maps an area string from the API to a Cuisine enum.
+     * @param strArea the area string from the API
+     * @return the corresponding Cuisine or null if no much is found
+     */
     private Cuisine mapCuisin(String strArea){
         if (strArea == null){
             return null;

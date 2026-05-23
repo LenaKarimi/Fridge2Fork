@@ -2,8 +2,13 @@ package TheMealDbAPI;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
-//denna klass speglar strukturen i json texten (man måste ha en sådan klass när man används json) och håller lista med recepten
+/**
+ * Represents response structure from TheMealDb API.
+ * It maps the JSON response and containing a list of meals.
+ * It is used to deserialization of API responses into Java objects.
+ * @param meals the list of meals returned from the API
+ * @author Lena
+ */
 @JsonIgnoreProperties (ignoreUnknown = true)
 public record TheMealDbResponse (List<TheMealDbDTO> meals){}
 
-//denna klass tar bara emot meals

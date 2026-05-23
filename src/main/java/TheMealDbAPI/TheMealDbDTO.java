@@ -2,10 +2,14 @@ package TheMealDbAPI;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-// detta representerar ett recept, alla fält speglar det som api skickar tillbaka,
-// två hjälpmetoder för att hämta specifik ingrediens och mått
-
-@JsonIgnoreProperties (ignoreUnknown = true) //ser till att fält ignoreras som ej finns i denna klass
+/**
+ * Data transfer object (DTO) representing a meal from TheMealDB API.
+ * It maps the JSON structure returned by the API into java objects.
+ * Each field corresponds directly to a property in the API response.
+ * It provides helper methods for accessing ingredients and their corresponding measurements by index.
+ * @author Lena
+ */
+@JsonIgnoreProperties (ignoreUnknown = true) //ignores unknown JSON fields
 public final class TheMealDbDTO {
     public String idMeal;
     public String strMeal;
@@ -58,6 +62,11 @@ public final class TheMealDbDTO {
     public String strMeasure19;
     public String strMeasure20;
 
+    /**
+     * Returns the ingredient index
+     * @param index the ingredient index (between 1-20)
+     * @return the ingredient at the given index, or null if not present
+     */
     public String getIngredient (int index){
         return switch (index){
             case 1 -> strIngredient1;
@@ -84,6 +93,11 @@ public final class TheMealDbDTO {
         };
     }
 
+    /**
+     * Returns the measurement corresponding to the given ingredient index
+     * @param index the measurement index (between 1-20)
+     * @return the measurment at the given index, or null if not present
+     */
     public String getMeasure (int index){
         return switch (index){
             case 1 -> strMeasure1;
@@ -109,5 +123,4 @@ public final class TheMealDbDTO {
             default -> throw new IllegalArgumentException("Index must be in a range 1-20");
         };
     }
-
 }

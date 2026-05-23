@@ -1,7 +1,11 @@
 package Model;
 
+/**
+ * Represents specific world cuisines.
+ * Each cuisine belongs to a broader CuisineGroup
+ * @author Lena
+ */
 public enum Cuisine {
-
     Algerian (CuisineGroup.middle_eastern),
     American (CuisineGroup.american),
     Argentinian(CuisineGroup.latin_american),
@@ -41,10 +45,18 @@ public enum Cuisine {
 
     private final CuisineGroup cuisineGroup;
 
+    /**
+     * Constructs a cuisine with its associated group
+     * @param cuisineGroup the broader geographic group
+     */
     Cuisine(CuisineGroup cuisineGroup){
         this.cuisineGroup=cuisineGroup;
     }
 
+    /**
+     * Returs the cuisine group it belongs to.
+     * @return The cuisine group
+     */
     public CuisineGroup getCuisineGroup() {
         return cuisineGroup;
     }

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TheMealManager {
-    //denna sköter logik, frågar mealrepo om alla recetp som matchar en ingrediens, går igenom alla recept
-    //filtrerar bort de som inte matchar med valda området utifrån kök
         private MealRepository repository;
         private MealMapper mapper = new MealMapper();
 
@@ -16,25 +14,24 @@ public class TheMealManager {
         }
 
         public List<Recipe> searchForRecepie (String mainIngredient, String cuisine, String diet){
-            //List<TheMealDbDTO> mealsMatching = new ArrayList<>(); // skapar lista med alla matchade recept
+            //List<TheMealDbDTO> mealsMatching = new ArrayList<>();
             List<Recipe> mealsMatching = new ArrayList<>(); // skapar lista med alla matchade recept
 
             try{
                 List<TheMealDbDTO> allMeals = repository.getMealsByIngredient(mainIngredient);
-                //System.out.println("Antal måltider hittade: " + allMeals.size());
+                System.out.println("Antal måltider hittade: " + allMeals.size());
 
-                //går igenom alla recept
                 for (TheMealDbDTO meal : allMeals){
 
                     TheMealDbDTO specificMeal = repository.getMealById(meal.idMeal);
-                    //System.out.println("Område: " + specificMeal.strArea);
+                    System.out.println("Område: " + specificMeal.strArea);
 
                     Recipe recipe = mapper.toDomain(specificMeal);
 
                     boolean hasCuisine = specificMeal.strArea.equalsIgnoreCase(cuisine);
                     boolean hasDiet = specificMeal.strCategory.equalsIgnoreCase(diet);
 
-                    if (hasCuisine && hasDiet){ // om område motsvarar kategori som valts
+                    if (hasCuisine && hasDiet){
                         mealsMatching.add(recipe);
                     }
                 }
@@ -45,8 +42,6 @@ public class TheMealManager {
             catch (Exception e) {
                 e.printStackTrace();
             }
-
             return mealsMatching;
         }
-
     }

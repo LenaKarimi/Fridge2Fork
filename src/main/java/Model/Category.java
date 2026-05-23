@@ -1,13 +1,15 @@
 package Model;
 
+/**
+ * Represents food categories used to classify ingredients
+ * @author Intisaar
+ */
 public enum Category {
-
-    KOLHYDRATER,
-    PROTEIN,
-    GRÖNSAKER,
-    MEJERI,
-    FRUKT,
-    SKAFFERI,
+    Carbohydrate,
+    Protein,
+    Vegetable,
+    Fruit,
+    Dairy,
+    Pantry,
     OTHER;
-
 }

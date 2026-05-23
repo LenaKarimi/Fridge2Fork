@@ -2,19 +2,33 @@ package Model;
 
 import java.util.List;
 
+/**
+ * Represents a recipe in the application domain.
+ * Contains information about recipe.
+ * @author Intisaar
+ * @author Lena
+ */
 public class Recipe{
-
-    private String id; //för att spara i vår egna databas
+    private String id;
     private String name;
     private String instructions;
     private String imageUrl;
     private List<Ingredient> ingredients;
     private int totalServings;
     private int estimatedTime;
-    private Diet diet; //frågan är om vi ska ha kvar detta? måste gruppera manuellt isf då det ej framgår i API?
+    private Diet diet;
     private Cuisine cuisine;
     private double matchPercentage;
 
+    /**
+     * Constructs a Recipe object.
+     * @param id unique identifier od the recipe
+     * @param name name of the recipe
+     * @param instructions cooking instructions
+     * @param imageUrl URL to the recipe image
+     * @param ingredients list of ingredients
+     * @param cuisine cuisine type
+     */
     public Recipe(String id, String name, String instructions, String imageUrl, List<Ingredient> ingredients, Cuisine cuisine){
         this.id = id;
         this.name = name;
@@ -26,60 +40,91 @@ public class Recipe{
         this.estimatedTime = 0;
         this.diet = null;
     }
+
+    /**
+     *
+     * @return
+     */
     public String getId() {
         return id;
     }
+
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
+
+    /**
+     *
+     * @return
+     */
     public String getInstructions() {
         return instructions;
     }
+
+    /**
+     *
+     * @return
+     */
     public String getImageUrl() {
         return imageUrl;
     }
+
+    /**
+     *
+     * @return
+     */
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
+    /**
+     *
+     * @return
+     */
     public Cuisine getCuisine() {
         return cuisine;
     }
-    public int getTotalServings() {
-        return totalServings;
-    }
 
-    public int getEstimatedTime() {
-        return estimatedTime;
-    }
-
+    /**
+     *
+     * @return
+     */
     public Diet getDiet() {
         return diet;
     }
 
-
-    //lägger bara set-metoder på det som vi själva behöver sätta på, det som ej sätts via API i denna konstruktor
-    public void setTotalServings(int totalServings) {
-        this.totalServings = totalServings;
-    }
-
-    public void setEstimatedTime(int estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
-
+    /**
+     *
+     * @param diet
+     */
     public void setDiet(Diet diet) {
         this.diet = diet;
     }
 
+    /**
+     *
+     * @param cuisine
+     */
     public void setCuisine(Cuisine cuisine) {
         this.cuisine = cuisine;
     }
 
-    //Detta ska användas för att visa på recipecard hur mycket procent match det är.
+    /**
+     * Sets the match percentage used for ranking recipes
+     * @param matchPercentage the match percentage (0-100)
+     */
     public void setMatchPercentage(double matchPercentage) {
         this.matchPercentage = matchPercentage;
     }
-    //Detta ska användas för att visa på recipecard hur mycket procent match det är.
+
+    /**
+     * Returns the match percentage used for ranking.
+     * @return the match percentage
+     */
     public double getMatchPercentage() {
         return matchPercentage;
     }
