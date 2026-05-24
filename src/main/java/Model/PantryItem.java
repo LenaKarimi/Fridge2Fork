@@ -1,5 +1,6 @@
 package Model;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class PantryItem {
@@ -7,9 +8,9 @@ public class PantryItem {
     private int id;
     private int profileId;
     private String name;
-    private LocalTime expiryDate;
+    private LocalDate expiryDate;
 
-    public PantryItem(int id, int profileId, String name, LocalTime expiryDate) {
+    public PantryItem(int id, int profileId, String name, LocalDate expiryDate) {
         this.id = id;
         this.profileId = profileId;
         this.name = name;
@@ -28,7 +29,7 @@ public class PantryItem {
         return name;
     }
 
-    public LocalTime getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 }
