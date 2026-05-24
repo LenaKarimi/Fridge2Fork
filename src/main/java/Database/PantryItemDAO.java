@@ -52,6 +52,16 @@ public class PantryItemDAO {
         }
     }
 
+    public void deleteExpiredItems(int profileId) throws SQLException {
+        String sql = "DELETE FROM pantry_items WHERE profile_id = ? AND expiry_date < CURRENT_DATE";
+        try (Connection connection = DbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, profileId);
+            preparedStatement.executeUpdate();
+        }
+
+    }
+
     private PantryItem mapToPantryItem(ResultSet resultSet, int profileId) throws SQLException {
         return new PantryItem(
                 resultSet.getInt("id"),
