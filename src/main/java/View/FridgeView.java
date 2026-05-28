@@ -255,10 +255,16 @@ public class FridgeView extends StackPane {
         Button selectAll = new Button("Select all");
         Button clearAll = new Button("Clear all");
 
-        String btnStyle = "-fx-font-size: 11px; -fx-padding: 2 8; -fx-background-color: transparent; " +
+        /*String btnStyle = "-fx-font-size: 11px; -fx-padding: 2 8; -fx-background-radius: transparent; " +
                 "-fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;";
         selectAll.setStyle(btnStyle);
-        clearAll.setStyle(btnStyle);
+        clearAll.setStyle(btnStyle);*/
+        selectAll.setStyle( "-fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 4 12;" +
+                "-fx-background-color: darkseagreen; -fx-text-fill: white;" +
+                "-fx-background-radius: 5; -fx-cursor: hand;");
+        clearAll.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 4 12;" +
+                "-fx-background-color: white; -fx-text-fill: #c0392b;" +
+                "-fx-border-color: #c0392b; -fx-border-radius: 5; -fx-cursor: hand;");
         selectAll.setCursor(javafx.scene.Cursor.HAND);
         clearAll.setCursor(javafx.scene.Cursor.HAND);
 
