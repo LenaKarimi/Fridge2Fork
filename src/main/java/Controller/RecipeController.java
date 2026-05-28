@@ -238,8 +238,16 @@ public class RecipeController {
 
     //recipe
     //gör om om objektet från ett modelobjekt till ett DTO-objekt
-    public RecipeDTO getRecipeDTO(Recipe Recipe) {
-        return new RecipeDTO(Recipe.getName(), Recipe.getImageUrl());
+    public RecipeDTO getRecipeDTO(Recipe recipe) {
+        return new RecipeDTO(
+                recipe.getName(),
+                recipe.getImageUrl(),
+                recipe.getInstructions(),
+                recipe.getIngredients(),
+                recipe.getCuisine(),
+                recipe.getMatchPercentage()
+
+        );
     }
 
     //Mappar en hel lista av Recipe till en lista av DTO
