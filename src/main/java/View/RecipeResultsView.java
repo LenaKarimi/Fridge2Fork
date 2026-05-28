@@ -35,7 +35,7 @@ public class RecipeResultsView extends VBox {
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
 
-        //Knappar för navigering
+       /* //Knappar för navigering
         HBox navButtons = new HBox(15);
         navButtons.setAlignment(Pos.CENTER);
 
@@ -53,7 +53,7 @@ public class RecipeResultsView extends VBox {
         randomizeBtn.setOnAction(e -> showRandomRecipes());
 
         navButtons.getChildren().addAll(newSearchBtn, randomizeBtn);
-        this.getChildren().add(navButtons);
+        this.getChildren().add(navButtons);*/
 
         boolean isSuggestions = recipes != null && !recipes.isEmpty() && recipes.stream().allMatch(r -> r.getMatchPercentage() < 0.5);
         if (isSuggestions) {
@@ -86,10 +86,32 @@ public class RecipeResultsView extends VBox {
 
         this.getChildren().add(scrollPane);
 
+        Label shuffleHint = new Label ("Not what you were looking for?");
+        shuffleHint.setStyle("-fx-font-size: 14px; " +
+                "-fx-text-fill: gray; " +
+                "-fx-font-style: italic;");
+
+        Button randomizeBtn = new Button ("Shuffle recipes");
+        randomizeBtn.setStyle("-fx-font-size: 14px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-padding: 10 30; " +
+                "-fx-background-color: darkseagreen; " +
+                "-fx-text-fill: white; " +
+                "-fx-background-radius: 8;"
+        );
+
+        randomizeBtn.setCursor(Cursor.HAND);
+        randomizeBtn.setOnAction(e -> showRandomRecipes());
+        VBox shuffleSection = new VBox(8);
+        shuffleSection.getChildren().addAll(shuffleHint, randomizeBtn);
+        this.getChildren().add(shuffleSection);
+
         //Här visas första urvalet direkt
         showRandomRecipes();
 
     }
+
+
 
     private void showRandomRecipes(){
         if ( allFetchedRecipes == null || allFetchedRecipes.isEmpty()) return;
