@@ -108,8 +108,11 @@ public class HomeView extends BorderPane {
         centerStack.setAlignment(Pos.CENTER);
 
         //ladda bilden (synkront för felsökning)
-        String fridgeImageUrl = "https://images.stockcake.com/public/e/5/5/e557df37-e25c-42d9-ad93-9a9d692580d2_large/stocked-fridge-interior-stockcake.jpg";
-        Image fridgeImage = new Image(fridgeImageUrl, false);
+       /** String fridgeImageUrl = "https://images.stockcake.com/public/e/5/5/e557df37-e25c-42d9-ad93-9a9d692580d2_large/stocked-fridge-interior-stockcake.jpg";
+        Image fridgeImage = new Image(fridgeImageUrl, false);*/
+        Image fridgeImage = new Image(
+                getClass().getResourceAsStream("/images/fridge-finder.png")
+        );
         ImageView bg = new ImageView(fridgeImage);
 
         //bilden ska fylla hela ytan
