@@ -84,4 +84,27 @@ public class UserController {
     public void logout() {
         this.currentUser = null;
     }
+
+    private String safePassword(String password) {
+
+        if (password.length() < 10) {
+            return "Password must be at least 10 characters!";
+        }
+
+        boolean hasUppercase = false;
+        boolean hasLowercase = false;
+        boolean hasNumber = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUppercase = true;
+            if (Character.isLowerCase(c)) hasLowercase = true;
+            if (Character.isDigit(c)) hasNumber = true;
+        }
+
+        if (!hasUppercase) return  "Password must contain at least one uppercase letter!";
+        if (!hasLowercase) return "Password must contain at least one lowercase letter!";
+        if (!hasNumber) return "Password must contain at least one number!"
+
+        return null;
+    }
 }
