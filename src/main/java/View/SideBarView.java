@@ -1,6 +1,7 @@
 package View;
 
 import Controller.LikedRecipeController;
+import Controller.PantryController;
 import Controller.UserController;
 import java.util.List;
 
@@ -194,7 +195,11 @@ public class SideBarView extends VBox {
                  Fridge2ForkApp.root.setCenter(new LikedRecipesView(likedRecipes, userController));
              }
          } else if (text.equals("Purchases")) { // bara en tom vy visas då detta ej är klar
-             Fridge2ForkApp.root.setCenter(new VBox());
+             if (userController.getCurrentUser() != null) {
+                 Fridge2ForkApp.root.setCenter(new PantryView(new PantryController(), userController));
+             } else {
+                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
+             }
          }
     }
 
