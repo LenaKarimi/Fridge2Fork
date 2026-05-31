@@ -92,18 +92,19 @@ public class RecipeResultsView extends VBox {
                 "-fx-font-style: italic;");
 
         Button randomizeBtn = new Button ("Shuffle recipes");
-        randomizeBtn.setStyle("-fx-font-size: 14px; " +
+        randomizeBtn.setStyle("-fx-font-size: 15px; " +
                 "-fx-font-weight: bold; " +
-                "-fx-padding: 10 30; " +
-                "-fx-background-color: darkseagreen; " +
+                "-fx-padding: 12 40; " +
+                "-fx-background-color: #2e7d32; " +
                 "-fx-text-fill: white; " +
                 "-fx-background-radius: 8;"
         );
 
         randomizeBtn.setCursor(Cursor.HAND);
         randomizeBtn.setOnAction(e -> showRandomRecipes());
-        VBox shuffleSection = new VBox(8);
-        shuffleSection.getChildren().addAll(shuffleHint, randomizeBtn);
+        VBox shuffleSection = new VBox(10, shuffleHint, randomizeBtn);
+        shuffleSection.setAlignment(Pos.CENTER);
+        shuffleSection.setPadding(new Insets (20, 0, 10, 0));
         this.getChildren().add(shuffleSection);
 
         //Här visas första urvalet direkt
