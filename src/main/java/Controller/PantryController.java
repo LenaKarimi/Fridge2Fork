@@ -15,7 +15,7 @@ public class PantryController {
 
 
     // lägger till produkt, returenerar null om lyckat, felmedelande om problem
-    public String addItem(int profileId, String name, String expiryDate) throws SQLException {
+    public String addItem(int profileId, String name, String expiryDate) {
         if(name == null || name.isBlank()) {
             return "Write a product name";
         }

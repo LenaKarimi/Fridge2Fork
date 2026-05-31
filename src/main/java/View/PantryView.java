@@ -96,18 +96,15 @@ public class PantryView extends BorderPane {
         if (localDate != null){
             date = localDate.toString();
         }
-        try {
-            String error = pantryController.addItem(profilID, nameField.getText(), date);
-            if (error != null){
-                informationLabel.setText(error);
-            }
-            else {
-                informationLabel.setText("Saved!");
-                nameField.clear();
-                refreshList();
-            }
-        } catch (Exception e) {
-            informationLabel.setText("Somethong went wrong");
+
+        String error = pantryController.addItem(profilID, nameField.getText(), date);
+
+        if (error != null){
+            informationLabel.setText(error);
+        } else {
+            informationLabel.setText("Saved!");
+            nameField.clear();
+            refreshList();
         }
     }
 
