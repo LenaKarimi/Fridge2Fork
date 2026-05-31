@@ -19,10 +19,19 @@ import javafx.scene.layout.StackPane;
 
 import java.util.List;
 
+/**
+ * View that displays all recipes the user has liked.
+ * Shows recipe cards in a scrollable grid with an option unlike each recipe.
+ * @author Maya
+ */
 public class LikedRecipesView extends VBox {
-
     private final UserController userController;
 
+    /**
+     * Constructs the LikedRecipeView and builds the UI.
+     * @param likedRecipes list of recipes the user has liked
+     * @param userController provides the current logged in user
+     */
     public LikedRecipesView(List<Recipe> likedRecipes, UserController userController) {
         this.userController = userController;
 
@@ -31,11 +40,9 @@ public class LikedRecipesView extends VBox {
         this.setAlignment(Pos.TOP_CENTER);
         this.setStyle("-fx-background-color: white;");
 
-        //rubrik
         Label title = new Label("Your Liked Recipes");
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #e67e22;");
 
-        //flowpane så korten hamnar på samma rader
         FlowPane recipeGrid = new FlowPane();
         recipeGrid.setHgap(25);
         recipeGrid.setVgap(25);
@@ -46,12 +53,11 @@ public class LikedRecipesView extends VBox {
             Label noResults = new Label("You haven't liked any recipes yet!");
             noResults.setStyle("-fx-font-size: 18px; -fx-text-fill: gray;");
             this.getChildren().addAll(title, noResults);
-        } else {
+        }
+        else {
             for (Recipe recipe : likedRecipes) {
                 recipeGrid.getChildren().add(createRecipeCard(recipe));
             }
-
-            //scrollpane ifall man har jättemånga gillade recept
             ScrollPane scrollPane = new ScrollPane(recipeGrid);
             scrollPane.setFitToWidth(true);
             scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
@@ -60,6 +66,11 @@ public class LikedRecipesView extends VBox {
         }
     }
 
+    /**
+     * Created a recipe card with image, title and an unlike button.
+     * @param recipe the recipe to display.
+     * @return a styled VBox representing the recipe card
+     */
     private VBox createRecipeCard(Recipe recipe) {
         System.out.println("skapar kort för;" + recipe.getName());
         VBox card = new VBox(10);
@@ -67,14 +78,10 @@ public class LikedRecipesView extends VBox {
                 "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
         card.setPrefWidth(240);
         card.setCursor(Cursor.HAND);
-
-        //klicka på kortet för att se receptet
         card.setOnMouseClicked(e -> {
-            //skickar  null som previousView för att markera att man kommer från liked
             Fridge2ForkApp.root.setCenter(new RecipeView(recipe, null, userController));
         });
 
-        //BILD
         ImageView imageView = new ImageView();
         if (recipe.getImageUrl() != null && !recipe.getImageUrl().isBlank()) {
             try {
@@ -82,24 +89,19 @@ public class LikedRecipesView extends VBox {
                 imageView.setFitWidth(210);
                 imageView.setFitHeight(140);
                 imageView.setPreserveRatio(true);
-            } catch (Exception e) { //ignorera laddningsfel
+            }
+            catch (Exception e) {
             }
         }
 
-        //TEXT rad
         Label titleLabel = new Label(recipe.getName());
         titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         titleLabel.setWrapText(true);
-        titleLabel.setMaxWidth(160); // kollar om detta lägger till namnet i liked recipe view
+        titleLabel.setMaxWidth(160);
 
-        //LIKE-knapp i hörnet (fyllt hjärta \u2665)
         Button unlikeBtn = new Button("\u2665");
         unlikeBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
         unlikeBtn.setCursor(Cursor.HAND);
-
-
-
-        //Action för att ta bort (Racils del sen)
         unlikeBtn.setOnAction(e -> {
             if (userController.getCurrentUser() != null) {
                 LikedRecipeController likedRecipeController = new LikedRecipeController();
@@ -113,7 +115,7 @@ public class LikedRecipesView extends VBox {
 
         HBox footer = new HBox(10, titleLabel, unlikeBtn);
         footer.setAlignment(Pos.CENTER_LEFT);
-        footer.setMaxWidth(210); // kollar om detta adderar namnet på liked recipe view
+        footer.setMaxWidth(210);
         HBox.setHgrow(titleLabel, javafx.scene.layout.Priority.ALWAYS);
 
         card.getChildren().addAll(imageView, footer);

@@ -16,27 +16,28 @@ import javafx.util.Duration;
 import javafx.scene.control.Alert;
 import java.util.*;
 
-
+/**
+ * View for selecting ingredients from categorixed lists.
+ * The user must select at least one item per caregory before proceeding to recipe search.
+ * @author Maya and Intisaar
+ */
 public class FridgeView extends StackPane {
-
     private Label errorLabel;
     private final UserController userController;
-
-    //Nytt vi har tagt bort den gamla listan med checkboxar och skapat denna lista
-    //med vboxar istället för att kunna dela upp ingredienserna i kategorier
     private List<VBox> categorySections = new ArrayList<>();
 
+    /**
+     * Constructs the fRIDGEview and builds the UI.
+     * @param userController provides the currently logged in user
+     */
     public FridgeView(UserController userController){
         this.userController = userController;
-
         VBox mainContent = new VBox(20);
         mainContent.setPadding(new Insets(40));
         mainContent.setAlignment(Pos.TOP_LEFT);
 
         Label title = new Label("What's in your fridge?");
         title.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;");
-
-        //skapa info-symbolen
         Label infoIcon = new Label("i");
         infoIcon.setStyle(
                 "-fx-background-color: darkseagreen; " +
@@ -50,15 +51,12 @@ public class FridgeView extends StackPane {
                         "-fx-alignment: center; " +
                         "-fx-cursor: help;"
         );
-
-        //skapa själva hjälptexten
         Tooltip tooltip = new Tooltip("Select all the ingredients you have at home.\nChoose 'None'" +
                 " if a category is empty.");
         tooltip.setShowDelay(Duration.millis(100)); // Visas snabbt
         tooltip.setStyle("-fx-font-size: 14px;");
         Tooltip.install(infoIcon, tooltip);
 
-        //för info-symbol klickbar
         infoIcon.setOnMouseClicked(e -> {
             Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
             infoAlert.setTitle("How to use");
@@ -72,7 +70,6 @@ public class FridgeView extends StackPane {
             infoAlert.showAndWait();
         });
 
-        //lägg till både titel och info i en HBox så de hamnar bredvid varandra
         HBox titleBox = new HBox(15, title, infoIcon);
         titleBox.setAlignment(Pos.CENTER_LEFT);
         mainContent.getChildren().add(titleBox);
@@ -81,76 +78,48 @@ public class FridgeView extends StackPane {
         errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold;");
         errorLabel.setVisible(false);
 
-
-        //mainContent.getChildren().add(errorLabel);
-        //mainContent.getChildren().add(errorLabel);
-
-        //NYTT: vi spara nu varje kategori i categorysection direkt när de skapas
-        //detta behvös ändras så att vi kan kolla vilka boxar som är ikryssade i alla kategorier
-
-        //Kolhydrater
         categorySections.add(createCategorySection("Carbohydrates",  "Rice","Jasmine Rice", "Basmati Rice", "Brown Rice", "Pasta", "Spaghetti", "Macaroni",
                 "Noodles", "Udon Noodles", "Egg Noodles", "Bread", "White Bread", "Ciabatta", "Baguette", "Flour", "Whole Wheat Flour", "Corn Flour", "Tortilla", "Wraps", "Couscous", "Quinoa", "Oats", "None"));
 
-        //protein
         categorySections.add(createCategorySection("Protein", "Chicken", "Chicken Breast", "Chicken Thigh", "Beef", "Beef Brisket", "Minced Beef", "Steak", "Pork", "Pork Chops", "Pork Belly", "Lamb", "Lamb Shoulder", "Lamb Mince", "Turkey", "Duck", "Goat", "Bacon", "Ham", "Sausage",
                 "Salmon", "Tuna", "Cod", "Haddock", "Sardines", "Anchovies", "Shrimp", "Prawns", "Crab", "Lobster", "Mussels", "Clams", "Squid", "Octopus", "Fish",
                 "Tofu", "Tempeh", "Beans", "Lentils", "Chickpeas", "Quinoa",
                 "Lentils", "Red Lentils", "Green Lentils", "Chickpeas", "Black Beans", "Kidney Beans", "White Beans", "Butter Beans", "Peas", "Split Peas", "None"));
 
-        //Grönsaker
         categorySections.add(createCategorySection("Vegetables", "Onion", "Garlic", "Tomato", "Cherry Tomatoes", "Baby Plum Tomatoes", "Potato",
                 "Sweet Potato", "Carrot", "Cabbage", "Red Cabbage",
                 "Spinach", "Lettuce", "Broccoli", "Cauliflower", "Zucchini", "Eggplant", "Bell Pepper",
                 "Green Pepper", "Red Pepper", "Chili", "Cucumber", "Leek", "Spring Onion", "Mushroom",
                 "Pumpkin", "Squash", "Corn", "Peas", "Green Beans", "Okra", "Radish", "None"));
 
-        //Frukter
         categorySections.add(createCategorySection("Fruits", "Apple", "Banana", "Orange", "Lemon", "Lime", "Mango", "Pineapple", "Coconut",
                 "Strawberry", "Blueberry", "Raspberry", "Pear", "Peach", "Plum", "Apricot", "Fig", "Dates", "Avocado", "None"));
 
-        //mejeri
         categorySections.add(createCategorySection("Dairy", "Milk", "Butter", "Cheese", "Cheddar", "Mozzarella",
                 "Parmesan", "Feta", "Cream", "Double Cream", "Sour Cream", "Yogurt", "Greek Yogurt", "Custard", "Paneer", "Ricotta", "Mascarpone",
                 "Ghee", "Creme Fraiche", "None"));
 
-
-
-        //skafferi
         categorySections.add(createCategorySection("Pantry", "Olive oil", "Garlic", "Canned tomatoes",
                 "Chickpeas", "Lentils", "Nuts", "None"));
 
-
-
-        //örter och kryddor
         categorySections.add(createCategorySection("Spices & herbs", "Salt", "Black Pepper", "White Pepper", "Paprika", "Smoked Paprika",
                 "Cumin", "Turmeric", "Curry Powder", "Chili Powder", "Cinnamon", "Cardamom", "Cloves", "Nutmeg", "Oregano", "Basil", "Parsley", "Thyme", "Rosemary",
                 "Coriander", "Bay Leaves", "None"));
 
-
-
-        //sås
         categorySections.add(createCategorySection("Sauce", "Soy Sauce", "Fish Sauce", "Oyster Sauce", "Tomato Sauce", "Ketchup", "Mayonnaise", "Mustard",
                 "Vinegar", "Balsamic Vinegar", "Olive Oil", "Vegetable Oil", "Sesame Oil", "Hot Sauce", "Chili Sauce", "None"));
-
 
         categorySections.add(createCategorySection("Liquid", "Water", "Stock", "Chicken Stock",
                 "Beef Stock", "Vegetable Stock", "Wine", "White Wine", "Red Wine", "Beer", "Coconut Milk", "None"));
 
-
         categorySections.add(createCategorySection("Nuts and seeds", "Almonds", "Cashews", "Peanuts",
                 "Walnuts", "Hazelnuts", "Pistachios", "Sesame Seeds", "Sunflower Seeds", "Pumpkin Seeds", "None"));
-
 
         categorySections.add(createCategorySection("Other", "Eggs", "Breadcrumbs", "Gelatin",
                 "Yeast", "Pasta Sheets", "Dough", "Pickles", "Olives", "None"));
 
-
-        //NYTT vi lägger till hela listan av kategorier i vår huvudlayout
         mainContent.getChildren().addAll(categorySections);
 
-
-        //Nästa-knappen
         Button nextButton = new Button("Next step");
         nextButton.setStyle("-fx-font-size: 16px; -fx-padding: 12 40; -fx-background-color: darkseagreen;" +
                 "fx-text-fill: white; -fx-font-weight: bold;");
@@ -158,21 +127,19 @@ public class FridgeView extends StackPane {
         nextButton.setOnAction(e -> handleNextStep());
 
         mainContent.getChildren().addAll(nextButton, errorLabel);
-
-        //ScrollPane om listan blir lite för lång
         ScrollPane scrollPane = new ScrollPane(mainContent);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         this.getChildren().add(scrollPane);
     }
 
-    //NYTT denna metod går in i en specifik kategori lista och hämtar
-    //namnen på de ingredienser användaren valt
-
+    /**
+     * Returns a list of selected ingredient name from a category section.
+     * @param section the VBox representing a category
+     * @return list of selected ingredient names, excluding "None"
+     */
     private List<String> getSelectedFromSection(VBox section){
         List<String> selected = new ArrayList<>();
-
-        //Nytt här hämtas flowpane där alla checkboxar är som ligger inuti kategorin
         FlowPane flow = (FlowPane) section.getChildren().get(2);
 
         for (javafx.scene.Node node : flow.getChildren()){
@@ -186,19 +153,17 @@ public class FridgeView extends StackPane {
         return selected;
     }
 
-
+    /**
+     * Validates that all categories have at least one selection, then navigates to the DietView with the selected ingredients.
+     */
     private void handleNextStep(){
-        //NYTT vi skapar en map , de nya formatet som controller kräver
         Map<String, List<String>> categoryMap = new HashMap<>();
-        List<String> missingCategories = new ArrayList<>(); //för att samla felen
+        List<String> missingCategories = new ArrayList<>();
 
-        //vi loopar genom varje kategori en efter en
         for (VBox section : categorySections) {
-            //hämta namnet på kategorin från rubriken label
             Label catLabel = (Label) section.getChildren().get(0);
             String categoryName = catLabel.getText();
 
-            //Här hämtar vi ALLA valda rutor för att kontrollera kravet (även "None")
             List<String> allSelected = new ArrayList<>();
             FlowPane flow = (FlowPane) section.getChildren().get(2);
 
@@ -210,41 +175,43 @@ public class FridgeView extends StackPane {
                     }
                 }
             }
-            //Här sker den obligatoriska kontrollen att minst ett val gjorts per kategori
             if (allSelected.isEmpty()) {
                 missingCategories.add(categoryName);
-            } else {
-                //om ej tom, lägg till ingredienser i mappen
-            } //Här skapar vi en lista för de faktiska ingredienserna utan "None"
+            }
+            else {
+            }
             List<String> realIngredients = new ArrayList<>();
             for (String item : allSelected) {
                 if (!item.equalsIgnoreCase("None")) {
                     realIngredients.add(item);
                 }
             }
-            //Om det fanns riktiga ingredienser sparar vi dem i vår map
             if (!realIngredients.isEmpty()) {
                 categoryMap.put(categoryName, realIngredients);
             }
         }
 
-        //Kolla om vi hittade några fel
-        if (!missingCategories.isEmpty()){           //string.join sätter ihop strängarna
+        if (!missingCategories.isEmpty()){
             showErrorMessage("Missing selection in: " + String.join(", ", missingCategories));
             return;
         }
-
         clearErrorMessage();
         try {
             RecipeController controller = new RecipeController();
-            //Vi skickar mappen (categoryMap)
             Fridge2ForkApp.root.setCenter(new DietView(categoryMap, controller, userController));
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             showErrorMessage("Something went wrong when searching for recipes. Please try again!");
             ex.printStackTrace();
         }
     }
 
+    /**
+     * Creates a categorized section with checkboxes from each ingredient.
+     * @param categoryName the name of the category
+     * @param ingredients the ingredients to display as checkboxed
+     * @return a styled VBox containing the category label, buttons anc checkboxes
+     */
     private VBox createCategorySection(String categoryName, String... ingredients){
         VBox section = new VBox(10);
         section.setStyle("-fx-background-color: #f2ede4; -fx-background-radius: 10; -fx-padding: 15;");
@@ -255,10 +222,6 @@ public class FridgeView extends StackPane {
         Button selectAll = new Button("Select all");
         Button clearAll = new Button("Clear all");
 
-        /*String btnStyle = "-fx-font-size: 11px; -fx-padding: 2 8; -fx-background-radius: transparent; " +
-                "-fx-border-color: darkseagreen; -fx-border-radius: 5; -fx-text-fill: darkseagreen;";
-        selectAll.setStyle(btnStyle);
-        clearAll.setStyle(btnStyle);*/
         selectAll.setStyle( "-fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 4 12;" +
                 "-fx-background-color: darkseagreen; -fx-text-fill: white;" +
                 "-fx-background-radius: 5; -fx-cursor: hand;");
@@ -284,15 +247,12 @@ public class FridgeView extends StackPane {
             }
         });
 
-        //gör om arrayen till en lista  för att sortera alfabetisk ordning
         List<String> sortedList = new ArrayList<>(Arrays.asList(ingredients));
 
-        //ta bort "none" och sortera resten
         sortedList.remove("None");
         Collections.sort(sortedList);
         sortedList.add("None");
 
-        //loopa genom sorterade listan
         for(String ingredient : sortedList){
             CheckBox cb = new CheckBox(ingredient);
 
@@ -301,7 +261,6 @@ public class FridgeView extends StackPane {
                         "-fx-font-style: italic; -fx-border-color: black; -fx-border-radius: 5;" +
                         " -fx-padding: 2 6;");
 
-                //om "none" klickas, avkryssa alla andra
                 cb.setOnAction(e -> {
                     if (cb.isSelected()){
                         for (javafx.scene.Node node: ingredientFlow.getChildren()){
@@ -311,7 +270,8 @@ public class FridgeView extends StackPane {
                         }
                     }
                 });
-            } else {
+            }
+            else {
                 cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
                 //om en ingrediens klickas, avkryssa "none"
                 cb.setOnAction(e -> {
@@ -331,14 +291,18 @@ public class FridgeView extends StackPane {
         return section;
     }
 
-
-    //Tänkt att använda för att felhantera om val saknas
+    /**
+     * Shows error message below the next button.
+     * @param message the message
+     */
     public void showErrorMessage(String message){
         errorLabel.setText(message);
         errorLabel.setVisible(true);
     }
 
-    //Tömma felmeddelandet
+    /**
+     * Hides the error message
+      */
     public void clearErrorMessage(){
       errorLabel.setVisible(false);
     }

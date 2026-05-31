@@ -9,10 +9,15 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+/**
+ * View for logging in to an exiting user account.
+ * Displays input fields for username and password.
+ * @author Lena, Racil and Maya
+ */
+
 public class LoginView extends VBox {
 
     public LoginView(UserController userController) {
-
         this.setSpacing(10);
         this.setPadding(new Insets(20));
         this.setAlignment(Pos.CENTER);
@@ -28,7 +33,7 @@ public class LoginView extends VBox {
         password.setMaxWidth(200);
 
         Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: red;"); // fellable skrivit av racil
+        errorLabel.setStyle("-fx-text-fill: red;");
 
         Button loginBtn = new Button("Login");
         Button backBtn = new Button("Back");
@@ -47,31 +52,12 @@ public class LoginView extends VBox {
             }
         });
 
-        /** //orginalmetod
-        loginBtn.setOnAction(e -> {
-            String user = username.getText();
-            String pass = password.getText();
-
-            ProfileDTO isUser = userController.login(user,pass);
-            if (isUser != null){// ska var success
-                HomeView homeView = new HomeView(userController);
-                homeView.setUserName(isUser.getName());
-                Fridge2ForkApp.root.setCenter(homeView);
-            }
-            else {
-                //vi behöver bestämma hur vi ska visa felmeddelande
-            }
-
-        });
-         */
-
         backBtn.setOnAction(e -> {
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
         });
 
         this.getChildren().addAll(title, username, password, errorLabel, loginBtn, backBtn);
 
-        //tar bort fokuset från textboxen
         javafx.application.Platform.runLater(() -> this.requestFocus());
     }
 }

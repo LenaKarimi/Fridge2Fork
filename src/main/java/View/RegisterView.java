@@ -10,8 +10,17 @@ import View.*;
 
 import javax.swing.*;
 
+/**
+ * View for registering a new user account.
+ * Displays input fields for username, password, name and email.
+ * @author Lena and Racil
+ */
 public class RegisterView extends VBox {
 
+    /**
+     * Constructs a RegisterView and builds the UI.
+     * @param userController handles the logic of user registration
+     */
     public RegisterView(UserController userController) {
 
         this.setSpacing(10);
@@ -51,27 +60,12 @@ public class RegisterView extends VBox {
                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
             }
         });
-
-        /** // orginalmetod
-        registerBtn.setOnAction(e -> {
-            String user = username.getText();
-            String pass = password.getText();
-            String firstName = name.getText();
-            String emailAdress = email.getText();
-
-            userController.registerUser(user,pass,firstName,emailAdress);
-            Fridge2ForkApp.root.setCenter(new org.example.LoginView(userController));
-        });
-         */
-
         backBtn.setOnAction(e -> {
             Fridge2ForkApp.root.setCenter(new HomeView(userController));
 
         });
 
         this.getChildren().addAll(title, username, password, name, email, errorLable, registerBtn, backBtn);
-
-        //tar bort fokuset från textboxen
         javafx.application.Platform.runLater(() -> this.requestFocus());
     }
 }
