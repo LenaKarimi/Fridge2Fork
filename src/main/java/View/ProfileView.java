@@ -86,37 +86,45 @@ public class ProfileView extends VBox {
                 " -fx-border-radius: 5;");
         logoutButton.setCursor(Cursor.HAND);
 
+        Label errorLable = new Label();
+        errorLable.setStyle("-fx-text-fill: red;");
+
         saveButton.setOnAction(event -> {
             if (profileDTO != null) {
-                String newPassword;
-                if(password.getText().isEmpty()) {
-                    newPassword = profileDTO.getPassword();
-                } else {
-                    newPassword = password.getText();
-                }
+                String newPassword = password.getText().isEmpty()
+                        ? profileDTO.getPassword()
+                        : password.getText();
 
-                userController.updateProfile(
+                String error = userController.updateProfile(
                         profileDTO.getId(),
                         userName.getText(),
                         newPassword,
                         name.getText(),
                         email.getText()
                 );
-                statusLabel.setTextFill(Color.GREEN);
-                statusLabel.setText("Profile updated! Redirecting...");
-                System.out.println("Profile updated successfully");
 
-                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                pause.setOnFinished(e -> {
-                    profileDTO.setName(name.getText());
-                    profileDTO.setUsername(userName.getText());
-                    profileDTO.setEmail(email.getText());
+                if (error != null) {
+                    errorLable.setText(error);
+                    errorLable.setStyle("-fx-text-fill: red;");
+                } else {
+                    errorLable.setText("");
+                    statusLabel.setTextFill(Color.GREEN);
+                    statusLabel.setText("Profile updated! Redirecting...");
+                    System.out.println("Profile updated successfully");
 
-                    HomeView hv = new HomeView(userController);
-                    hv.setupLoggedInState(profileDTO);
-                    Fridge2ForkApp.root.setCenter(hv);
-                });
-                pause.play();
+                    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                    pause.setOnFinished(e -> {
+                        profileDTO.setName(name.getText());
+                        profileDTO.setUsername(userName.getText());
+                        profileDTO.setEmail(email.getText());
+
+                        HomeView hv = new HomeView(userController);
+                        hv.setupLoggedInState(profileDTO);
+                        Fridge2ForkApp.root.setCenter(hv);
+                    });
+                    pause.play();
+                }
+
             }
         });
 
@@ -148,6 +156,7 @@ public class ProfileView extends VBox {
                 name,
                 new Label("Change Password"),
                 password,
+                errorLable,
                 new Separator()
         );
         HBox buttons = new HBox(12);

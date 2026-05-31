@@ -34,7 +34,7 @@ public class RegisterView extends VBox {
         username.setMaxWidth(200);
 
         PasswordField password = new PasswordField();
-        password.setPromptText("Password");
+        password.setPromptText("Password(10 char,1 number, upper case, lower case)");
         password.setMaxWidth(200);
 
         TextField name = new TextField();

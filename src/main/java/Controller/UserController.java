@@ -72,12 +72,26 @@ public class UserController {
     }
 
 
-    public void updateProfile(int id, String username, String password, String name, String email) {
+    public String updateProfile(int id, String username, String password, String name, String email) {
+
+        if (password.isBlank() || name.isBlank() || email.isBlank() || username.isBlank()) {
+            return "Fill in all fields!";
+        }
+
+        if (password != null && !password.isBlank()) {
+            String passwordError = safePassword(password);
+            if (passwordError != null) {
+                return passwordError;
+            }
+        }
+
         try {
             Profile updated = new Profile(id, username, password, name, email);
             profileDAO.updateProfile(updated);
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Something went wrong, try again!";
         }
     }
 
