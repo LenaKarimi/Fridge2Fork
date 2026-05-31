@@ -50,6 +50,14 @@ CREATE TABLE IF NOT EXISTS public.liked_recipes
 
 TABLESPACE pg_default;
 
+
+CREATE TABLE pantry_items (
+    id SERIAL PRIMARY KEY,
+    profile_id INT REFERENCES profiles(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    expiry_date DATE NOT NULL
+);
+
 ALTER TABLE IF EXISTS public.liked_recipes
     OWNER to aq2327;
 
