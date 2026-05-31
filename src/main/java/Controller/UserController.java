@@ -18,6 +18,11 @@ public class UserController {
            return "Fill in all fields!";
        }
 
+       String passwordError = safePassword(password);
+       if (passwordError != null) {
+           return passwordError;
+       }
+
         try {
             Profile existing = profileDAO.getProfileByUsername(username);
 
@@ -103,8 +108,9 @@ public class UserController {
 
         if (!hasUppercase) return  "Password must contain at least one uppercase letter!";
         if (!hasLowercase) return "Password must contain at least one lowercase letter!";
-        if (!hasNumber) return "Password must contain at least one number!"
+        if (!hasNumber) return "Password must contain at least one number!";
 
         return null;
     }
+
 }
