@@ -15,14 +15,14 @@ public class UserController {
     // denna metod är till för kontroller vid skapandet av nytt konto
     public String registerUser(String username, String password, String name, String email) {
        if (username.isBlank() || password.isBlank() || name.isBlank() || email.isBlank()) {
-           return "Fyll i alla fält!";
+           return "Fill in all fields!";
        }
 
         try {
             Profile existing = profileDAO.getProfileByUsername(username);
 
             if (existing != null) {
-                return "Användarnamnet är upptaget!";
+                return "Username is already taken!";
             }
 
             Profile newProfile = new Profile(username, password, name, email);
@@ -31,24 +31,24 @@ public class UserController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Något gick fel, försök igen";
+            return "Something went wrong, try again!";
         }
     }
 
     // vid inloggning returnerar den en profil dto till guit annars null
     public ProfileDTO login(String username, String password) {
         if (username.isBlank() || password.isBlank()) {
-            loginError = "Fyll i både användarnamn och lösenord!";
+            loginError = "Fill in all fields!";
             return null;
         }
         try {
             Profile profile = profileDAO.getProfileByUsername(username);
             if (profile == null) {
-                loginError = "Användaren finns inte";
+                loginError = "Username not found!";
                 return null;
             }
             if (!profile.getPassword().equals(password)) {
-                loginError = "Fel lösenord";
+                loginError = "Wrong password!";
                 return null;
             }
             loginError = null;
@@ -57,7 +57,7 @@ public class UserController {
             return loggedInUser;
         } catch (SQLException e) {
             e.printStackTrace();
-            loginError = "Något gick fel, försök igen";
+            loginError = "Something went wrong, try again!";
             return null;
         }
     }
