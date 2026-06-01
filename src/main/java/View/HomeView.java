@@ -105,7 +105,7 @@ public class HomeView extends BorderPane {
         centerStack.setAlignment(Pos.CENTER);
 
         Image fridgeImage = new Image(
-                getClass().getResourceAsStream("/images/fridge-finder.png")
+                getClass().getResourceAsStream("/images/fridge.png")
         );
         ImageView bg = new ImageView(fridgeImage);
 
