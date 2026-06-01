@@ -111,19 +111,27 @@ public class HomeView extends BorderPane {
 
         bg.setPreserveRatio(true);
         bg.setSmooth(true);
-        bg.fitWidthProperty().bind(this.widthProperty());
+        bg.setFitHeight(420);
+        bg.setOpacity(0.55);
+       /* bg.fitWidthProperty().bind(this.widthProperty());
         bg.fitHeightProperty().bind(this.heightProperty());
-        bg.setStyle("-fx-opacity: 0.95;");
+        bg.setStyle("-fx-opacity: 0.95;");*/
 
         VBox overlay = new VBox(20);
         overlay.setAlignment(Pos.CENTER);
-        overlay.setPadding(new Insets(40));
-        overlay.setMaxWidth(800);
+        overlay.setPadding(new Insets(30, 50, 30, 50));
+        overlay.setMaxWidth(600);
+
+
+        welcomeLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;");
+        subText.setStyle("-fx-font-size: 16px; -fx-text-fill: #1a1a1a;");
+        BSubText.setStyle(
+                "-fx-font-size: 14px; -fx-padding: 10 24;" +
+                        "-fx-background-color: darkseagreen; -fx-text-fill: white;" +
+                        "-fx-font-weight: bold; -fx-background-radius: 6;"
+        );
+
         overlay.getChildren().addAll(welcomeLabel, subText, buttonBox);
-
-        welcomeLabel.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;");
-        subText.setStyle("-fx-font-size: 16px; -fx-text-fill: #444;");
-
         centerStack.getChildren().addAll(bg, overlay);
         this.setCenter(centerStack);
 
