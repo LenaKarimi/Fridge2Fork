@@ -2,7 +2,7 @@ package Model;
 
 /**
  * Represents broad geographic groupings of cuisines.
- * @author Lwna
+ * @author Lena
  */
 public enum CuisineGroup {
     african,
