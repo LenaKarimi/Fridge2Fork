@@ -52,8 +52,8 @@ public class HomeView extends BorderPane {
             Fridge2ForkApp.root.setCenter(new RegisterView(userController));
         });
 
-        loginBtn.setStyle("-fx-background-color: transparent; -fx-border-color: tan; -fx-border-radius: 5;");
-        registerBtn.setStyle("-fx-background-color: tan; -fx-text-fill: white; -fx-background-radius: 5;");
+        loginBtn.setStyle("-fx-background-color: white; -fx-border-color: darkseagreen; -fx-border-radius: 2;-fx-border-radius: 6; -fx-text-fill: darkseagreen; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 6 18;");
+        registerBtn.setStyle("-fx-background-color: darkseagreen; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 6 18;");
 
         loginBtn.setCursor(javafx.scene.Cursor.HAND);
         registerBtn.setCursor(javafx.scene.Cursor.HAND);
@@ -111,8 +111,8 @@ public class HomeView extends BorderPane {
 
         bg.setPreserveRatio(true);
         bg.setSmooth(true);
-        bg.setFitHeight(420);
-        bg.setOpacity(0.55);
+        bg.setFitHeight(615);
+        bg.setOpacity(1.0);
        /* bg.fitWidthProperty().bind(this.widthProperty());
         bg.fitHeightProperty().bind(this.heightProperty());
         bg.setStyle("-fx-opacity: 0.95;");*/
@@ -121,17 +121,17 @@ public class HomeView extends BorderPane {
         overlay.setAlignment(Pos.CENTER);
         overlay.setPadding(new Insets(30, 50, 30, 50));
         overlay.setMaxWidth(600);
-
-
+        overlay.getChildren().addAll(welcomeLabel, subText, buttonBox);
         welcomeLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;");
-        subText.setStyle("-fx-font-size: 16px; -fx-text-fill: #1a1a1a;");
-        BSubText.setStyle(
+        subText.setStyle("-fx-font-size: 16px;  -fx-font-weight: bold; -fx-text-fill: #1a1a1a;"
+        +  " -fx-background-color: rgba(143,188,143,0.80); -fx-background-radius: 8; -fx-padding: 4 12;" );
+        /*BSubText.setStyle(
                 "-fx-font-size: 14px; -fx-padding: 10 24;" +
                         "-fx-background-color: darkseagreen; -fx-text-fill: white;" +
                         "-fx-font-weight: bold; -fx-background-radius: 6;"
-        );
+        );*/
 
-        overlay.getChildren().addAll(welcomeLabel, subText, buttonBox);
+
         centerStack.getChildren().addAll(bg, overlay);
         this.setCenter(centerStack);
 
