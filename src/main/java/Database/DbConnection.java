@@ -9,6 +9,7 @@ import java.sql.SQLException;
  * Manges a single shared database connection.
  * It implements a simple connection that ensure that only one active database connection is used throughout the application.
  * Database credentials are loaded from environment variables.
+ * @author Lena and Racil
  */
 public class DbConnection {
     private static Connection connection;
