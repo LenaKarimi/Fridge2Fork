@@ -44,40 +44,40 @@ public class Profile {
     }
 
     /**
-     *
-     * @return
+     * Returns the unique database ID of this user profile.
+     * @return the user ID
      */
     public int getId() {
         return id;
     }
 
     /**
-     *
-     * @return
+     * Returns the login username of this user.
+     * @return the username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     *
-     * @return
+     * Returns the password of this user.
+     * @return the password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     *
-     * @return
+     * Returns the full display name of this user.
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @return
+     * Returns the email address of this user.
+     * @return the email address
      */
     public String getEmail() {
         return email;
