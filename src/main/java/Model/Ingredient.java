@@ -31,32 +31,33 @@ public class Ingredient {
     }
 
     /**
-     *
-     * @return
+     * Returns the name of this ingredient.
+     * @return the ingredient name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @return
+     * Returns the measurement amount for this ingredient.
+     * @return the measurement string
      */
     public String getMeasure() {
         return measure;
     }
 
     /**
-     *
-     * @return
+     * Returns the food category this ingredient belongs to.
+     * @return the Category enum value
      */
     public Category getCategory() {
         return category;
     }
 
     /**
-     *
-     * @param category
+     * Sets the food category for this ingredient.
+     * Use this to override the default category after construction.
+     * @param category the Category enum value to assign
      */
     public void setCategory(Category category) {
         this.category = category;
