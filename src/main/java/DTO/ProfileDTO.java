@@ -29,64 +29,67 @@ public class ProfileDTO {
     }
 
     /**
-     *
-     * @return
+     * Returns the unique database ID of this user.
+     * @return the user ID
      */
     public int getId() {
         return id;
     }
 
     /**
-     *
-     * @return
+     * Returns the login username of this user.
+     * @return the username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     *
-     * @return
+     * Returns the password of this user.
+     * @return the password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     *
-     * @return
+     * Returns the full display name of this user.
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @return
+     * Returns the email address of this user.
+     * @return the email address
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     *
-     * @param username
+     * Sets the login username for this user.
+     * Used when the user updates their profile information.
+     * @param username the new username to assign
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     *
-     * @param name
+     * Sets the full display name for this user.
+     * Used when the user updates their profile information.
+     * @param name the new full name to assign
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     *
-     * @param email
+     * Sets the email address for this user.
+     * Used when the user updates their profile information.
+     * @param email the new email address to assign
      */
     public void setEmail(String email) {
         this.email = email;
