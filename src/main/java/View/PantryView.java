@@ -71,7 +71,7 @@ public class PantryView extends BorderPane {
             }
         });
 
-        Button deletBtn = new Button("Delet seletec item");
+        Button deletBtn = new Button("Delete selected item");
         deletBtn.setOnAction(e-> handleDelete());
 
         VBox panelList = new VBox(10, new Label("Pantry"), list, deletBtn);
@@ -107,7 +107,7 @@ public class PantryView extends BorderPane {
                 refreshList();
             }
         } catch (Exception e) {
-            informationLabel.setText("Somethong went wrong");
+            informationLabel.setText("Something went wrong");
         }
     }
 

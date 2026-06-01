@@ -15,9 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.StackPane;
-
 import java.util.List;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 
 /**
  * View that displays all recipes the user has liked.
@@ -67,19 +67,36 @@ public class LikedRecipesView extends VBox {
     }
 
     /**
-     * Created a recipe card with image, title and an unlike button.
+     * Creates a recipe card with image, title and an unlike button.
      * @param recipe the recipe to display.
      * @return a styled VBox representing the recipe card
      */
     private VBox createRecipeCard(Recipe recipe) {
         System.out.println("skapar kort för;" + recipe.getName());
         VBox card = new VBox(10);
+
+        //hoover-effekt som sidopanelen har på knapparna
+        DropShadow hoverShadow = new javafx.scene.effect.DropShadow();
+        hoverShadow.setColor(javafx.scene.paint.Color.rgb(0, 0, 0, 0.15));
+        hoverShadow.setRadius(14);
+        hoverShadow.setOffsetY(6);
+
+        card.setOnMouseEntered(e -> {
+            card.setEffect(hoverShadow);
+            card.setTranslateY(-6);
+        });
+
+        card.setOnMouseExited(e -> {
+            card.setEffect(null);
+            card.setTranslateY(0);
+        });
+
         card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 15; " +
                 "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
         card.setPrefWidth(240);
         card.setCursor(Cursor.HAND);
         card.setOnMouseClicked(e -> {
-            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, null, userController));
+            Fridge2ForkApp.root.setCenter(new RecipeView(recipe, this, userController));
         });
 
         ImageView imageView = new ImageView();
@@ -94,10 +111,13 @@ public class LikedRecipesView extends VBox {
             }
         }
 
-        Label titleLabel = new Label(recipe.getName());
-        titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        //fallback titel om namn saknas
+        String titleText = (recipe.getName() != null && !recipe.getName().isBlank()) ? recipe.getName() :
+                "Unnamed Recipe";
+        Label titleLabel = new Label(titleText);
+        titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
         titleLabel.setWrapText(true);
-        titleLabel.setMaxWidth(160);
+        titleLabel.setMaxWidth(210);
 
         Button unlikeBtn = new Button("\u2665");
         unlikeBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
