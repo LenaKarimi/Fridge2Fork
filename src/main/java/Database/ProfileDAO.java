@@ -5,9 +5,19 @@ import Database.DbConnection;
 import java.sql.*;
 
 
+/**
+ * Data Access Object for managing user profiles in the database.
+ * Handles creating, retrieving and updating profile records.
+ * @author Racil
+ */
 public class ProfileDAO {
 
     //denna metod koppar upp sig till databasen och skapar en ny användare
+    /**
+     * Inserts a new user profile into the database.
+     * @param profile the profile to create
+     * @throws SQLException if a database access error occurs
+     */
     public void createProfile(Profile profile) throws SQLException{
         String sql = "INSERT INTO profiles (username, password_hash, name, email) VALUES (?, ?, ?, ?)"; // det vi vill skriva
         Connection connection = DbConnection.getConnection();
@@ -22,6 +32,12 @@ public class ProfileDAO {
     }
 
     // denna metoden kopplar upp sig mot databasen och hämtar användaren baserat på användarnamn
+    /**
+     * Retrieves a user profile from the database by username.
+     * @param username the username to search for
+     * @return the matching Profile, or null if no match is found
+     * @throws SQLException if a database access error occurs
+     */
     public Profile getProfileByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM profiles WHERE username = ?"; // vår sql query
         Connection connection = DbConnection.getConnection();
@@ -37,6 +53,11 @@ public class ProfileDAO {
         return null;
     }
 
+    /**
+     * Updates an existing user profile in the database.
+     * @param profile the profile with updated values
+     * @throws SQLException if a database access error occurs
+     */
     public void updateProfile(Profile profile) throws SQLException{
         String sql = "UPDATE profiles SET username = ?, password_hash = ?, name = ?, email = ? WHERE id = ?";
         Connection connection = DbConnection.getConnection();
@@ -52,6 +73,12 @@ public class ProfileDAO {
     }
 
     // mapper, returnerar profile objekt
+    /**
+     * Maps a row from the database result set to a Profile object.
+     * @param resultSet the result set positioned at the current row
+     * @return a Profile built from the result set data
+     * @throws SQLException if a database access error occurs
+     */
     private Profile mapToProfile(ResultSet resultSet) throws SQLException {
         return new Profile( // skickar till kostruktorn och skapar nytt objekt
                 resultSet.getInt("id"),

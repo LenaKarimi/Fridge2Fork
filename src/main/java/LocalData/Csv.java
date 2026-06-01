@@ -3,11 +3,22 @@ package LocalData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for parsing CSV lines.
+ * Handles quoted fields and escaped double-quote characters.
+ * @author Intisaar
+ */
 public final class Csv {
 
     private Csv() {
     }
 
+    /**
+     * Parses a single CSV line into a list of field values.
+     * Supports quoted fields containing commas and escaped double quotes.
+     * @param line the CSV line to parse
+     * @return list of field values in the order they appear in the line
+     */
     public static List<String> parseLine(String line) {
         List<String> values = new ArrayList<>();
         StringBuilder current = new StringBuilder();

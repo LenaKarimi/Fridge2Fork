@@ -14,6 +14,11 @@ import LocalData.CsvStore;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * Controller responsible for searching and filtering recipes.
+ * Supports both online (API) and offline (CSV) modes.
+ * @author Intisaar, Maya, Lena, Racil
+ */
 public class RecipeController {
 
     //offline=false då körs csv
@@ -25,6 +30,12 @@ public class RecipeController {
     private final MealMapper mealMapper;
    //listan med recept som laddas in från csv när programmet är offline
     private final List<Recipe> localRecipes;
+
+
+    /**
+     * Constructs a RecipeController and initialises API clients and local recipe data.
+     * @throws Exception if local CSV data cannot be read
+     */
 
     public RecipeController() throws Exception{
 
@@ -44,6 +55,15 @@ public class RecipeController {
 
 
     //Funktion för att ska en arraylist av de ingredienser som finns baserat på det primära ingrediensen
+    /**
+     * Searches for recipes based on the user's selected ingredients, cuisines and diets.
+     * Validates that at least one ingredient has been selected per category before searching.
+     * @param categoryMap map of category names to lists of selected ingredients
+     * @param selectedCuisines list of cuisines to filter by, or empty for no filter
+     * @param selectedDiets list of diets to filter by, or empty for no filter
+     * @return list of matching recipes sorted by match percentage
+     * @throws Exception if the search fails
+     */
     public List<Recipe> searchRecipes(Map<String, List<String>> categoryMap, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) throws Exception {
 
         //Kontrollera att varje kategori i Gui har fått minst ett val none inkluderad.
@@ -61,6 +81,16 @@ public class RecipeController {
     }
 
     //söker recept via API, samma logik som tidigare
+    /**
+     * Searches for recipes via the TheMealDb API.
+     * Collects recipes matching the user's ingredients, filters by cuisine and diet,
+     * and returns recipes above 50% match. Falls back to suggestions if none are found.
+     * @param userFridge list of ingredients the user has selected
+     * @param selectedCuisines list of cuisines to filter by, or empty for no filter
+     * @param selectedDiets list of diets to filter by, or empty for no filter
+     * @return sorted list of matching recipes, or suggestions if no matches above 50%
+     * @throws Exception if the API request fails
+     */
     private List<Recipe> searchFromApi(List<String> userFridge, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) throws Exception {
 
         //Sökningen sker här för möjliga recept baserad på valda ingredienser
@@ -134,6 +164,15 @@ public class RecipeController {
     }
 
     //söker recept lokalt från CSV-listan istället för API
+    /**
+     * Searches for recipes locally from the preloaded CSV data.
+     * Filters by cuisine and diet, calculates match percentage and returns
+     * recipes above 50% match. Falls back to suggestions if none are found.
+     * @param userFridge list of ingredients the user has selected
+     * @param selectedCuisines list of cuisines to filter by, or empty for no filter
+     * @param selectedDiets list of diets to filter by, or empty for no filter
+     * @return sorted list of matching recipes, or suggestions if no matches above 50%
+     */
     private List<Recipe> searchFromCsv(List<String> userFridge, List<Cuisine> selectedCuisines, List <Diet> selectedDiets) {
         List<Recipe> matchingRecipes = new ArrayList<>();
         List<Recipe> suggestions = new ArrayList<>();
@@ -174,7 +213,12 @@ public class RecipeController {
     }
 
 
-    //här kontrolleras att minst ett val gjorts per kategor.
+    //här kontrolleras att minst ett val gjorts per kategori.
+    /**
+     * Validates that every category in the map contains at least one selected ingredient.
+     * @param categoryMap map of category names to lists of selected ingredients
+     * @throws IllegalArgumentException if any category has no selection
+     */
     private void validateAllCategories(Map<String, List<String>> categoryMap){
         for (String categoryName : categoryMap.keySet()){
             List<String> selections = categoryMap.get(categoryName);
@@ -187,6 +231,12 @@ public class RecipeController {
     }
 
     //här skapas lista med valda ingredienser och none exkluderas.
+    /**
+     * Extracts all selected ingredients from the category map, excluding "none" values.
+     * Converts all ingredient names to lowercase for consistent API matching.
+     * @param categoryMap map of category names to lists of selected ingredients
+     * @return flat list of selected ingredient names in lowercase
+     */
     private List<String> extractAllIngredients(Map<String, List<String>> categoryMap){
         List <String> allIngredients = new ArrayList<>();
         for ( List<String> ingredientList : categoryMap.values()){
@@ -203,18 +253,40 @@ public class RecipeController {
     }
 
     //kontroll om receptets ursprung matchar användarens val av kök
+    /**
+     * Checks whether a recipe matches the user's selected cuisines.
+     * Returns true if no cuisines are selected (no filter applied).
+     * @param recipe the recipe to check
+     * @param selectedCuisines list of cuisines to filter by
+     * @return true if the recipe matches, false otherwise
+     */
     private boolean isCorrectCuisine(Recipe recipe, List<Cuisine> selectedCuisines){
         //om användaren ej val kök godkänns alla recept
         if (selectedCuisines == null || selectedCuisines.isEmpty()) return true;
         return selectedCuisines.contains(recipe.getCuisine());
     }
 
+
+    /**
+     * Checks whether a recipe matches the user's selected diets.
+     * Returns true if no diets are selected (no filter applied).
+     * @param recipe the recipe to check
+     * @param selectedDiets list of diets to filter by
+     * @return true if the recipe matches, false otherwise
+     */
     private boolean isCorrectDiet(Recipe recipe, List<Diet> selectedDiets){
         if (selectedDiets == null || selectedDiets.isEmpty()) return true;
         return selectedDiets.contains(recipe.getDiet());
     }
 
     //här sker beräkningen av receptets ingredienser som matchar anvädnarens val
+    /**
+     * Calculates how well a recipe matches the user's available ingredients.
+     * Uses partial string matching to handle ingredient name variations.
+     * @param recipe the recipe to evaluate
+     * @param userFridge list of ingredients the user has selected
+     * @return a value between 0.0 and 1.0 representing the match percentage
+     */
     private double calculateMatchPercentage(Recipe recipe, List<String> userFridge){
         double matchCount = 0;
         List<Ingredient> recipeIngredients = recipe.getIngredients();
@@ -238,6 +310,11 @@ public class RecipeController {
 
     //recipe
     //gör om om objektet från ett modelobjekt till ett DTO-objekt
+    /**
+     * Converts a Recipe domain object to a RecipeDTO for use in the GUI.
+     * @param recipe the recipe to convert
+     * @return a RecipeDTO with all display fields populated
+     */
     public RecipeDTO getRecipeDTO(Recipe recipe) {
         return new RecipeDTO(
                 recipe.getName(),
@@ -251,6 +328,11 @@ public class RecipeController {
     }
 
     //Mappar en hel lista av Recipe till en lista av DTO
+    /**
+     * Converts a list of Recipe objects to a list of RecipeDTOs.
+     * @param recipes the list of recipes to convert
+     * @return list of RecipeDTOs
+     */
     public List<RecipeDTO> getRecipeDTOList(List<Recipe> recipes) {
         List<RecipeDTO> dtos = new ArrayList<>();
         for (Recipe r : recipes) {
