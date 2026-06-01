@@ -17,8 +17,8 @@ import javafx.scene.control.Alert;
 import java.util.*;
 
 /**
- * View for selecting ingredients from categorixed lists.
- * The user must select at least one item per caregory before proceeding to recipe search.
+ * View for selecting ingredients from categorized lists.
+ * The user must select at least one item per category before proceeding to recipe search.
  * @author Maya and Intisaar
  */
 public class FridgeView extends StackPane {
@@ -198,7 +198,7 @@ public class FridgeView extends StackPane {
         clearErrorMessage();
         try {
             RecipeController controller = new RecipeController();
-            Fridge2ForkApp.root.setCenter(new DietView(categoryMap, controller, userController));
+            Fridge2ForkApp.root.setCenter(new DietView(categoryMap, controller, userController, this));
         }
         catch (Exception ex) {
             showErrorMessage("Something went wrong when searching for recipes. Please try again!");

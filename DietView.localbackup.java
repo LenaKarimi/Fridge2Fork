@@ -40,20 +40,12 @@ public class DietView extends StackPane {
     private final VBox loadingOverlay;
     private final VBox mainForm;
 
-    /**
-     * Constructs the DietView and builds the UI.
-     * @param selectedIngredients ingredients selected by the user in the previous step
-     * @param controller handles the logic of recipe search
-     * @param userController provides the current logged in user
-     * @param previousView the view to return to after the results
-     */
     public DietView(Map<String, List<String>> selectedIngredients, RecipeController controller,
                     UserController userController, Node previousView) {
         this.selectedIngredients = selectedIngredients;
         this.controller = controller;
         this.userController = userController;
         this.previousView = previousView;
-
 
         mainForm = new VBox(15);
         mainForm.setAlignment(Pos.CENTER_LEFT);
@@ -109,13 +101,9 @@ public class DietView extends StackPane {
         loadingText.setStyle("-fx-font-size: 18px; -fx-font-style: italic; -fx-text-fill: gray;");
 
         loadingOverlay.getChildren().addAll(progress, loadingText);
-
         this.getChildren().addAll(mainForm, loadingOverlay);
     }
 
-    /**
-     * Kicks off the search in a background thread and shows a loading UI.
-     */
     private void fetchRecipesInBackground() {
         List<Cuisine> chosenCuisines = getSelectedCuisines();
         List<Diet> chosenDiets = getSelectedDiets();
@@ -124,7 +112,6 @@ public class DietView extends StackPane {
             showError("Please select at least one cuisine type or 'Any cuisine'.");
             return;
         }
-
         if (chosenDiets.isEmpty() && !isAnySelectionSelected(dietCheckBoxes, "Any diet")) {
             showError("Please select at least one diet or 'Any diet'.");
             return;
@@ -134,9 +121,7 @@ public class DietView extends StackPane {
         mainForm.setOpacity(0.3);
         mainForm.setDisable(true);
         loadingOverlay.setVisible(true);
-
         findRecipesBtn.setDisable(true);
-        findRecipesBtn.setText("Searching...");
 
         Task<List<Recipe>> task = new Task<>() {
             @Override
@@ -157,20 +142,12 @@ public class DietView extends StackPane {
                 mainForm.setOpacity(1.0);
                 mainForm.setDisable(false);
                 findRecipesBtn.setDisable(false);
-                findRecipesBtn.setText("Find Recipes");
-
-                Throwable ex = task.getException();
-                String message = ex != null && ex.getMessage() != null ? ex.getMessage() : "Unknown error";
-                showError("Could not fetch recipes: " + message);
+                showError("Could not fetch recipes: " + task.getException().getMessage());
             });
-            task.getException().printStackTrace();
         });
 
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+        new Thread(task).start();
     }
-
 
     private void showError(String msg) {
         errorLabel.setText(msg);

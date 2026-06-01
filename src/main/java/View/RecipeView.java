@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import Controller.UserController;
 import DTO.ProfileDTO;
 import java.util.List;
+import javafx.scene.Node;
 
 /**
  * View that displays the full details of a single recipe.
@@ -25,7 +26,7 @@ import java.util.List;
  * @author Intisaar and Maya
  */
 public class RecipeView extends StackPane {
-    private final RecipeResultsView previousView;
+    private final Node previousView;
     private final UserController userController;
 
     /**
@@ -34,7 +35,7 @@ public class RecipeView extends StackPane {
      * @param previousView the results view to return to, or null
      * @param userController provides the currently logged in user
      */
-    public RecipeView(Recipe recipe, RecipeResultsView previousView, UserController userController) {
+    public RecipeView(Recipe recipe, Node previousView, UserController userController) {
         this.previousView = previousView;
         this.userController = userController;
 
@@ -46,12 +47,25 @@ public class RecipeView extends StackPane {
         content.setMaxWidth(800);
         content.setAlignment(Pos.TOP_LEFT);
 
-        Button backButton = new Button("← Back to Results");
+        //dynamisk tbx-knapp baserat på tidigare vy
+        String backText = "← Back";
+        if (previousView instanceof LikedRecipesView){
+            backText = "← Back to Liked Recipes";
+        } else if (previousView instanceof RecipeResultsView){
+            backText = "← Back to Results";
+        }
+
+        Button backButton = new Button(backText);
         backButton.setStyle("-fx-background-color: darkseagreen; -fx-text-fill: white; -fx-font-weight: bold;");
         backButton.setCursor(javafx.scene.Cursor.HAND);
 
+        //gå tbx till tidigare vy om tillgänglig, annars fallback till HomeView
         backButton.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(previousView);
+            if (previousView != null){
+                Fridge2ForkApp.root.setCenter(previousView);
+            } else {
+                Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            }
         });
 
         Button likeButton = new Button("\u2661 Like"); //\u2661 = tomt hjärta, \u2665 = fyllt hjärta

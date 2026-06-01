@@ -71,7 +71,7 @@ public class PantryView extends BorderPane {
             }
         });
 
-        Button deletBtn = new Button("Delet seletec item");
+        Button deletBtn = new Button("Delete selected item");
         deletBtn.setOnAction(e-> handleDelete());
 
         VBox panelList = new VBox(10, new Label("Pantry"), list, deletBtn);
@@ -96,15 +96,18 @@ public class PantryView extends BorderPane {
         if (localDate != null){
             date = localDate.toString();
         }
-
-        String error = pantryController.addItem(profilID, nameField.getText(), date);
-
-        if (error != null){
-            informationLabel.setText(error);
-        } else {
-            informationLabel.setText("Saved!");
-            nameField.clear();
-            refreshList();
+        try {
+            String error = pantryController.addItem(profilID, nameField.getText(), date);
+            if (error != null){
+                informationLabel.setText(error);
+            }
+            else {
+                informationLabel.setText("Saved!");
+                nameField.clear();
+                refreshList();
+            }
+        } catch (Exception e) {
+            informationLabel.setText("Something went wrong");
         }
     }
 

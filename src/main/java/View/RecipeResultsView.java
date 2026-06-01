@@ -5,6 +5,7 @@ import Controller.LikedRecipeController;
 import Model.Recipe;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
@@ -14,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import Controller.UserController;
+import javafx.scene.Node;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -28,22 +30,80 @@ public class RecipeResultsView extends VBox {
     private final UserController userController;
     private final List<Recipe> allFetchedRecipes;
     private HBox recipeContainer;
+    private final Node previousView;
 
     /**
      * Constructs the RecipeResultView and builds the UI.
      * @param recipes list of matching recipes to display
+     * @param previousView the view to return to when clicking "Edit ingredients"
      * @param userController provides the currently logged in user
      */
-    public RecipeResultsView(List<Recipe> recipes, UserController userController) {
+    public RecipeResultsView(List<Recipe> recipes, Node previousView, UserController userController) {
         this.setPadding(new Insets(40));
         this.setSpacing(30);
         this.setAlignment(Pos.TOP_CENTER);
         this.userController = userController;
         this.allFetchedRecipes = recipes;
+        this.previousView = previousView;
 
         Label title = new Label("Matching recipes");
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
+
+        //back-/edit-knapp
+        Button backBtn = new Button("← Edit ingredients");
+        backBtn.setStyle(
+                "-fx-background-color: white; " +
+                        "-fx-text-fill: #2e7d32; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 8 20; " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-color: #2e7d32; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-font-size: 14px;"
+        );
+        backBtn.setCursor(Cursor.HAND);
+        //hover-effekt
+        backBtn.setOnMouseEntered(e -> backBtn.setStyle(
+                "-fx-background-color: #f1f8e9; " +
+                        "-fx-text-fill: #1b5e20; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 8 20; " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-color: #1b5e20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-font-size: 14px;"
+        ));
+        backBtn.setOnMouseExited(e -> backBtn.setStyle(
+                "-fx-background-color: white; " +
+                        "-fx-text-fill: #2e7d32; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 8 20; " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-color: #2e7d32; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-font-size: 14px;"
+        ));
+
+        backBtn.setOnAction(e -> {
+            if (previousView != null){
+                Fridge2ForkApp.root.setCenter(previousView);
+            } else {
+                Fridge2ForkApp.root.setCenter(new HomeView(userController));
+            }
+        });
+
+        //lägger knappen till vänster och titeln i mitten
+        StackPane headerStack = new StackPane();
+        headerStack.getChildren().addAll(title, backBtn);
+        StackPane.setAlignment(backBtn, Pos.CENTER_LEFT);
+        StackPane.setAlignment(title, Pos.CENTER);
+        this.getChildren().add(headerStack);
+
+        HBox topBar = new HBox(10, backBtn, title);
+        topBar.setAlignment(Pos.CENTER);
+        this.getChildren().add(topBar);
+
         boolean isSuggestions = recipes != null && !recipes.isEmpty() && recipes.stream().allMatch(r -> r.getMatchPercentage() < 0.5);
         if (isSuggestions) {
             Label suggestionLabel = new Label("We could not find any recipes over 50% match, but here are some suggestions:");
