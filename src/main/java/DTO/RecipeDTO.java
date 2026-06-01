@@ -11,7 +11,7 @@ import java.util.List;
  * Data Transfer Object (DTO) used for transferring simplified recipe data
  * between layers of the application.
  * It contains the essential fields needed for display purposes.
- * @author Lena
+ * @author Lena and Intisaar
  */
 public class RecipeDTO {
     private String name;
@@ -53,14 +53,35 @@ public class RecipeDTO {
         return imageUrl;
     }
 
+    /**
+     * Returns the list of ingredients required by this recipe.
+     * @return a list of Ingredient objects
+     */
     public List<Ingredient> getIngredients() {return ingredients;}
 
+    /**
+     * Returns the cuisine type of this recipe.
+     * @return the Cuisine enum value
+     */
     public Cuisine getCuisine() { return cuisine;}
 
+    /**
+     * Returns the cooking instructions for this recipe.
+     * @return the instructions as a plain text string
+     */
     public String getInstructions() {return instructions;}
 
+    /**
+     * Returns the raw match percentage indicating how well this recipe matches the user's pantry.
+     * @return the match percentage
+     */
     public double getMatchPercentage(){ return matchPercentage;}
 
+    /**
+     * Returns the match percentage formatted as a whole-number percentage string for display in the UI.
+     * For example, a match percentage of 0.75 returns "75%".
+     * @return the formatted match percentage string
+     */
     public String getMatchPercentageFormatted(){
         return (int) Math.round(matchPercentage * 100) + "%";
     }
