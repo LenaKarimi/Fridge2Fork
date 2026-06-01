@@ -23,24 +23,24 @@ public class PantryItemDTO {
     }
 
     /**
-     *
-     * @return
+     * Returns the unique ID of this pantry item.
+     * @return the pantry item ID
      */
     public int getId() {
         return id;
     }
 
     /**
-     *
-     * @return
+     * Returns the name of the ingredient or food item.
+     * @return the item name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @return
+     * Returns the expiry date of this pantry item as a formatted string.
+     * @return the expiry date string
      */
     public String getExpiryDate() {
         return expiryDate;
