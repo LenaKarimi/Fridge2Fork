@@ -3,9 +3,21 @@ package Database;
 import Database.*;
 import java.sql.*;
 
+/**
+ * Data Access Object for managing liked recipes in the database.
+ * Handles saving, removing and checking liked recipes per user.
+ * @author Racil
+ */
 public class LikedRecipeDAO {
 
     // sparar likat recept till en användare
+    /**
+     * Saves a liked recipe for a given user.
+     * Duplicate entries are silently ignored.
+     * @param profieId the ID of the user
+     * @param mealId the ID of the recipe to like
+     * @throws SQLException if a database access error occurs
+     */
     public void likedRecipe(int profieId, String mealId) throws SQLException {
         //lägger in båda idn i tabellen, dubletter ignoreras
         String sql = "INSERT INTO liked_recipes (profile_id, meal_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
@@ -18,6 +30,12 @@ public class LikedRecipeDAO {
     }
 
     //avlika recept
+    /**
+     * Removes a liked recipe for a given user.
+     * @param profieId the ID of the user
+     * @param mealId the ID of the recipe to unlike
+     * @throws SQLException if a database access error occurs
+     */
     public void unlikeRecipe(int profieId, String mealId) throws SQLException {
         //tar bort rad där båda idn matchar
         String sql = "DELETE FROM liked_recipes WHERE profile_id = ? AND meal_id = ?";
@@ -30,6 +48,13 @@ public class LikedRecipeDAO {
     }
 
     // vet ej om nödvändigt men kontrollerar om ett recept är gillat
+    /**
+     * Checks whether a specific recipe is liked by a given user.
+     * @param profieId the ID of the user
+     * @param mealId the ID of the recipe to check
+     * @return true if the recipe is liked, false otherwise
+     * @throws SQLException if a database access error occurs
+     */
     public boolean isLiked(int profieId, String mealId) throws SQLException {
         // söker efter en rad i tabbelen där idn matchar
         String sql = "SELECT 1 FROM liked_recipes WHERE profile_id = ? AND meal_id = ?";
