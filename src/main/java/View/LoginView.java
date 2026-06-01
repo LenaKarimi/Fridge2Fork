@@ -2,12 +2,17 @@ package View;
 
 
 import App.Fridge2ForkApp;
+import Controller.LikedRecipeController;
+import Controller.PantryController;
 import Controller.UserController;
 import DTO.ProfileDTO;
+import Model.Recipe;
 import View.HomeView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+
+import java.util.List;
 
 /**
  * View for logging in to an exiting user account.
@@ -16,8 +21,12 @@ import javafx.geometry.*;
  */
 
 public class LoginView extends VBox {
-
-    public LoginView(UserController userController) {
+    /**
+     * Constructs the LoginView and builds the UI.
+     * @param userController handles login logic and user state
+     * @param destination the view to navigate to after successful login
+     */
+    public LoginView(UserController userController, String destination) {
         this.setSpacing(10);
         this.setPadding(new Insets(20));
         this.setAlignment(Pos.CENTER);
@@ -43,12 +52,27 @@ public class LoginView extends VBox {
 
             if (isUser == null) {
                 errorLabel.setText(userController.getLoginError());
-            } else {
-                HomeView homeView = new HomeView(userController);
-                homeView.setupLoggedInState(isUser);
-
-                Fridge2ForkApp.root.setCenter(homeView);
+            }
+            else {
                 Fridge2ForkApp.root.setLeft(new SideBarView(userController));
+
+                if (destination.equals("Liked recipes")){
+                    LikedRecipeController likedRecipeController = new LikedRecipeController();
+                    int profilId = userController.getCurrentUser().getId();
+                    List<Recipe> likedRecipes = likedRecipeController.getLikedRecipes(profilId);
+                    Fridge2ForkApp.root.setCenter(new LikedRecipesView(likedRecipes,userController));
+                }
+                else if (destination.equals("Purchases")){
+                    Fridge2ForkApp.root.setCenter(new PantryView(new PantryController(), userController));
+                }
+                else if (destination.equals("Profile")){
+                    Fridge2ForkApp.root.setCenter(new ProfileView(userController, userController.getCurrentUser()));
+                }
+                else {
+                    HomeView homeView = new HomeView(userController);
+                    homeView.setupLoggedInState(isUser);
+                    Fridge2ForkApp.root.setCenter(homeView);
+                }
             }
         });
 
