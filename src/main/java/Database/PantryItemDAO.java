@@ -9,9 +9,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object for managing pantry items in the database.
+ * Handles adding, retrieving, deleting and mapping pantry items per user.
+ * @author Racil
+ */
 public class PantryItemDAO {
 
     // lägger till en ny profukt i databasen för den specifika personen
+    /**
+     * Adds a new pantry item for a given user.
+     * @param profileId the ID of the user
+     * @param name the name of the ingredient
+     * @param expiryDate the expiry date of the ingredient
+     * @throws SQLException if a database access error occurs
+     */
     public void addItem(int profileId, String name, LocalDate expiryDate) throws SQLException {
         String sql = "INSERT INTO pantry_items (profile_id, name, expiry_date) VALUES (?, ?, ?)"; // detta är vår sql request
         try (Connection connection = DbConnection.getConnection(); // vi öppnar db uppkopplingen
@@ -24,6 +36,13 @@ public class PantryItemDAO {
     }
 
     // hämtar enbart de produkter som ej passerat utgångsdatumet
+    /**
+     * Returns all pantry items for a given user that have not yet expired.
+     * Results are ordered by expiry date ascending.
+     * @param profileId the ID of the user
+     * @return list of valid pantry items
+     * @throws SQLException if a database access error occurs
+     */
     public List<PantryItem> getPantryItems(int profileId) throws SQLException {
        String sql = """
                SELECT id, name, expiry_date FROM pantry_items
@@ -43,6 +62,11 @@ public class PantryItemDAO {
     }
 
     //resnar utgångna produkter
+    /**
+     * Deletes a specific pantry item from the database by its ID.
+     * @param itemId the ID of the item to delete
+     * @throws SQLException if a database access error occurs
+     */
     public void deletePantryItem(int itemId) throws SQLException {
         String sql = "DELETE FROM pantry_items WHERE id = ?";
         try (Connection connection = DbConnection.getConnection();
@@ -52,6 +76,12 @@ public class PantryItemDAO {
         }
     }
 
+    /**
+     * Deletes all expired pantry items for a given user.
+     * An item is considered expired if its expiry date is before today.
+     * @param profileId the ID of the user
+     * @throws SQLException if a database access error occurs
+     */
     public void deleteExpiredItems(int profileId) throws SQLException {
         String sql = "DELETE FROM pantry_items WHERE profile_id = ? AND expiry_date < CURRENT_DATE";
         try (Connection connection = DbConnection.getConnection();
@@ -62,6 +92,13 @@ public class PantryItemDAO {
 
     }
 
+    /**
+     * Maps a row from the database result set to a PantryItem object.
+     * @param resultSet the result set positioned at the current row
+     * @param profileId the ID of the user the item belongs to
+     * @return a PantryItem built from the result set data
+     * @throws SQLException if a database access error occurs
+     */
     private PantryItem mapToPantryItem(ResultSet resultSet, int profileId) throws SQLException {
         return new PantryItem(
                 resultSet.getInt("id"),
