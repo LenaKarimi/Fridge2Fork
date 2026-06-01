@@ -8,10 +8,22 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object for managing recipes in the database.
+ * Handles saving, retrieving and mapping recipe records including ingredients stored as JSON.
+ * @author Intisaar
+ */
 public class RecipeDAO {
 
     private final ObjectMapper mapper = new ObjectMapper(); // skapar ett mapper objekt
 
+    /**
+     * Saves a recipe to the database.
+     * If a recipe with the same meal ID already exists, the insert is silently ignored.
+     * @param recipe the recipe to save
+     * @throws SQLException if a database access error occurs
+     * @throws JsonProcessingException if the ingredient list cannot be serialised to JSON
+     */
     public void saveRecipe(Recipe recipe) throws SQLException, JsonProcessingException { // sparar recept i databasen
        // on confilct = inget görs om receptet redan finns
         String sql = """
@@ -32,6 +44,13 @@ public class RecipeDAO {
         }
     }
 
+    /**
+     * Retrieves a single recipe from the database by its meal ID.
+     * @param mealId the ID of the recipe to retrieve
+     * @return the matching Recipe, or null if no match is found
+     * @throws SQLException if a database access error occurs
+     * @throws JsonProcessingException if the stored ingredient JSON cannot be parsed
+     */
     public Recipe getRecipeById(String mealId) throws SQLException, JsonProcessingException { // hämta recept från databasen
         String sql = "SELECT * FROM recipes WHERE meal_id = ?"; // hämtar alla kolumner där meal id matchar efterfrågan
         try (Connection connection = DbConnection.getConnection();
@@ -45,6 +64,14 @@ public class RecipeDAO {
         return null;
     }
 
+    /**
+     * Returns all recipes that a given user has liked.
+     * Joins the recipes and liked_recipes tables to find the matches.
+     * @param profileId the ID of the user
+     * @return list of liked recipes
+     * @throws SQLException if a database access error occurs
+     * @throws JsonProcessingException if stored ingredient JSON cannot be parsed
+     */
     public List<Recipe> getLikedRecipes(int profileId) throws SQLException, JsonProcessingException { // hämtar alla recept som en profil gillat
         String sql = """
                 SELECT r.* FROM recipes r
@@ -64,6 +91,14 @@ public class RecipeDAO {
     }
 
     // mapper som gör om rad från databasen (resultSet) till ett objekt
+    /**
+     * Maps a row from the database result set to a Recipe object.
+     * Deserialises the ingredient list from JSON and converts the cuisine string to an enum.
+     * @param resultSet the result set positioned at the current row
+     * @return a Recipe built from the result set data
+     * @throws SQLException if a database access error occurs
+     * @throws JsonProcessingException if the ingredient JSON cannot be parsed
+     */
     private Recipe mapToRecipe(ResultSet resultSet) throws SQLException, JsonProcessingException {
         String cuisineString = resultSet.getString("cuisine"); // hämtar cuisine som text från databasen
         Cuisine cuisine = null;
