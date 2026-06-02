@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Data Access Object for managing recipes in the database.
  * Handles saving, retrieving and mapping recipe records including ingredients stored as JSON.
- * @author Intisaar
+ * @author Racil
  */
 public class RecipeDAO {
 
