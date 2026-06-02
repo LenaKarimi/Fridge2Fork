@@ -75,7 +75,6 @@ public class LikedRecipesView extends VBox {
         System.out.println("skapar kort för;" + recipe.getName());
         VBox card = new VBox(10);
 
-        //hoover-effekt som sidopanelen har på knapparna
         DropShadow hoverShadow = new javafx.scene.effect.DropShadow();
         hoverShadow.setColor(javafx.scene.paint.Color.rgb(0, 0, 0, 0.15));
         hoverShadow.setRadius(14);
@@ -126,17 +125,15 @@ public class LikedRecipesView extends VBox {
             if (userController.getCurrentUser() != null) {
                 LikedRecipeController likedRecipeController = new LikedRecipeController();
                 int profileId = userController.getCurrentUser().getId();
-                likedRecipeController.unlikeRecipe(profileId, recipe.getId()); // tar bort från db
+                likedRecipeController.unlikeRecipe(profileId, recipe.getId());
                 card.setVisible(false);
                 card.setManaged(false);
             }
 
         });
 
-        HBox footer = new HBox(10, titleLabel, unlikeBtn);
+        VBox footer = new VBox(5, titleLabel, unlikeBtn);
         footer.setAlignment(Pos.CENTER_LEFT);
-        footer.setMaxWidth(210);
-        HBox.setHgrow(titleLabel, javafx.scene.layout.Priority.ALWAYS);
 
         card.getChildren().addAll(imageView, footer);
         return card;
