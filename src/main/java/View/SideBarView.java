@@ -18,6 +18,7 @@ import App.Fridge2ForkApp;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import javafx.scene.control.ButtonBar;
 
 /**
  * Sidebar navigation view displayed on the left side of the application.
@@ -80,8 +81,10 @@ public class SideBarView extends VBox {
                 confirm.setHeaderText(null);
                 confirm.setContentText("Are you sure you want to log out?");
 
+                confirm.initOwner(Fridge2ForkApp.root.getScene().getWindow());
+
                 ButtonType yes = new ButtonType("Yes");
-                ButtonType no = new ButtonType("No", ButtonType.NO.getButtonData());
+                ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
                 confirm.getButtonTypes().setAll(yes, no);
 
                 confirm.showAndWait().ifPresent(choice -> {
@@ -143,6 +146,7 @@ public class SideBarView extends VBox {
         box.setOnMouseClicked(e -> {
             if (Fridge2ForkApp.root.getCenter() instanceof FridgeView) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(Fridge2ForkApp.root.getScene().getWindow());
                 alert.setTitle("Leave this page?");
                 alert.setHeaderText(null);
                 alert.setContentText("If you exit this page, your choices won't be saved.");

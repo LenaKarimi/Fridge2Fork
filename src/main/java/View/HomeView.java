@@ -215,6 +215,7 @@ public class HomeView extends BorderPane {
            System.out.println("sideBar är: " + Fridge2ForkApp.sideBar);
            userController.logout();
            Fridge2ForkApp.sideBar.resetProfilePicture();
+
        });
    }
 }
