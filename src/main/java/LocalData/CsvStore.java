@@ -172,7 +172,7 @@ public final class CsvStore {
         if (area == null || area.isBlank()) return null;
         try {
             for (Cuisine cuisine : Cuisine.values()) {
-                if (cuisine.name().equalsIgnoreCase(area.trim())) {
+                if (cuisine.name().equalsIgnoreCase(area.trim().replace(" ", ""))) {
                     return cuisine;
                 }
             }

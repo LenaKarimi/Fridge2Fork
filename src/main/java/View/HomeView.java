@@ -45,7 +45,7 @@ public class HomeView extends BorderPane {
         Button registerBtn = new Button("Create account");
 
         loginBtn.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(new LoginView(userController));
+            Fridge2ForkApp.root.setCenter(new LoginView(userController, "Home"));
         });
 
         registerBtn.setOnAction(e -> {
@@ -112,7 +112,11 @@ public class HomeView extends BorderPane {
         bg.setPreserveRatio(true);
         bg.setSmooth(true);
         bg.setFitHeight(615);
-        bg.setOpacity(1.0);
+        //bg.setOpacity(1.0);
+        bg.setOpacity(0.3);
+
+
+
        /* bg.fitWidthProperty().bind(this.widthProperty());
         bg.fitHeightProperty().bind(this.heightProperty());
         bg.setStyle("-fx-opacity: 0.95;");*/
@@ -203,7 +207,7 @@ public class HomeView extends BorderPane {
            loginBtn.setCursor(Cursor.HAND);
            registerBtn.setCursor(Cursor.HAND);
 
-           loginBtn.setOnAction(ev -> Fridge2ForkApp.root.setCenter(new LoginView(userController)));
+           loginBtn.setOnAction(ev -> Fridge2ForkApp.root.setCenter(new LoginView(userController, "Home")));
            registerBtn.setOnAction(ev -> Fridge2ForkApp.root.setCenter(new RegisterView(userController)));
 
            authButtons.getChildren().addAll(loginBtn, registerBtn);

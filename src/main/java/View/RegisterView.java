@@ -57,7 +57,7 @@ public class RegisterView extends VBox {
             if (error != null) {
                 errorLable.setText(error);
             } else {
-                Fridge2ForkApp.root.setCenter(new LoginView(userController));
+                Fridge2ForkApp.root.setCenter(new LoginView(userController, "Home"));
             }
         });
         backBtn.setOnAction(e -> {

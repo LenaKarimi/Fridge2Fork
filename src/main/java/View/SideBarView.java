@@ -170,6 +170,7 @@ public class SideBarView extends VBox {
 
     /**
      * Navigates to the appropriate view based on the clicked button label.
+     * Redirects to login with destination if the user is not logged in
      * @param text the label of the clicked navigation button
      */
     private void navigera(String text) {
@@ -180,13 +181,13 @@ public class SideBarView extends VBox {
              if (userController.getCurrentUser() != null) {
                  Fridge2ForkApp.root.setCenter(new ProfileView(userController, userController.getCurrentUser()));
              } else {
-                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
+                 Fridge2ForkApp.root.setCenter(new LoginView(userController, "Profile"));
              }
          }
          else if (text.equals("Liked recipes")) {
              System.out.println("getCurrentUser: " + userController.getCurrentUser());
              if (userController.getCurrentUser() == null) {
-                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
+                 Fridge2ForkApp.root.setCenter(new LoginView(userController, "Liked recipes"));
              }
              else {
                  LikedRecipeController likedRecipeController = new LikedRecipeController();
@@ -200,7 +201,7 @@ public class SideBarView extends VBox {
                  Fridge2ForkApp.root.setCenter(new PantryView(new PantryController(), userController));
              }
              else {
-                 Fridge2ForkApp.root.setCenter(new LoginView(userController));
+                 Fridge2ForkApp.root.setCenter(new LoginView(userController, "Purchases"));
              }
          }
     }
