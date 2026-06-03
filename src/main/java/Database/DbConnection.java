@@ -1,6 +1,6 @@
 package Database;
 
-import java.net.URL;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,11 +8,15 @@ import java.sql.SQLException;
 /**
  * Manges a single shared database connection.
  * It implements a simple connection that ensure that only one active database connection is used throughout the application.
- * Database credentials are loaded from environment variables.
+ * Database credentials are loaded from env file.
  * @author Lena and Racil
  */
 public class DbConnection {
-    private static Connection connection;
+    private static final Dotenv dotenv = Dotenv.load();
+
+    public static final String URL = dotenv.get("DB_F2F_URL");
+    public static final String USER = dotenv.get("DB_F2F_USER");
+    public static final String PASSWORD = dotenv.get("DB_F2F_PASSWORD");
 
     /**
      * Returns an active database connection.
@@ -23,18 +27,6 @@ public class DbConnection {
      */
     public static Connection getConnection() throws SQLException {
         System.out.println("öppnar db upkoppling");
-        if (connection == null || connection.isClosed()) {
-
-            String url = System.getenv("DB_F2F_URL");
-            String user = System.getenv("DB_F2F_USER");
-            String password = System.getenv("DB_F2F_PASSWORD");
-
-            connection = DriverManager.getConnection(
-                    url,
-                    user,
-                    password
-            );
-        }
-        return connection;
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
