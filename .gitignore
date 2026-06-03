@@ -254,3 +254,7 @@ target/classes/View/.FridgeView 2.class.icloud
 target/classes/View/.HomeView 2.class.icloud
 target/classes/View/.RecipeView 2.class.icloud
 target/classes/View/.SideBarView 2.class.icloud
+
+.env
+config/.env
+*.env
