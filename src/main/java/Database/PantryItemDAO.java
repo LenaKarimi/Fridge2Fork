@@ -1,6 +1,5 @@
 package Database;
 
-import Database.*;
 import Model.*;
 import DTO.*;
 import java.sql.*;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class PantryItemDAO {
 
-    // lägger till en ny profukt i databasen för den specifika personen
+
     /**
      * Adds a new pantry item for a given user.
      * @param profileId the ID of the user
@@ -25,17 +24,17 @@ public class PantryItemDAO {
      * @throws SQLException if a database access error occurs
      */
     public void addItem(int profileId, String name, LocalDate expiryDate) throws SQLException {
-        String sql = "INSERT INTO pantry_items (profile_id, name, expiry_date) VALUES (?, ?, ?)"; // detta är vår sql request
-        try (Connection connection = DbConnection.getConnection(); // vi öppnar db uppkopplingen
+        String sql = "INSERT INTO pantry_items (profile_id, name, expiry_date) VALUES (?, ?, ?)";
+        try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, profileId); // skcikar in våra frågetecken
+            preparedStatement.setInt(1, profileId);
             preparedStatement.setString(2, name);
             preparedStatement.setDate(3, Date.valueOf(expiryDate));
             preparedStatement.executeUpdate();
         }
     }
 
-    // hämtar enbart de produkter som ej passerat utgångsdatumet
+
     /**
      * Returns all pantry items for a given user that have not yet expired.
      * Results are ordered by expiry date ascending.
@@ -48,20 +47,20 @@ public class PantryItemDAO {
                SELECT id, name, expiry_date FROM pantry_items
                WHERE profile_id = ? AND expiry_date >= CURRENT_DATE
                ORDER BY expiry_date ASC
-               """; // hämtar produkter med utgångsdatum som är dagens datum eller senare
-       List<PantryItem> pantryItems = new ArrayList<>(); // lista som fylls på med produkter
+               """;
+       List<PantryItem> pantryItems = new ArrayList<>();
        try (Connection connection = DbConnection.getConnection();
        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, profileId);
-            ResultSet resultSet = preparedStatement.executeQuery(); // kör frågan och sparar resultatet
-            while (resultSet.next()) { // loopar resultatet
-                pantryItems.add(mapToPantryItem(resultSet, profileId)); //gör om till ett model objekt plus lägger till i listan
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                pantryItems.add(mapToPantryItem(resultSet, profileId));
             }
        }
-       return pantryItems; // returnerar listan
+       return pantryItems;
     }
 
-    //resnar utgångna produkter
+
     /**
      * Deletes a specific pantry item from the database by its ID.
      * @param itemId the ID of the item to delete

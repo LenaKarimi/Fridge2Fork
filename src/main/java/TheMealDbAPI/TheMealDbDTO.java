@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * It provides helper methods for accessing ingredients and their corresponding measurements by index.
  * @author Lena
  */
-@JsonIgnoreProperties (ignoreUnknown = true) //ignores unknown JSON fields
+@JsonIgnoreProperties (ignoreUnknown = true)
 public final class TheMealDbDTO {
     public String idMeal;
     public String strMeal;

@@ -20,7 +20,6 @@ public class PantryController {
     private final PantryItemDAO pantryItemDAO = new PantryItemDAO();
 
 
-    // lägger till produkt, returenerar null om lyckat, felmedelande om problem
     /**
      * Adds a new pantry item for a given user.
      * Validates that both name and expiry date are provided and that the date is not in the past.
@@ -54,7 +53,7 @@ public class PantryController {
         }
     }
 
-    //hämtar alla giltiga produkter och rensar det passerade
+
     /**
      * Returns all valid pantry items for a given user.
      * Expired items are automatically removed before returning the list.
@@ -63,7 +62,7 @@ public class PantryController {
      */
     public List<PantryItemDTO> getPantryItems(int profileId) {
         try {
-            pantryItemDAO.deleteExpiredItems(profileId); // resnar utgångna produkter
+            pantryItemDAO.deleteExpiredItems(profileId);
             List<PantryItem> pantryItems = pantryItemDAO.getPantryItems(profileId);
             return mapToDTOList(pantryItems);
 
@@ -73,7 +72,7 @@ public class PantryController {
         }
     }
 
-    //raderar en produkt från databasen
+
     /**
      * Deletes a specific pantry item from the database.
      * @param itemid the ID of the item to delete
@@ -86,7 +85,7 @@ public class PantryController {
         }
     }
 
-    // mappar en item till en dto
+
     /**
      * Converts a PantryItem domain object to a PantryItemDTO for use in the GUI.
      * @param pantryItem the pantry item to convert
@@ -96,11 +95,11 @@ public class PantryController {
         return new PantryItemDTO(
                 pantryItem.getId(),
                 pantryItem.getName(),
-                pantryItem.getExpiryDate().toString() // snyggar till datumets formatering
+                pantryItem.getExpiryDate().toString()
         );
     }
 
-    //mappar en lista av items till en lista av dtos, använder MapToDTO
+
     /**
      * Converts a list of PantryItem objects to a list of PantryItemDTOs.
      * @param pantryItems the list of pantry items to convert
@@ -108,8 +107,8 @@ public class PantryController {
      */
     private List<PantryItemDTO> mapToDTOList(List<PantryItem> pantryItems) {
         List<PantryItemDTO> pantryItemDTOSList = new ArrayList<>();
-        for(PantryItem pantryItem : pantryItems) { // loopar listan
-            pantryItemDTOSList.add(mapToDTO(pantryItem)); // anroppar ovanstående metod
+        for(PantryItem pantryItem : pantryItems) {
+            pantryItemDTOSList.add(mapToDTO(pantryItem));
         }
         return pantryItemDTOSList;
     }

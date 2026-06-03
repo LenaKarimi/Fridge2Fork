@@ -171,16 +171,32 @@ public class DietView extends StackPane {
         th.start();
     }
 
+    /**
+     * Displays an error message in the user interface
+     * @param msg error message
+     */
 
     private void showError(String msg) {
         errorLabel.setText(msg);
         errorLabel.setVisible(true);
     }
 
+    /**
+     * Checks wether any checkbox with the specified text is selected
+     * @param boxes the list of checkboxes
+     * @param text the text of the checkbox to look for
+     * @return true if a matching checkbox is selected otherwise false
+     */
     private boolean isAnySelectionSelected(List<CheckBox> boxes, String text) {
         return boxes.stream().anyMatch(cb -> cb.getText().equals(text) && cb.isSelected());
     }
 
+    /**
+     * Retrives all selected cuisines based on the selected cuisine group checkboxes
+     * if "any cuisine" is selected an empty list is returned so that no cuisine filtering applies
+     *
+     * @return a list of selected cuisines
+     */
     private List<Cuisine> getSelectedCuisines() {
         List<Cuisine> selected = new ArrayList<>();
         for (CheckBox cb : cuisineCheckBoxes) {
@@ -198,6 +214,12 @@ public class DietView extends StackPane {
         return selected;
     }
 
+    /**
+     * retrives all selected dietary preferences based on the selected diet checkboxes.
+     * If "any diest" is selected an empty list is returned so that no diet filer is applied.
+     *
+     * @return list of selected dietary choices
+     */
     private List<Diet> getSelectedDiets() {
         List<Diet> selected = new ArrayList<>();
         for (CheckBox cb : dietCheckBoxes) {

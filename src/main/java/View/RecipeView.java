@@ -47,7 +47,7 @@ public class RecipeView extends StackPane {
         content.setMaxWidth(800);
         content.setAlignment(Pos.TOP_LEFT);
 
-        //dynamisk tbx-knapp baserat på tidigare vy
+
         String backText = "← Back";
         if (previousView instanceof LikedRecipesView){
             backText = "← Back to Liked Recipes";
@@ -59,7 +59,6 @@ public class RecipeView extends StackPane {
         backButton.setStyle("-fx-background-color: darkseagreen; -fx-text-fill: white; -fx-font-weight: bold;");
         backButton.setCursor(javafx.scene.Cursor.HAND);
 
-        //gå tbx till tidigare vy om tillgänglig, annars fallback till HomeView
         backButton.setOnAction(e -> {
             if (previousView != null){
                 Fridge2ForkApp.root.setCenter(previousView);
@@ -68,7 +67,7 @@ public class RecipeView extends StackPane {
             }
         });
 
-        Button likeButton = new Button("\u2661 Like"); //\u2661 = tomt hjärta, \u2665 = fyllt hjärta
+        Button likeButton = new Button("\u2661 Like");
         likeButton.setStyle("-fx-font-size: 16px; -fx-background-color: white; -fx-border-color: red;" +
                 " -fx-border-radius: 5; -fx-text-fill: red;");
         likeButton.setCursor(javafx.scene.Cursor.HAND);
@@ -107,7 +106,6 @@ public class RecipeView extends StackPane {
                 Image image = new Image(imageUrl, true);
                 recipeImageView.setImage(image);
                 recipeImageView.setFitWidth(500);
-                //NYTT anpassa bildstorlek
                 recipeImageView.setFitHeight(300);
                 recipeImageView.setPreserveRatio(true);
                 recipeImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);");
@@ -126,7 +124,7 @@ public class RecipeView extends StackPane {
         List<Ingredient> ingredients = recipe.getIngredients();
         if (ingredients != null) {
             for (Ingredient ing : ingredients) {
-                //här kombineras mått och namn
+
                 String ingredientText = ing.getMeasure() + " " + ing.getName();
                 Label ingLabel = new Label("• " + ingredientText);
                 ingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: black;");

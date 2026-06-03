@@ -13,11 +13,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.util.List;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
 
 /**
  * View that displays all recipes the user has liked.
@@ -110,7 +108,6 @@ public class LikedRecipesView extends VBox {
             }
         }
 
-        //fallback titel om namn saknas
         String titleText = (recipe.getName() != null && !recipe.getName().isBlank()) ? recipe.getName() :
                 "Unnamed Recipe";
         Label titleLabel = new Label(titleText);

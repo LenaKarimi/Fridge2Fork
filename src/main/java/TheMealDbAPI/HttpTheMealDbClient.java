@@ -39,7 +39,7 @@ public class HttpTheMealDbClient {
 
         mainIngredient = mainIngredient.replace(" ", "_");
 
-        String url = baseUrl + "/filter.php?i=" + mainIngredient; //här bygger jag URL
+        String url = baseUrl + "/filter.php?i=" + mainIngredient;
         return sendRequest(url);
     }
 

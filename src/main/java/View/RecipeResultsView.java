@@ -50,7 +50,7 @@ public class RecipeResultsView extends VBox {
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkkhaki;");
         this.getChildren().add(title);
 
-        //back-/edit-knapp
+
         Button backBtn = new Button("← Edit ingredients");
         backBtn.setStyle(
                 "-fx-background-color: white; " +
@@ -63,7 +63,7 @@ public class RecipeResultsView extends VBox {
                         "-fx-font-size: 14px;"
         );
         backBtn.setCursor(Cursor.HAND);
-        //hover-effekt
+
         backBtn.setOnMouseEntered(e -> backBtn.setStyle(
                 "-fx-background-color: #f1f8e9; " +
                         "-fx-text-fill: #1b5e20; " +
@@ -93,7 +93,7 @@ public class RecipeResultsView extends VBox {
             }
         });
 
-        //lägger knappen till vänster och titeln i mitten
+
         StackPane headerStack = new StackPane();
         headerStack.getChildren().addAll(title, backBtn);
         StackPane.setAlignment(backBtn, Pos.CENTER_LEFT);

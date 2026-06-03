@@ -183,7 +183,23 @@ public final class CsvStore {
         }
     }
 
-
+    /**
+     * Represents a recipe record containing all recipe related data taken from the
+     * data source. Each instance is imutable and stores information about a recipe.
+     *
+     * @param id the unique identifier of the recipe
+     * @param name the name of the recipe
+     * @param category the recipe category
+     * @param area the cuisine associated with the recipe
+     * @param instructions the coocking instructions
+     * @param thumbnailUrl the URL of the recipe image
+     * @param tags the tags associated eith the recipe
+     * @param youtubeUrl the url of a related Yputube video
+     * @param sourceUrl the URL of the original recipe source
+     * @param imageSourceUrl the URL of the image source
+     * @param creativeCommonsConfirmed indicates if the recipe cobntet is under Creative Commons license
+     * @param dateModified the date the recipe was last modified
+     */
     private record RecipeRow(
             String id,
             String name,

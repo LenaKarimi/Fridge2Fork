@@ -3,7 +3,7 @@ package Controller;
 import Database.*;
 import Model.*;
 import java.util.List;
-import java.sql.SQLException;
+
 
 
 /**
@@ -15,7 +15,7 @@ public class LikedRecipeController {
     private final LikedRecipeDAO likedRecipeDAO = new LikedRecipeDAO();
     private final RecipeDAO recipeDAO = new RecipeDAO();
 
-    // metod som sparar recept som är gilalde i databasen
+
     /**
      * Saves a recipe as liked for a given user.
      * Stores the recipe in the database if it does not already exist, then links it to the user.
@@ -24,14 +24,14 @@ public class LikedRecipeController {
      */
     public void likeRecipe(int profieId, Recipe recipe)  {
         try {
-            recipeDAO.saveRecipe(recipe); // sparar receptet om det ej redan finns
-            likedRecipeDAO.likedRecipe(profieId, recipe.getId()); // kopplar till användaren
+            recipeDAO.saveRecipe(recipe);
+            likedRecipeDAO.likedRecipe(profieId, recipe.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //ta bort gillning
+
     /**
      * Removes a liked recipe for a given user.
      * @param profieId the ID of the user
@@ -45,7 +45,7 @@ public class LikedRecipeController {
         }
     }
 
-    //hämta alla gillade recept för en användare
+
     /**
      * Returns all liked recipes for a given user.
      * @param profieId the ID of the user
@@ -60,9 +60,7 @@ public class LikedRecipeController {
         }
     }
 
-    //denna metod behövs så att hjärtat är ifyllt ifall receptet
-    //visas under en senare generering, då hjärtat alltid ska vara
-    // ifyllt om det är likat av en användraen
+
     /**
      * Checks whether a specific recipe is liked by a given user.
      * Used to determine whether to display a filled or empty heart icon.

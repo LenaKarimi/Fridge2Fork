@@ -17,7 +17,6 @@ public class UserController {
 
 
 
-    // denna metod är till för kontroller vid skapandet av nytt konto
     /**
      * Registers a new user account.
      * Validates that all fields are filled in, that the password meets requirements
@@ -55,7 +54,7 @@ public class UserController {
         }
     }
 
-    // vid inloggning returnerar den en profil dto till guit annars null
+
     /**
      * Attempts to log in a user with the given credentials.
      * Sets the current user on success.
@@ -89,6 +88,10 @@ public class UserController {
         }
     }
 
+    /**
+     * returns the current login error message.
+     * @return the login error message, null if no login error
+     */
     public String getLoginError() {
         return loginError;
     }
@@ -126,11 +129,15 @@ public class UserController {
         }
     }
 
+    /**
+     * Returns the current loged in user
+     * @return the current loged in user
+     */
     public ProfileDTO getCurrentUser() {
         return currentUser;
     }
 
-    //jag la bara till en liten logout metod :D //Maya
+
     /**
      * Logs out the current user by clearing the session.
      */

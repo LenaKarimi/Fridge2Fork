@@ -1,9 +1,8 @@
 package DTO;
 
-import Controller.RecipeController;
 import Model.Cuisine;
 import Model.Ingredient;
-import Model.Recipe;
+
 
 import java.util.List;
 

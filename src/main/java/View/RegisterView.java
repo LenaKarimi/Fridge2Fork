@@ -2,11 +2,10 @@ package View;
 
 import App.Fridge2ForkApp;
 import Controller.UserController;
-import View.HomeView;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
-import View.*;
+
 
 import javax.swing.*;
 

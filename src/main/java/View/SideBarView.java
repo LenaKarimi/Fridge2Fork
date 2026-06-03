@@ -67,7 +67,7 @@ public class SideBarView extends VBox {
 
             logoutBtn.setOnMouseEntered(e -> {
                 logoutBtn.setEffect(logoutShadow);
-                logoutBtn.setTranslateY(-2); // Ett litet lyft
+                logoutBtn.setTranslateY(-2);
             });
 
             logoutBtn.setOnMouseExited(e -> {

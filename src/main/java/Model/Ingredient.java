@@ -27,7 +27,7 @@ public class Ingredient {
     public Ingredient(String name, String measure){
         this.name = name;
         this.measure = measure;
-        this.category = Category.OTHER; //API definerar inte kategori
+        this.category = Category.OTHER;
     }
 
     /**

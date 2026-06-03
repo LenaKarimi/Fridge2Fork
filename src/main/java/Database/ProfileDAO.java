@@ -1,7 +1,6 @@
 package Database;
 
 import Model.*;
-import Database.DbConnection;
 import java.sql.*;
 
 
@@ -12,16 +11,16 @@ import java.sql.*;
  */
 public class ProfileDAO {
 
-    //denna metod koppar upp sig till databasen och skapar en ny användare
+
     /**
      * Inserts a new user profile into the database.
      * @param profile the profile to create
      * @throws SQLException if a database access error occurs
      */
     public void createProfile(Profile profile) throws SQLException{
-        String sql = "INSERT INTO profiles (username, password_hash, name, email) VALUES (?, ?, ?, ?)"; // det vi vill skriva
+        String sql = "INSERT INTO profiles (username, password_hash, name, email) VALUES (?, ?, ?, ?)";
         Connection connection = DbConnection.getConnection();
-        try (PreparedStatement insertObject = connection.prepareStatement(sql)) { // försöker connecta via connaction klassen
+        try (PreparedStatement insertObject = connection.prepareStatement(sql)) {
 
             insertObject.setString(1, profile.getUsername());
             insertObject.setString(2,profile.getPassword());
@@ -31,7 +30,6 @@ public class ProfileDAO {
         }
     }
 
-    // denna metoden kopplar upp sig mot databasen och hämtar användaren baserat på användarnamn
     /**
      * Retrieves a user profile from the database by username.
      * @param username the username to search for
@@ -39,14 +37,14 @@ public class ProfileDAO {
      * @throws SQLException if a database access error occurs
      */
     public Profile getProfileByUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM profiles WHERE username = ?"; // vår sql query
+        String sql = "SELECT * FROM profiles WHERE username = ?";
         Connection connection = DbConnection.getConnection();
-        try (PreparedStatement selectObject = connection.prepareStatement(sql)) { // försöker göra en koppling
+        try (PreparedStatement selectObject = connection.prepareStatement(sql)) {
 
-            selectObject.setString(1, username); // användarnamnet v skcikar in från parametern
-            try (ResultSet resultSet = selectObject.executeQuery()) { // kör queryn i databasen och sparar resultatet
-                 if (resultSet.next()) { // returnerar true = det finns data, false = tomt resultat , har med pekaern att göra
-                     return mapToProfile(resultSet); // tar data från raden och skapar ett profile objekt
+            selectObject.setString(1, username);
+            try (ResultSet resultSet = selectObject.executeQuery()) {
+                 if (resultSet.next()) {
+                     return mapToProfile(resultSet);
                  }
             }
         }
@@ -72,7 +70,7 @@ public class ProfileDAO {
         }
     }
 
-    // mapper, returnerar profile objekt
+
     /**
      * Maps a row from the database result set to a Profile object.
      * @param resultSet the result set positioned at the current row
@@ -80,9 +78,9 @@ public class ProfileDAO {
      * @throws SQLException if a database access error occurs
      */
     private Profile mapToProfile(ResultSet resultSet) throws SQLException {
-        return new Profile( // skickar till kostruktorn och skapar nytt objekt
+        return new Profile(
                 resultSet.getInt("id"),
-                resultSet.getString("username"), // hämtar värdet från varje kolumn i tabellen
+                resultSet.getString("username"),
                 resultSet.getString("password_hash"),
                 resultSet.getString("name"),
                 resultSet.getString("email")

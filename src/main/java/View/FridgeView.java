@@ -273,7 +273,6 @@ public class FridgeView extends StackPane {
             }
             else {
                 cb.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
-                //om en ingrediens klickas, avkryssa "none"
                 cb.setOnAction(e -> {
                     if (cb.isSelected()){
                         for (javafx.scene.Node node : ingredientFlow.getChildren()){

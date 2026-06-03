@@ -2,7 +2,6 @@ package App;
 
 import Controller.UserController;
 import javafx.application.Application;
-import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -26,21 +25,21 @@ public class Fridge2ForkApp extends Application {
      */
     @Override
     public void start(Stage stage){
-        root = new BorderPane(); //1.Här skapar vi huvudramen för programmet
+        root = new BorderPane();
 
-        UserController userController = new UserController(); //skapat controllern en gån här
+        UserController userController = new UserController();
 
-        sideBar = (new SideBarView(userController)); //Sidebaren med färger
+        sideBar = (new SideBarView(userController));
         root.setLeft(sideBar); //Välkomstsidan i mitten
-        root.setCenter(new HomeView(userController)); // skickar in controllern till homeview så resterande vyer kan jobba med den
+        root.setCenter(new HomeView(userController));
 
-        Scene scene = new Scene(root, 800, 600); //2.Innehållet och lägg i ramen, storlek 800x600
+        Scene scene = new Scene(root, 800, 600);
 
-        stage.setTitle("Fridge2Fork"); //3. Titel till fönstret högst upp
+        stage.setTitle("Fridge2Fork");
 
-        stage.setScene(scene); //4. Koppla ihop fönstret (stage) med dess innehåll
+        stage.setScene(scene);
 
-        stage.show(); //5. Gör det synligt på skärmen
+        stage.show();
     }
 
     /**
