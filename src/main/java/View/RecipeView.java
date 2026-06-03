@@ -1,8 +1,10 @@
 package View;
 
 import App.Fridge2ForkApp;
+import Controller.LikedRecipeController;
 import Model.Ingredient;
 import Model.Recipe;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -47,7 +49,6 @@ public class RecipeView extends StackPane {
         content.setMaxWidth(800);
         content.setAlignment(Pos.TOP_LEFT);
 
-        //dynamisk tbx-knapp baserat på tidigare vy
         String backText = "← Back";
         if (previousView instanceof LikedRecipesView){
             backText = "← Back to Liked Recipes";
@@ -59,7 +60,6 @@ public class RecipeView extends StackPane {
         backButton.setStyle("-fx-background-color: darkseagreen; -fx-text-fill: white; -fx-font-weight: bold;");
         backButton.setCursor(javafx.scene.Cursor.HAND);
 
-        //gå tbx till tidigare vy om tillgänglig, annars fallback till HomeView
         backButton.setOnAction(e -> {
             if (previousView != null){
                 Fridge2ForkApp.root.setCenter(previousView);
@@ -78,26 +78,35 @@ public class RecipeView extends StackPane {
             likeButton.setVisible(false);
         }
 
-        likeButton.setOnAction(e -> {
-            if (likeButton.getText().equals("Liked")) {
-                likeButton.setText("Liked");
-                likeButton.setStyle("-fx-font-size: 16px; -fx-background-color: red; -fx-text-fill: white;" +
-                        " -fx-background-radius: 5;");
-                System.out.println("Sparar recept " + recipe.getName() + " för användare " + currentUser.getUsername());
-            }
-            else {
-                likeButton.setText("Like");
-                likeButton.setStyle("-fx-font-size: 16px; -fx-background-color: white; -fx-border-color: red;" +
-                        " -fx-border-radius: 5; -fx-text-fill: red;");
-                System.out.println("Tar bort recept " + recipe.getName());
-            }
-        });
-        backButton.setOnAction(e -> {
-            Fridge2ForkApp.root.setCenter(previousView);
-        });
         Label title = new Label(recipe.getName());
         title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: darkseagreen;");
         title.setWrapText(true);
+
+        if (userController.getCurrentUser() != null) {
+            LikedRecipeController likedRecipeController = new LikedRecipeController();
+            int profileId = userController.getCurrentUser().getId();
+
+            boolean liked = likedRecipeController.isLiked(profileId, recipe.getId());
+            Button heartBtn = new Button(liked ? "\u2665" : "\u2661");
+            heartBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 20px;");
+            heartBtn.setCursor(Cursor.HAND);
+
+            heartBtn.setOnMouseClicked(e -> {
+                e.consume();
+                if (heartBtn.getText().equals("\u2661")) {
+                    heartBtn.setText("\u2665");
+                    likedRecipeController.likeRecipe(profileId, recipe);
+
+                } else {
+                    heartBtn.setText("\u2661");
+                    likedRecipeController.unlikeRecipe(profileId, recipe.getId());
+                }
+            });
+            content.getChildren().addAll(backButton, title, heartBtn);
+        }
+        else {
+            content.getChildren().addAll(backButton, title);
+        }
 
         ImageView recipeImageView = new ImageView();
         String imageUrl = recipe.getImageUrl();
@@ -151,7 +160,7 @@ public class RecipeView extends StackPane {
         HBox imageAndIngredients = new HBox(40, recipeImageView, ingredientsBox);
         imageAndIngredients.setAlignment(Pos.TOP_LEFT);
 
-        content.getChildren().addAll(backButton, title, imageAndIngredients, instructionsBox);
+        content.getChildren().addAll(imageAndIngredients, instructionsBox);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(content);

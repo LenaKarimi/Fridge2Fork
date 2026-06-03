@@ -5,6 +5,7 @@ import Controller.LikedRecipeController;
 import Model.Recipe;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
@@ -29,7 +30,7 @@ import java.util.Collections;
 public class RecipeResultsView extends VBox {
     private final UserController userController;
     private final List<Recipe> allFetchedRecipes;
-    private HBox recipeContainer;
+    private FlowPane recipeContainer;
     private final Node previousView;
 
     /**
@@ -118,9 +119,17 @@ public class RecipeResultsView extends VBox {
             return;
         }
 
+        /*
         this.recipeContainer = new HBox(20);
         recipeContainer.setAlignment(Pos.CENTER_LEFT);
         recipeContainer.setPadding(new Insets(10));
+        */
+        this.recipeContainer = new FlowPane();
+        recipeContainer.setHgap(20);
+        recipeContainer.setVgap(20);
+        recipeContainer.setPadding(new Insets(10));
+        recipeContainer.setAlignment(Pos.TOP_LEFT);
+
 
         for (Recipe recipe : recipes) {
             recipeContainer.getChildren().add(createRecipeCard(recipe));
@@ -128,6 +137,7 @@ public class RecipeResultsView extends VBox {
 
         ScrollPane scrollPane = new ScrollPane(recipeContainer);
         scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         this.getChildren().add(scrollPane);
 
